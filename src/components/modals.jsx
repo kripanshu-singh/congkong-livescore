@@ -7,7 +7,7 @@ export const ConfirmSubmitModal = ({ isOpen, onClose, onConfirm, totalScore, zer
   const { t, lang } = useContext(AppContext);
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in">
       <div className="bg-white  w-[90%] max-w-[400px] rounded-[32px] p-8 shadow-2xl border border-white/10 animate-in zoom-in-95">
         <h3 className="text-2xl font-bold mb-2 text-center text-slate-900 ">{t.confirm_title}</h3>
         
@@ -63,7 +63,7 @@ export const TeamDetailModal = ({ isOpen, onClose, team, judges, scores }) => {
   const minScore = Math.min(...submittedScores);
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in cursor-pointer" onClick={onClose}>
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in cursor-pointer" onClick={onClose}>
       <div className="bg-white  w-[90%] max-w-[600px] rounded-[32px] p-8 shadow-2xl border border-white/10 animate-in zoom-in-95 cursor-pointer" onClick={e => e.stopPropagation()}>
         <div className="flex justify-between items-start mb-6">
           <div>
@@ -228,7 +228,7 @@ export const SignatureModal = ({ isOpen, onClose, onSave }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-md animate-in fade-in">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-md animate-in fade-in">
       <div className="bg-white  w-[90%] max-w-[400px] rounded-[32px] p-6 shadow-2xl animate-in zoom-in-95">
         <h3 className="text-lg font-bold mb-4 text-center">{t.sign_title}</h3>
         <p className="text-xs text-center text-slate-500 mb-4">{t.sign_desc}</p>
