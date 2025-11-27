@@ -176,7 +176,10 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
 
       <header className="relative flex flex-col lg:flex-row justify-between items-center mb-8 px-2 z-10 shrink-0 gap-4 lg:gap-0">
          <div className="w-full lg:w-auto flex flex-col items-center lg:items-start">
-            <h1 className="text-4xl font-black tracking-tighter mb-2 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 drop-shadow-sm">{t.mission_control}</h1>
+            <div className="flex items-center gap-3 mb-2">
+              <img src="/conkkong-logo.svg" className="w-8 h-8" alt="Logo" />
+              <h1 className="text-4xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 drop-shadow-sm">{t.mission_control}</h1>
+            </div>
             <div className="flex items-center gap-4 text-xs font-medium">
                <span className="flex items-center gap-2 px-3 py-1 bg-white/80 backdrop-blur-sm rounded-full shadow-sm border border-slate-200/60 text-slate-600">
                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]"/> 

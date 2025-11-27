@@ -25,7 +25,7 @@ const LoginScreen = ({ onLogin }) => {
         <div className="space-y-8 animate-in slide-in-from-bottom-8 duration-1000">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white  border border-slate-200  text-xs font-bold uppercase tracking-widest mb-6 shadow-sm text-slate-600 ">
-              <Sparkles className="w-3 h-3 text-blue-500" /> LiveScore Titanium Edition
+              <img src="/conkkong-logo.svg" className="w-4 h-4" alt="Logo" /> LiveScore Titanium Edition
             </div>
             <h1 className="text-5xl lg:text-6xl font-semibold tracking-tighter text-slate-900  mb-6 leading-tight break-keep">
               {t.app_title}<br/>

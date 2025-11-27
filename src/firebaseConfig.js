@@ -3,16 +3,6 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Your web app's Firebase configuration
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBu8uRMN8ghIeVZJ9LAVTJO5klxLoEaIzQ",
-//   authDomain: "citrus-52675.firebaseapp.com",
-//   projectId: "citrus-52675",
-//   storageBucket: "citrus-52675.firebasestorage.app",
-//   messagingSenderId: "642440523500",
-//   appId: "1:642440523500:web:993b21fc1a7b05dfaaffc9"
-// };
-
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,

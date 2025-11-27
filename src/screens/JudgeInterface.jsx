@@ -82,6 +82,10 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
         {/* Sidebar */}
         <div className="w-full lg:w-[300px] h-[200px] lg:h-auto shrink-0 bg-white/80 backdrop-blur-xl rounded-[24px] flex flex-col border border-white/20 shadow-sm z-20">
           <div className="p-5 border-b border-slate-100 ">
+            <div className="flex items-center gap-2 mb-6 opacity-50">
+               <img src="/conkkong-logo.svg" className="w-4 h-4" alt="Logo" />
+               <span className="text-xs font-bold uppercase tracking-widest">LiveScore</span>
+            </div>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs">
                 {judge.name[0]}
