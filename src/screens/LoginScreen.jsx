@@ -61,7 +61,6 @@ const LoginScreen = ({ onLogin }) => {
         <GlassCard className="p-8 h-[600px] flex flex-col shadow-2xl border-white/60 ">
           <div className="flex justify-between items-center mb-6 px-2">
             <h2 className="text-xl font-bold text-slate-900 ">{t.login_judge}</h2>
-            <div className="w-8 h-8 rounded-full bg-slate-100  flex items-center justify-center"><Command className="w-4 h-4" /></div>
           </div>
 
           <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">

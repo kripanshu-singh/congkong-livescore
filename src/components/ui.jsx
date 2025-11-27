@@ -10,14 +10,14 @@ export const SettingsBar = () => {
   
   return (
     <div className="flex items-center gap-2 bg-white/60 backdrop-blur-md rounded-full p-1 border border-white/40 shadow-sm">
-      <button 
+      {/* <button 
         onClick={toggleTheme}
         className="p-2 rounded-full hover:bg-white/20  transition-colors text-slate-700  cursor-pointer"
         title="Toggle Theme"
       >
         {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
       </button>
-      <div className="w-px h-4 bg-slate-300  mx-1"></div>
+      <div className="w-px h-4 bg-slate-300  mx-1"></div> */}
       <button
         onClick={() => setLang(prev => prev === 'ko' ? 'en' : 'ko')}
         className="px-3 py-1 rounded-full text-xs font-bold hover:bg-white/20  transition-colors text-slate-700  font-mono cursor-pointer"
