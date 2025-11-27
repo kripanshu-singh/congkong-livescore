@@ -174,8 +174,8 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
 
       <TeamDetailModal isOpen={!!selectedTeam} onClose={() => setSelectedTeam(null)} team={selectedTeam} judges={judges} scores={scores} />
 
-      <header className="relative flex justify-between items-center mb-8 px-2 z-10 shrink-0">
-         <div>
+      <header className="relative flex flex-col lg:flex-row justify-between items-center mb-8 px-2 z-10 shrink-0 gap-4 lg:gap-0">
+         <div className="w-full lg:w-auto flex flex-col items-center lg:items-start">
             <h1 className="text-4xl font-black tracking-tighter mb-2 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 drop-shadow-sm">{t.mission_control}</h1>
             <div className="flex items-center gap-4 text-xs font-medium">
                <span className="flex items-center gap-2 px-3 py-1 bg-white/80 backdrop-blur-sm rounded-full shadow-sm border border-slate-200/60 text-slate-600">
@@ -191,7 +191,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                )} */}
             </div>
          </div>
-         <div className="flex gap-4 items-center">
+         <div className="flex gap-4 items-center flex-wrap justify-center w-full lg:w-auto">
             <SettingsBar />
             
             <button 
@@ -233,9 +233,9 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
          </div>
       </header>
 
-      <div className="grid grid-cols-12 gap-6 flex-1 min-h-0 grid-rows-1">
+      <div className="flex flex-col lg:grid lg:grid-cols-12 lg:grid-rows-1 gap-6 flex-1 min-h-0 overflow-y-auto lg:overflow-hidden">
          {/* Left Col: Field Control */}
-         <div className="col-span-3 flex flex-col gap-6">
+         <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 shrink-0">
             {/* Field Op 1: Active Team Control */}
             <GlassCard className="flex-1 p-0 flex flex-col overflow-hidden border-slate-200/60 shadow-lg">
                <div className="p-4 border-b border-slate-100 bg-slate-50/80 backdrop-blur-sm sticky top-0 z-10">
@@ -306,7 +306,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
          </div>
 
          {/* Center: Leaderboard */}
-         <div className="col-span-9">
+         <div className="col-span-1 lg:col-span-9 h-[600px] lg:h-full pb-6 lg:pb-0">
             <GlassCard className="h-full flex flex-col p-0 overflow-hidden border-slate-200/60 shadow-xl">
                <div className="p-5 border-b border-slate-100 bg-white/80 backdrop-blur-md flex justify-between items-center sticky top-0 z-20">
                   <div className="flex items-center gap-3">
@@ -323,11 +323,11 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                   </div>
                </div>
                
-               <div className="bg-slate-50/80 border-b border-slate-100 p-3 grid grid-cols-12 text-xs font-bold text-slate-400 uppercase tracking-wider sticky top-[73px] z-10 backdrop-blur-sm">
+               <div className="bg-slate-50/80 border-b border-slate-100 p-3 grid grid-cols-[auto_1fr_auto] md:grid-cols-12 text-xs font-bold text-slate-400 uppercase tracking-wider sticky top-[73px] z-10 backdrop-blur-sm gap-2 md:gap-0">
                   <div className="col-span-1 text-center">#</div>
-                  <div className="col-span-6 pl-4">{t.team}</div>
-                  <div className="col-span-3 text-center">{t.judge_progress}</div>
-                  <div className="col-span-2 text-right pr-6">{t.total_score}</div>
+                  <div className="col-span-1 md:col-span-6 pl-4">{t.team}</div>
+                  <div className="hidden md:block md:col-span-3 text-center">{t.judge_progress}</div>
+                  <div className="col-span-1 md:col-span-2 text-right pr-6">{t.total_score}</div>
                </div>
 
                <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar bg-slate-50/30">
@@ -341,7 +341,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                        <div 
                           key={team.id} 
                           onClick={() => setSelectedTeam(team)}
-                          className={`grid grid-cols-12 items-center p-4 rounded-2xl transition-all duration-300 group cursor-pointer border
+                          className={`grid grid-cols-[auto_1fr_auto] md:grid-cols-12 items-center p-4 rounded-2xl transition-all duration-300 group cursor-pointer border
                             ${isTop3 ? 'bg-white shadow-md border-slate-100 hover:-translate-y-0.5 hover:shadow-lg' : 'bg-white/50 border-transparent hover:bg-white hover:shadow-sm'}
                           `}
                        >
@@ -350,7 +350,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                                 {idx === 0 ? <Crown className="w-4 h-4" /> : idx + 1}
                              </div>
                           </div>
-                          <div className="col-span-6 pl-4 min-w-0">
+                          <div className="col-span-1 md:col-span-6 pl-4 min-w-0">
                              <div className="flex items-center gap-2 mb-0.5">
                                <span className={`font-bold text-base truncate ${idx === 0 ? 'text-slate-900' : 'text-slate-700'}`}>{team.name}</span>
                                {idx < 3 && <Medal className={`w-3 h-3 ${idx === 0 ? 'text-yellow-500' : idx === 1 ? 'text-slate-400' : 'text-amber-600'}`} />}
@@ -361,7 +361,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                                <span>{team.presenter}</span>
                              </div>
                           </div>
-                          <div className="col-span-3 flex flex-col items-center justify-center gap-1.5">
+                          <div className="hidden md:flex md:col-span-3 flex-col items-center justify-center gap-1.5">
                              <div className="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                                <div 
                                  className="h-full bg-blue-500 transition-all duration-500 rounded-full" 
@@ -372,7 +372,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                                 {team.count} / {judges.length} Judges
                              </span>
                           </div>
-                          <div className="col-span-2 text-right pr-6">
+                          <div className="col-span-1 md:col-span-2 text-right pr-6">
                              <div className={`text-2xl font-mono font-black tracking-tight ${idx === 0 ? 'text-indigo-600' : 'text-slate-700'}`}>
                                 {team.judgeAvg.toFixed(2)}
                              </div>
