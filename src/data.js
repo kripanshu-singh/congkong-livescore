@@ -37,6 +37,8 @@ export const DICTIONARY = {
     field_control: "현장 운영 통제",
     force_sync: "발표 팀 강제 지정 (Sync)",
     emergency_unlock: "심사 잠금 해제 (Emergency)",
+    caution: "주의",
+    btn_unlock: "해제",
     
     live_ranking: "LIVE RANKING (Max 110pts)",
     ranking_calc: "최고/최저 제외 평균 산출",
@@ -109,6 +111,8 @@ export const DICTIONARY = {
     field_control: "Field Operations",
     force_sync: "Force Active Team (Sync)",
     emergency_unlock: "Emergency Unlock",
+    caution: "CAUTION",
+    btn_unlock: "Unlock",
     
     live_ranking: "LIVE RANKING (Max 110pts)",
     ranking_calc: "Avg (Excl. Max/Min)",

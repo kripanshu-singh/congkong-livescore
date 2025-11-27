@@ -275,7 +275,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                   <h4 className="text-xs font-bold text-red-600 uppercase tracking-wider flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4"/> {t.emergency_unlock}
                   </h4>
-                  <span className="text-[10px] font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded-full">CAUTION</span>
+                  <span className="text-[10px] font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded-full">{t.caution}</span>
                </div>
                <div className="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar bg-red-50/10">
                   {teams.map(team => (
@@ -292,7 +292,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                                 onClick={() => onUnlock(key)}
                                 className="text-[10px] font-bold bg-red-50 text-red-500 px-3 py-1.5 rounded-md hover:bg-red-500 hover:text-white transition-all cursor-pointer flex items-center gap-1"
                               >
-                                <Unlock className="w-3 h-3" /> Unlock
+                                <Unlock className="w-3 h-3" /> {t.btn_unlock}
                               </button>
                            </div>
                         )
