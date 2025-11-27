@@ -134,7 +134,10 @@ export const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (id === 'admin' && pw === '1234') {
+    const adminUser = import.meta.env.VITE_ADMIN_USER || 'congkong';
+    const adminPw = import.meta.env.VITE_ADMIN_PASSWORD || 'friends';
+    
+    if (id === adminUser && pw === adminPw) {
        onLogin();
        onClose();
     } else {
@@ -144,7 +147,7 @@ export const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in">
       <div className="bg-white  w-[360px] rounded-[32px] p-8 shadow-2xl border border-white/10 animate-in zoom-in-95">
         <div className="flex justify-between items-center mb-8">
            <h3 className="text-xl font-bold flex items-center gap-2"><ShieldCheck className="w-6 h-6 text-blue-500"/> {t.admin_modal_title}</h3>
