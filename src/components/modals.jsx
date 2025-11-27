@@ -100,6 +100,11 @@ export const TeamDetailModal = ({ isOpen, onClose, team, judges, scores }) => {
                        <div className={`text-2xl font-black ${isMax || isMin ? 'text-slate-400 line-through decoration-slate-400/50' : 'text-slate-800 '}`}>{score.total}</div>
                     </div>
                     <div className="text-[10px] text-slate-400">{t.submitted}</div>
+                    {score.signature && (
+                      <div className="mt-2 flex justify-end">
+                        <img src={score.signature} alt="Signature" className="h-8 opacity-70" />
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 text-red-500 font-bold text-sm animate-pulse">
