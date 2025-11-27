@@ -16,7 +16,7 @@ export default function App() {
   const [scores, setScores] = useState({});
   const [control, setControl] = useState({ activeTeamId: TEAMS[0].id, timer: { isRunning: false, seconds: 420 } });
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('light');
   const [lang, setLang] = useState('ko');
 
   useEffect(() => {
@@ -148,7 +148,7 @@ export default function App() {
     }
   };
 
-  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
   return (
     <AppContext.Provider value={{ isOnline, theme, toggleTheme, lang, setLang, t: DICTIONARY[lang] }}>

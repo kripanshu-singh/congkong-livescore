@@ -106,12 +106,12 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] dark:bg-black font-sans p-6 text-slate-900 dark:text-white transition-colors duration-500">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-200 font-sans p-6 text-slate-900 transition-colors duration-500">
       <TeamDetailModal isOpen={!!selectedTeam} onClose={() => setSelectedTeam(null)} team={selectedTeam} judges={judges} scores={scores} />
 
-      <header className="flex justify-between items-center mb-8">
+      <header className="flex justify-between items-center mb-8 px-2">
          <div>
-            <h1 className="text-3xl font-bold tracking-tight mb-1">{t.mission_control}</h1>
+            <h1 className="text-4xl font-black tracking-tighter mb-1 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600">{t.mission_control}</h1>
             <div className="flex items-center gap-4 text-xs text-slate-500 font-medium">
                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"/> {t.system_status}</span>
                {control?.activeTeamId && <span className="text-blue-500 flex items-center gap-1"><MonitorPlay className="w-3 h-3"/> {t.current_presenting}: {teams.find(t=>t.id===control.activeTeamId)?.name}</span>}
@@ -119,7 +119,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
          </div>
          <div className="flex gap-3">
             <SettingsBar />
-            <div className="bg-slate-100 dark:bg-slate-800 rounded-full px-4 py-2 flex items-center gap-3 border border-slate-200 dark:border-slate-700">
+            <div className="bg-slate-100  rounded-full px-4 py-2 flex items-center gap-3 border border-slate-200 ">
                <Timer className="w-4 h-4 text-slate-500"/>
                <span className="font-mono font-bold text-lg w-16 text-center">
                  {Math.floor((control?.timer?.seconds || 0) / 60)}:{String((control?.timer?.seconds || 0) % 60).padStart(2, '0')}
@@ -130,10 +130,10 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                </div>
             </div>
 
-            <button onClick={() => setMode('CEREMONY')} className="px-5 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-black rounded-full text-sm font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
+            <button onClick={() => setMode('CEREMONY')} className="px-5 py-2.5 bg-slate-900  text-white  rounded-full text-sm font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
                <Play className="w-4 h-4 fill-current"/> {t.mode_ceremony}
             </button>
-            <button onClick={onLogout} className="p-2.5 bg-slate-200 dark:bg-slate-800 rounded-full hover:bg-slate-300 dark:hover:bg-slate-700"><LogOut className="w-5 h-5"/></button>
+            <button onClick={onLogout} className="p-2.5 bg-slate-200  rounded-full hover:bg-slate-300 "><LogOut className="w-5 h-5"/></button>
          </div>
       </header>
 
@@ -142,7 +142,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
          <div className="col-span-3 flex flex-col gap-6">
             {/* Field Op 1: Active Team Control */}
             <GlassCard className="flex-1 p-0 flex flex-col overflow-hidden">
-               <div className="p-5 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/5">
+               <div className="p-5 border-b border-slate-100  bg-slate-50/50 ">
                   <h4 className="text-xs font-bold text-slate-400 uppercase flex items-center gap-2">
                     <MonitorPlay className="w-4 h-4 text-red-500"/> {t.force_sync}
                   </h4>
@@ -155,7 +155,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                       className={`w-full p-3 text-left rounded-lg text-xs font-bold flex justify-between items-center transition-colors
                         ${control?.activeTeamId === team.id 
                           ? 'bg-red-500 text-white shadow-lg' 
-                          : 'hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500'}
+                          : 'hover:bg-slate-100  text-slate-500'}
                       `}
                     >
                       <span>{team.seq}. {team.name}</span>
@@ -167,7 +167,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
 
             {/* Field Op 2: Emergency Unlock */}
             <GlassCard className="h-[200px] p-0 flex flex-col overflow-hidden">
-               <div className="p-4 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/5">
+               <div className="p-4 border-b border-slate-100  bg-slate-50/50 ">
                   <h4 className="text-xs font-bold text-slate-400 uppercase flex items-center gap-2">
                     <Unlock className="w-4 h-4 text-yellow-500"/> {t.emergency_unlock}
                   </h4>
@@ -178,11 +178,11 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                         const key = `${team.id}_${judge.id}`;
                         if (!scores[key]) return null;
                         return (
-                           <div key={key} className="flex justify-between items-center bg-slate-50 dark:bg-white/5 p-2 rounded border border-slate-100 dark:border-white/5">
+                           <div key={key} className="flex justify-between items-center bg-slate-50  p-2 rounded border border-slate-100 ">
                               <span className="text-[10px] text-slate-500">{judge.name} → {team.name}</span>
                               <button 
                                 onClick={() => onUnlock(key)}
-                                className="text-[10px] bg-slate-200 dark:bg-slate-700 px-2 py-1 rounded hover:bg-red-500 hover:text-white transition-colors"
+                                className="text-[10px] bg-slate-200  px-2 py-1 rounded hover:bg-red-500 hover:text-white transition-colors"
                               >
                                 Unlock
                               </button>
@@ -197,13 +197,13 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
          {/* Center: Leaderboard */}
          <div className="col-span-9">
             <GlassCard className="h-full flex flex-col p-0 overflow-hidden">
-               <div className="p-5 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 flex justify-between items-center">
+               <div className="p-5 border-b border-slate-100  bg-slate-50/50  flex justify-between items-center">
                   <h3 className="font-bold text-sm uppercase tracking-wide text-slate-500">{t.live_ranking}</h3>
-                  <div className="text-[10px] text-slate-400 bg-slate-100 dark:bg-white/5 px-2 py-1 rounded flex items-center gap-1">
+                  <div className="text-[10px] text-slate-400 bg-slate-100  px-2 py-1 rounded flex items-center gap-1">
                      <Calculator className="w-3 h-3"/> {t.ranking_calc}
                   </div>
                </div>
-               <div className="bg-slate-100/50 dark:bg-white/5 p-3 grid grid-cols-12 text-xs font-bold text-slate-500 uppercase tracking-wider">
+               <div className="bg-slate-100/50  p-3 grid grid-cols-12 text-xs font-bold text-slate-500 uppercase tracking-wider">
                   <div className="col-span-1 text-center">{t.rank}</div>
                   <div className="col-span-7 pl-2">{t.team}</div>
                   <div className="col-span-2 text-center">{t.judge_progress}</div>
@@ -214,15 +214,15 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                      <div 
                         key={team.id} 
                         onClick={() => setSelectedTeam(team)}
-                        className="grid grid-cols-12 items-center p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 transition-colors group cursor-pointer"
+                        className="grid grid-cols-12 items-center p-4 rounded-xl hover:bg-white/80 transition-all duration-300 group cursor-pointer border border-transparent hover:border-slate-200 hover:shadow-md"
                      >
                         <div className="col-span-1 text-center">
-                           <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-xs mx-auto ${idx===0 ? 'bg-yellow-400 text-black' : 'bg-slate-200 dark:bg-white/10 text-slate-500'}`}>
+                           <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-bold text-xs mx-auto ${idx===0 ? 'bg-yellow-400 text-black' : 'bg-slate-200  text-slate-500'}`}>
                               {idx + 1}
                            </div>
                         </div>
                         <div className="col-span-7 pl-2 min-w-0">
-                           <div className="font-bold text-sm truncate text-slate-900 dark:text-white">{team.name}</div>
+                           <div className="font-bold text-sm truncate text-slate-900 ">{team.name}</div>
                            <div className="text-xs text-slate-400 truncate">{lang === 'en' ? team.univ_en : team.univ} | {team.presenter}</div>
                         </div>
                         <div className="col-span-2 text-center flex justify-center">
@@ -231,7 +231,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                            </span>
                         </div>
                         <div className="col-span-2 text-right pr-4">
-                           <div className="text-xl font-mono font-black text-slate-900 dark:text-white">
+                           <div className="text-xl font-mono font-black text-slate-900 ">
                               {team.judgeAvg.toFixed(2)}
                            </div>
                         </div>

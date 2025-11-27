@@ -9,18 +9,18 @@ export const SettingsBar = () => {
   const { theme, toggleTheme, lang, setLang } = useContext(AppContext);
   
   return (
-    <div className="flex items-center gap-2 bg-white/20 dark:bg-black/20 backdrop-blur-md rounded-full p-1 border border-white/10 dark:border-white/5">
+    <div className="flex items-center gap-2 bg-white/60 backdrop-blur-md rounded-full p-1 border border-white/40 shadow-sm">
       <button 
         onClick={toggleTheme}
-        className="p-2 rounded-full hover:bg-white/20 dark:hover:bg-white/10 transition-colors text-slate-700 dark:text-white"
+        className="p-2 rounded-full hover:bg-white/20  transition-colors text-slate-700 "
         title="Toggle Theme"
       >
         {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
       </button>
-      <div className="w-px h-4 bg-slate-300 dark:bg-slate-700 mx-1"></div>
+      <div className="w-px h-4 bg-slate-300  mx-1"></div>
       <button
         onClick={() => setLang(prev => prev === 'ko' ? 'en' : 'ko')}
-        className="px-3 py-1 rounded-full text-xs font-bold hover:bg-white/20 dark:hover:bg-white/10 transition-colors text-slate-700 dark:text-white font-mono"
+        className="px-3 py-1 rounded-full text-xs font-bold hover:bg-white/20  transition-colors text-slate-700  font-mono"
       >
         {lang === 'ko' ? 'KO' : 'EN'}
       </button>
@@ -32,10 +32,10 @@ export const GlassCard = ({ children, className = "", active = false, onClick })
   <div 
     onClick={onClick}
     className={`
-      relative overflow-hidden backdrop-blur-2xl transition-all duration-500 border
+      relative overflow-hidden backdrop-blur-3xl transition-all duration-500 border
       ${active 
-        ? 'bg-white/90 dark:bg-slate-800/90 border-blue-500/50 shadow-[0_8px_32px_rgba(59,130,246,0.2)]' 
-        : 'bg-white/60 dark:bg-slate-900/60 border-white/20 dark:border-white/5 shadow-sm hover:bg-white/80 dark:hover:bg-slate-800/80'
+        ? 'bg-white/95 border-blue-500/50 shadow-[0_8px_32px_rgba(59,130,246,0.25)] ring-1 ring-blue-500/20' 
+        : 'bg-white/70 border-white/40 shadow-xl shadow-slate-200/50 hover:bg-white/80 hover:shadow-2xl hover:shadow-slate-200/60 hover:-translate-y-0.5'
       }
       rounded-[24px] ${className}
     `}
@@ -57,14 +57,14 @@ export const AppleSlider = ({ value, max, onChange, label, desc }) => {
     <div className="group select-none touch-none py-3">
       <div className="flex justify-between items-end mb-2 px-1">
         <div>
-          <span className="text-[14px] font-bold text-slate-700 dark:text-slate-200 tracking-tight block">{label}</span>
-          <span className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">{desc}</span>
+          <span className="text-[14px] font-bold text-slate-700  tracking-tight block">{label}</span>
+          <span className="text-[11px] text-slate-400  font-medium">{desc}</span>
         </div>
-        <span className="font-mono text-xl font-bold text-slate-900 dark:text-white flex items-baseline gap-1">
+        <span className="font-mono text-xl font-bold text-slate-900  flex items-baseline gap-1">
           {value}<span className="text-xs text-slate-400 font-normal">/{max}</span>
         </span>
       </div>
-      <div className="relative h-11 w-full bg-slate-100 dark:bg-slate-800/80 rounded-xl overflow-hidden transition-all active:scale-[0.99] border border-black/5 dark:border-white/5 shadow-inner">
+      <div className="relative h-11 w-full bg-slate-100  rounded-xl overflow-hidden transition-all active:scale-[0.99] border border-black/5  shadow-inner">
         <div 
           className={`absolute top-0 left-0 bottom-0 ${getColor(percentage)} transition-all duration-300 ease-out`}
           style={{ width: `${percentage}%` }}
