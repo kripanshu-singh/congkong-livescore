@@ -78,9 +78,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
       
       <ToastMessage message={t.toast_saved} isVisible={showToast} />
 
-      <DynamicIsland activeTeam={activeTeam} totalScore={totalScore} isOnline={isOnline} timer={control?.timer} saveStatus={saveStatus} />
-
-      <div className="flex-1 flex overflow-hidden px-4 pb-4 gap-4">
+      <div className="flex-1 flex overflow-hidden px-4 pb-4 gap-4 mt-5">
         {/* Sidebar */}
         <div className="w-[300px] bg-white/80  backdrop-blur-xl rounded-[24px] flex flex-col border border-white/20 shadow-sm z-20">
           <div className="p-5 border-b border-slate-100 ">
@@ -92,7 +90,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                 <div className="font-bold text-sm truncate">{lang === 'en' ? (judge.name_en || judge.name) : judge.name}</div>
                 <div className="text-[10px] text-slate-500 uppercase tracking-wider">{judge.company}</div>
               </div>
-              <button onClick={onLogout}><LogOut className="w-4 h-4 text-slate-400 hover:text-red-500" /></button>
+              <button onClick={onLogout} className="cursor-pointer"><LogOut className="w-4 h-4 text-slate-400 hover:text-red-500" /></button>
             </div>
             <div className="h-1 bg-slate-100  rounded-full overflow-hidden">
               <div className="h-full bg-blue-500 transition-all duration-500" style={{ width: `${(Object.keys(scores).filter(k => k.includes(judge.id)).length / teams.length) * 100}%` }} />
@@ -112,7 +110,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                   className={`w-full p-3 rounded-[16px] text-left transition-all duration-200 relative group
                     ${isActive ? 'bg-white  shadow-sm' : 'hover:bg-black/5 '}
                     ${isGlobalActive && !isActive ? 'ring-1 ring-blue-500/50 ring-dashed' : ''}
-                  `}
+                   cursor-pointer`}
                 >
                   <div className="flex justify-between items-center mb-1">
                     <div className="flex items-center gap-2">
@@ -186,7 +184,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                  <GlassCard className="p-5 flex flex-col h-[280px]">
                     <div className="flex justify-between items-center mb-3">
                        <h3 className="font-bold text-sm flex items-center gap-2"><PenTool className="w-4 h-4 text-blue-500"/> {t.comment_placeholder}</h3>
-                       <button onClick={() => setShowAI(!showAI)} className="text-[10px] bg-slate-100  px-2 py-1 rounded-md font-bold flex items-center gap-1 hover:bg-blue-50  hover:text-blue-500 transition-colors">
+                       <button onClick={() => setShowAI(!showAI)} className="text-[10px] bg-slate-100  px-2 py-1 rounded-md font-bold flex items-center gap-1 hover:bg-blue-50  hover:text-blue-500 transition-colors cursor-pointer">
                           <Sparkles className="w-3 h-3" /> {t.ai_analysis}
                        </button>
                     </div>
@@ -209,7 +207,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                     </div>
                     <button 
                        onClick={handlePreSubmit}
-                       className="relative z-10 bg-white text-blue-600 px-6 py-3 rounded-xl font-bold text-sm shadow-lg hover:scale-105 active:scale-95 transition-all"
+                       className="relative z-10 bg-white text-blue-600 px-6 py-3 rounded-xl font-bold text-sm shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
                     >
                        {savedData ? t.update : t.submit}
                     </button>

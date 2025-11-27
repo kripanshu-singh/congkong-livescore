@@ -84,7 +84,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
     return (
       <div className="fixed inset-0 bg-black text-white z-50 flex flex-col items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/30 via-black to-black" />
-        <button onClick={() => setMode('DASHBOARD')} className="absolute top-8 right-8 z-50 p-2 bg-white/10 rounded-full hover:bg-white/20"><X className="w-6 h-6"/></button>
+        <button onClick={() => setMode('DASHBOARD')} className="absolute top-8 right-8 z-50 p-2 bg-white/10 rounded-full hover:bg-white/20 cursor-pointer"><X className="w-6 h-6"/></button>
         
         <div className="z-10 text-center space-y-8 animate-in zoom-in duration-1000">
            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-yellow-500/30 bg-yellow-500/10 text-yellow-400 text-sm font-bold uppercase tracking-widest mb-4">
@@ -125,15 +125,15 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                  {Math.floor((control?.timer?.seconds || 0) / 60)}:{String((control?.timer?.seconds || 0) % 60).padStart(2, '0')}
                </span>
                <div className="flex gap-1">
-                 <button onClick={toggleTimer} className="p-1 hover:bg-white/10 rounded-full">{control?.timer?.isRunning ? <Pause className="w-4 h-4"/> : <Play className="w-4 h-4"/>}</button>
-                 <button onClick={resetTimer} className="p-1 hover:bg-white/10 rounded-full"><Activity className="w-4 h-4"/></button>
+                 <button onClick={toggleTimer} className="p-1 hover:bg-white/10 rounded-full cursor-pointer">{control?.timer?.isRunning ? <Pause className="w-4 h-4"/> : <Play className="w-4 h-4"/>}</button>
+                 <button onClick={resetTimer} className="p-1 hover:bg-white/10 rounded-full cursor-pointer"><Activity className="w-4 h-4"/></button>
                </div>
             </div>
 
-            <button onClick={() => setMode('CEREMONY')} className="px-5 py-2.5 bg-slate-900  text-white  rounded-full text-sm font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
+            <button onClick={() => setMode('CEREMONY')} className="px-5 py-2.5 bg-slate-900  text-white  rounded-full text-sm font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2 cursor-pointer">
                <Play className="w-4 h-4 fill-current"/> {t.mode_ceremony}
             </button>
-            <button onClick={onLogout} className="p-2.5 bg-slate-200  rounded-full hover:bg-slate-300 "><LogOut className="w-5 h-5"/></button>
+            <button onClick={onLogout} className="p-2.5 bg-slate-200  rounded-full hover:bg-slate-300  cursor-pointer"><LogOut className="w-5 h-5"/></button>
          </div>
       </header>
 
@@ -156,7 +156,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                         ${control?.activeTeamId === team.id 
                           ? 'bg-red-500 text-white shadow-lg' 
                           : 'hover:bg-slate-100  text-slate-500'}
-                      `}
+                       cursor-pointer`}
                     >
                       <span>{team.seq}. {team.name}</span>
                       {control?.activeTeamId === team.id && <div className="w-2 h-2 bg-white rounded-full animate-pulse"/>}
@@ -182,7 +182,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                               <span className="text-[10px] text-slate-500">{judge.name} → {team.name}</span>
                               <button 
                                 onClick={() => onUnlock(key)}
-                                className="text-[10px] bg-slate-200  px-2 py-1 rounded hover:bg-red-500 hover:text-white transition-colors"
+                                className="text-[10px] bg-slate-200  px-2 py-1 rounded hover:bg-red-500 hover:text-white transition-colors cursor-pointer"
                               >
                                 Unlock
                               </button>

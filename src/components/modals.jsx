@@ -33,8 +33,8 @@ export const ConfirmSubmitModal = ({ isOpen, onClose, onConfirm, totalScore, zer
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={onClose} className="py-3.5 rounded-xl font-bold text-slate-500 bg-slate-100  hover:bg-slate-200 transition-colors text-sm">{t.btn_recheck}</button>
-          <button onClick={onConfirm} className="py-3.5 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/30 text-sm">{t.btn_complete}</button>
+          <button onClick={onClose} className="py-3.5 rounded-xl font-bold text-slate-500 bg-slate-100  hover:bg-slate-200 transition-colors text-sm cursor-pointer">{t.btn_recheck}</button>
+          <button onClick={onConfirm} className="py-3.5 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/30 text-sm cursor-pointer">{t.btn_complete}</button>
         </div>
       </div>
     </div>
@@ -63,15 +63,15 @@ export const TeamDetailModal = ({ isOpen, onClose, team, judges, scores }) => {
   const minScore = Math.min(...submittedScores);
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={onClose}>
-      <div className="bg-white  w-[90%] max-w-[600px] rounded-[32px] p-8 shadow-2xl border border-white/10 animate-in zoom-in-95" onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in cursor-pointer" onClick={onClose}>
+      <div className="bg-white  w-[90%] max-w-[600px] rounded-[32px] p-8 shadow-2xl border border-white/10 animate-in zoom-in-95 cursor-pointer" onClick={e => e.stopPropagation()}>
         <div className="flex justify-between items-start mb-6">
           <div>
             <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">{t.detail_title}</div>
             <h2 className="text-2xl font-bold text-slate-900 ">{team.name}</h2>
             <p className="text-sm text-slate-500">{lang === 'en' ? team.univ_en : team.univ} | {team.presenter}</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-slate-100  rounded-full"><X className="w-6 h-6 text-slate-400"/></button>
+          <button onClick={onClose} className="p-2 hover:bg-slate-100  rounded-full cursor-pointer"><X className="w-6 h-6 text-slate-400"/></button>
         </div>
 
         <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
@@ -148,7 +148,7 @@ export const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
       <div className="bg-white  w-[360px] rounded-[32px] p-8 shadow-2xl border border-white/10 animate-in zoom-in-95">
         <div className="flex justify-between items-center mb-8">
            <h3 className="text-xl font-bold flex items-center gap-2"><ShieldCheck className="w-6 h-6 text-blue-500"/> {t.admin_modal_title}</h3>
-           <button onClick={onClose} className="p-2 hover:bg-slate-100  rounded-full"><X className="w-5 h-5"/></button>
+           <button onClick={onClose} className="p-2 hover:bg-slate-100  rounded-full cursor-pointer"><X className="w-5 h-5"/></button>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -167,14 +167,14 @@ export const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
                 value={pw} onChange={(e) => setPw(e.target.value)}
                 className="w-full bg-slate-100  rounded-2xl py-3 pl-12 pr-12 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               />
-              <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600">
+              <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600 cursor-pointer">
                 {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
            </div>
            
            {error && <div className="text-red-500 text-xs text-center font-bold animate-pulse">{error}</div>}
 
-           <button type="submit" className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold text-sm shadow-lg shadow-blue-500/30 transition-all transform active:scale-95">
+           <button type="submit" className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold text-sm shadow-lg shadow-blue-500/30 transition-all transform active:scale-95 cursor-pointer">
              {t.btn_access}
            </button>
         </form>
@@ -238,8 +238,8 @@ export const SignatureModal = ({ isOpen, onClose, onSave }) => {
           {!hasSign && <div className="absolute inset-0 flex items-center justify-center text-slate-400 text-xs pointer-events-none">{t.sign_placeholder}</div>}
         </div>
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={onClose} className="py-3 rounded-xl font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 text-sm">{t.btn_cancel}</button>
-          <button onClick={() => onSave(canvasRef.current.toDataURL())} disabled={!hasSign} className="py-3 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 text-sm disabled:opacity-50">{t.btn_complete}</button>
+          <button onClick={onClose} className="py-3 rounded-xl font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 text-sm cursor-pointer">{t.btn_cancel}</button>
+          <button onClick={() => onSave(canvasRef.current.toDataURL())} disabled={!hasSign} className="py-3 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 text-sm disabled:opacity-50 cursor-pointer">{t.btn_complete}</button>
         </div>
       </div>
     </div>

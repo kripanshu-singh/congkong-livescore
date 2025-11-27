@@ -69,7 +69,7 @@ const LoginScreen = ({ onLogin }) => {
               <button
                 key={judge.id}
                 onClick={() => onLogin(judge)}
-                className="w-full group flex items-center gap-4 p-3 rounded-[20px] hover:bg-slate-100  transition-all duration-300"
+                className="w-full group flex items-center gap-4 p-3 rounded-[20px] hover:bg-slate-100  transition-all duration-300 cursor-pointer"
               >
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-slate-100 to-slate-200   flex items-center justify-center font-bold text-slate-600  shadow-inner group-hover:scale-105 transition-transform">
                   {judge.name[0]}
@@ -86,7 +86,7 @@ const LoginScreen = ({ onLogin }) => {
           <div className="mt-6 pt-6 border-t border-slate-200 ">
             <button 
               onClick={() => setShowAdmin(true)}
-              className="w-full py-3 rounded-xl border border-dashed border-slate-300  text-slate-400 hover:text-blue-500 hover:border-blue-500 hover:bg-blue-50  transition-all text-xs font-bold flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-xl border border-dashed border-slate-300  text-slate-400 hover:text-blue-500 hover:border-blue-500 hover:bg-blue-50  transition-all text-xs font-bold flex items-center justify-center gap-2 cursor-pointer"
             >
               <Lock className="w-3 h-3" /> {t.login_admin}
             </button>

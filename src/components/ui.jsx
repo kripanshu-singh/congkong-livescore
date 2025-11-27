@@ -12,7 +12,7 @@ export const SettingsBar = () => {
     <div className="flex items-center gap-2 bg-white/60 backdrop-blur-md rounded-full p-1 border border-white/40 shadow-sm">
       <button 
         onClick={toggleTheme}
-        className="p-2 rounded-full hover:bg-white/20  transition-colors text-slate-700 "
+        className="p-2 rounded-full hover:bg-white/20  transition-colors text-slate-700  cursor-pointer"
         title="Toggle Theme"
       >
         {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -20,7 +20,7 @@ export const SettingsBar = () => {
       <div className="w-px h-4 bg-slate-300  mx-1"></div>
       <button
         onClick={() => setLang(prev => prev === 'ko' ? 'en' : 'ko')}
-        className="px-3 py-1 rounded-full text-xs font-bold hover:bg-white/20  transition-colors text-slate-700  font-mono"
+        className="px-3 py-1 rounded-full text-xs font-bold hover:bg-white/20  transition-colors text-slate-700  font-mono cursor-pointer"
       >
         {lang === 'ko' ? 'KO' : 'EN'}
       </button>
@@ -38,7 +38,7 @@ export const GlassCard = ({ children, className = "", active = false, onClick })
         : 'bg-white/70 border-white/40 shadow-xl shadow-slate-200/50 hover:bg-white/80 hover:shadow-2xl hover:shadow-slate-200/60 hover:-translate-y-0.5'
       }
       rounded-[24px] ${className}
-    `}
+     cursor-pointer`}
   >
     {children}
   </div>
