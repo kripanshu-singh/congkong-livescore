@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
-import { collection, doc, setDoc, onSnapshot, deleteField } from 'firebase/firestore';
+import { collection, doc, setDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
 import { auth, db } from './firebaseConfig';
 import { AppContext } from './context';
 import { DICTIONARY, TEAMS, JUDGES } from './data';
@@ -119,30 +119,7 @@ export default function App() {
     delete newScores[scoreId];
     setScores(newScores);
     try {
-      await deleteField(doc(db, 'artifacts', appId, 'public', 'data', 'scores', scoreId)); 
-      // Resetting the doc might be needed if deleteField doesn't remove the doc itself or if we want to keep a record.
-      // The original code did: await setDoc(..., { ...scores[scoreId], detail: {}, total: 0, signature: null });
-      // But scores[scoreId] might be undefined after delete.
-      // Let's follow the original logic but be careful.
-      // Actually, original code:
-      // await deleteField(doc(...)); -> This is wrong usage of deleteField, it should be updateDoc(doc, {field: deleteField()})
-      // But here it seems they might have meant deleteDoc? Or maybe they are using a wrapper?
-      // The original import was: import { ..., deleteField } from 'firebase/firestore';
-      // And usage: await deleteField(doc(...));
-      // This is definitely incorrect Firestore SDK usage if it's the web SDK. `deleteField()` returns a Sentinel value to be used in `updateDoc`.
-      // `deleteDoc(docRef)` deletes the document.
-      
-      // Let's assume they want to reset the score.
-      // I will implement a reset logic:
-      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'scores', scoreId), {
-         id: scoreId,
-         // We might lose other info if we don't have it. 
-         // But since we have `scores` state, we can use it.
-         ...scores[scoreId],
-         detail: {}, 
-         total: 0, 
-         signature: null 
-      });
+      await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'scores', scoreId)); 
     } catch (e) {
       console.error("Error unlocking:", e);
     }

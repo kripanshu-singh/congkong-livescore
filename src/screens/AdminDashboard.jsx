@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react';
-import { Trophy, X, MonitorPlay, Unlock, Calculator, Timer, Pause, Play, Activity, LogOut, AlertTriangle, Crown, Medal } from 'lucide-react';
+import { Trophy, X, MonitorPlay, Unlock, Calculator, Timer, Pause, Play, Activity, LogOut, AlertTriangle, Crown, Medal, Download } from 'lucide-react';
 import { AppContext } from '../context';
 import { SettingsBar, GlassCard } from '../components/ui';
 import { TeamDetailModal } from '../components/modals';
@@ -49,6 +49,60 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
 
     return { progress, totalVotes, teamStats: finalRanking };
   }, [teams, scores, judges]);
+
+  const downloadCSV = () => {
+    // 1. Define Headers
+    const headers = [
+      'Rank',
+      'Team Name',
+      'University',
+      'Presenter',
+      'Final Score (Avg)',
+      ...judges.map(j => `Judge: ${j.name}`),
+      'Creativity Score',
+      'Market Score',
+      'Business Score',
+      'Judge Count'
+    ];
+
+    // 2. Build Rows
+    const rows = stats.teamStats.map((team, index) => {
+      const judgeScores = judges.map(j => {
+        const s = scores[`${team.id}_${j.id}`];
+        return s ? s.total : '-';
+      });
+
+      return [
+        index + 1,
+        `"${team.name}"`, // Quote to handle commas
+        `"${team.univ}"`,
+        `"${team.presenter}"`,
+        team.judgeAvg.toFixed(2),
+        ...judgeScores,
+        team.creScore,
+        team.mktScore,
+        team.bizScore,
+        team.count
+      ];
+    });
+
+    // 3. Combine to CSV String
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(r => r.join(','))
+    ].join('\n');
+
+    // 4. Trigger Download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `evaluation_results_${new Date().toISOString().slice(0,10)}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   // Timer Logic
   const toggleTimer = () => {
@@ -140,6 +194,14 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
          <div className="flex gap-4 items-center">
             <SettingsBar />
             
+            <button 
+              onClick={downloadCSV}
+              className="p-2.5 bg-white border border-slate-200 text-slate-500 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-100 transition-colors cursor-pointer shadow-sm flex items-center gap-2"
+              title="Download CSV"
+            >
+              <Download className="w-5 h-5"/>
+            </button>
+            
             {/* Timer Control */}
             <div className="bg-white rounded-2xl p-1.5 flex items-center gap-4 border border-slate-200 shadow-sm pr-2">
                <div className="bg-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2">
@@ -216,7 +278,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                   {teams.map(team => (
                      judges.map(judge => {
                         const key = `${team.id}_${judge.id}`;
-                        if (!scores[key]) return null;
+                        if (!scores[key] || scores[key].total <= 0) return null;
                         return (
                            <div key={key} className="flex justify-between items-center bg-white p-3 rounded-lg border border-red-100 shadow-sm group hover:border-red-200 transition-colors">
                               <div className="flex flex-col">
