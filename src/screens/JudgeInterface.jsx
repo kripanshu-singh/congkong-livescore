@@ -78,9 +78,9 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
       
       <ToastMessage message={t.toast_saved} isVisible={showToast} />
 
-      <div className="flex-1 flex overflow-hidden px-4 pb-4 gap-4 mt-5">
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden px-4 pb-4 gap-4 mt-5">
         {/* Sidebar */}
-        <div className="w-[300px] bg-white/80  backdrop-blur-xl rounded-[24px] flex flex-col border border-white/20 shadow-sm z-20">
+        <div className="w-full lg:w-[300px] h-[200px] lg:h-auto shrink-0 bg-white/80 backdrop-blur-xl rounded-[24px] flex flex-col border border-white/20 shadow-sm z-20">
           <div className="p-5 border-b border-slate-100 ">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs">
@@ -132,7 +132,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
 
         {/* Main */}
         <main className="flex-1 flex flex-col min-w-0 bg-white/50  backdrop-blur-md rounded-[24px] border border-white/20 shadow-sm overflow-hidden relative">
-          <div className="p-6 pb-0 flex justify-between items-center">
+          <div className="p-6 pb-0 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1">
                  <h1 className="text-2xl font-bold tracking-tight">{activeTeam.name}</h1>
@@ -147,7 +147,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                  {activeTeam.topic}
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 w-full lg:w-auto justify-between lg:justify-end">
                <SettingsBar />
                <div className="px-3 py-1 bg-slate-100  rounded-full text-xs font-bold text-slate-500">
                  {activeTeam.seq} / {teams.length}
