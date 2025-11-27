@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useContext } from 'react';
 import { LogOut, MonitorPlay, PenTool, Sparkles, Crown } from 'lucide-react';
 import { AppContext } from '../context';
 import { SettingsBar, GlassCard, AppleSlider, DynamicIsland, ToastMessage } from '../components/ui';
-import { ConfirmSubmitModal } from '../components/modals';
+import { ConfirmSubmitModal, SignatureModal } from '../components/modals';
 import { CRITERIA } from '../data';
 
 const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, control }) => {
@@ -11,6 +11,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
   const [localScore, setLocalScore] = useState({});
   const [memo, setMemo] = useState('');
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isSignatureOpen, setIsSignatureOpen] = useState(false);
   const [saveStatus, setSaveStatus] = useState('idle'); // idle, saving, saved
   const [showToast, setShowToast] = useState(false);
   const [showAI, setShowAI] = useState(false);
@@ -23,6 +24,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
   const activeTeam = teams.find(t => t.id === activeTeamId);
   const currentKey = `${activeTeamId}_${judge.id}`;
   const savedData = scores[currentKey];
+  const isLocked = savedData?.locked;
 
   useEffect(() => {
     if (savedData) {
@@ -36,17 +38,26 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
     }
   }, [activeTeamId, savedData]);
 
-  const handleScoreChange = (id, val) => setLocalScore(prev => ({ ...prev, [id]: val }));
+  const handleScoreChange = (id, val) => {
+    if (isLocked) return;
+    setLocalScore(prev => ({ ...prev, [id]: val }));
+  };
   const totalScore = Object.values(localScore).reduce((a, b) => a + b, 0);
 
   const handlePreSubmit = () => {
+    if (isLocked) return;
     setIsConfirmOpen(true);
   };
 
-  const handleFinalSubmit = async () => {
+  const handleConfirmSubmit = () => {
     setIsConfirmOpen(false);
+    setIsSignatureOpen(true);
+  };
+
+  const handleSignatureSubmit = async (signatureData) => {
+    setIsSignatureOpen(false);
     setSaveStatus('saving');
-    await onSubmit(activeTeamId, localScore, memo, 'digital-signature-placeholder');
+    await onSubmit(activeTeamId, localScore, memo, signatureData);
     setSaveStatus('saved');
     setShowToast(true);
     setTimeout(() => {
@@ -71,9 +82,15 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
       <ConfirmSubmitModal 
         isOpen={isConfirmOpen} 
         onClose={() => setIsConfirmOpen(false)} 
-        onConfirm={handleFinalSubmit} 
+        onConfirm={handleConfirmSubmit} 
         totalScore={totalScore}
         zeroItems={zeroItems}
+      />
+
+      <SignatureModal
+        isOpen={isSignatureOpen}
+        onClose={() => setIsSignatureOpen(false)}
+        onSave={handleSignatureSubmit}
       />
       
       <ToastMessage message={t.toast_saved} isVisible={showToast} />
@@ -177,6 +194,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                           max={crit.max} 
                           value={localScore[crit.id] || 0} 
                           onChange={(val) => handleScoreChange(crit.id, val)} 
+                          disabled={isLocked}
                         />
                       ))}
                     </div>
@@ -200,20 +218,22 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                     <textarea 
                        value={memo} onChange={(e) => setMemo(e.target.value)}
                        placeholder={t.comment_placeholder}
-                       className="flex-1 w-full bg-transparent border-none focus:ring-0 text-sm resize-none placeholder:text-slate-300 leading-relaxed p-0"
+                       disabled={isLocked}
+                       className={`flex-1 w-full bg-transparent border-none focus:ring-0 text-sm resize-none placeholder:text-slate-300 leading-relaxed p-0 ${isLocked ? 'cursor-not-allowed text-slate-400' : ''}`}
                     />
                  </GlassCard>
                  
-                 <div className="p-6 rounded-[24px] bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-xl flex items-center justify-between relative overflow-hidden">
+                 <div className={`p-6 rounded-[24px] text-white shadow-xl flex items-center justify-between relative overflow-hidden transition-all duration-300 ${isLocked ? 'bg-slate-400 grayscale' : 'bg-gradient-to-br from-blue-600 to-indigo-700'}`}>
                     <div className="relative z-10">
                        <div className="text-xs font-bold opacity-70 uppercase mb-1">{t.score_total}</div>
                        <div className="text-5xl font-black tracking-tighter">{totalScore}</div>
                     </div>
                     <button 
                        onClick={handlePreSubmit}
-                       className="relative z-10 bg-white text-blue-600 px-6 py-3 rounded-xl font-bold text-sm shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                       disabled={isLocked}
+                       className={`relative z-10 bg-white text-blue-600 px-6 py-3 rounded-xl font-bold text-sm shadow-lg transition-all ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 active:scale-95 cursor-pointer'}`}
                     >
-                       {savedData ? t.update : t.submit}
+                       {isLocked ? 'Locked' : savedData ? t.update : t.submit}
                     </button>
                     <div className="absolute right-0 bottom-0 opacity-10 pointer-events-none transform translate-x-4 translate-y-4">
                        <Crown className="w-32 h-32" />

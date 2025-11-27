@@ -93,7 +93,8 @@ export default function App() {
     const id = `${teamId}_${userProfile.id}`;
     const payload = {
       id, teamId, judgeId: userProfile.id, judgeName: userProfile.name,
-      detail, total, comment, signature, timestamp: Date.now()
+      detail, total, comment, signature, timestamp: Date.now(),
+      locked: true // Lock the score upon submission
     };
     // Optimistic update
     setScores(prev => ({ ...prev, [id]: payload }));
@@ -115,13 +116,20 @@ export default function App() {
   };
 
   const handleUnlock = async (scoreId) => {
-    const newScores = { ...scores };
-    delete newScores[scoreId];
-    setScores(newScores);
+    const scoreToUnlock = scores[scoreId];
+    if (!scoreToUnlock) return;
+
+    const updatedScore = { ...scoreToUnlock, locked: false };
+    
+    // Optimistic update
+    setScores(prev => ({ ...prev, [scoreId]: updatedScore }));
+    
     try {
-      await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'scores', scoreId)); 
+      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'scores', scoreId), updatedScore, { merge: true }); 
     } catch (e) {
       console.error("Error unlocking:", e);
+      // Revert optimistic update if needed
+      setScores(prev => ({ ...prev, [scoreId]: scoreToUnlock }));
     }
   };
 

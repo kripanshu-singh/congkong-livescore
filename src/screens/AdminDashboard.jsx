@@ -185,13 +185,13 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]"/> 
                  {t.system_status}
                </span>
-               {/* {control?.activeTeamId && (
+               {control?.activeTeamId && (
                  <span className="flex items-center gap-2 px-3 py-1 bg-blue-50 backdrop-blur-sm rounded-full shadow-sm border border-blue-100 text-blue-600">
                    <MonitorPlay className="w-3 h-3"/> 
                    <span className="opacity-70">{t.current_presenting}:</span>
                    <span className="font-bold">{teams.find(t=>t.id===control.activeTeamId)?.name}</span>
                  </span>
-               )} */}
+               )}
             </div>
          </div>
          <div className="flex gap-4 items-center flex-wrap justify-center w-full lg:w-auto">
@@ -281,7 +281,7 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                   {teams.map(team => (
                      judges.map(judge => {
                         const key = `${team.id}_${judge.id}`;
-                        if (!scores[key] || scores[key].total <= 0) return null;
+                        if (!scores[key] || scores[key].total <= 0 || !scores[key].locked) return null;
                         return (
                            <div key={key} className="flex justify-between items-center bg-white p-3 rounded-lg border border-red-100 shadow-sm group hover:border-red-200 transition-colors">
                               <div className="flex flex-col">

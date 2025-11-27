@@ -44,7 +44,7 @@ export const GlassCard = ({ children, className = "", active = false, onClick })
   </div>
 );
 
-export const AppleSlider = ({ value, max, onChange, label, desc }) => {
+export const AppleSlider = ({ value, max, onChange, label, desc, disabled }) => {
   const percentage = (value / max) * 100;
   const getColor = (pct) => {
     if (pct >= 90) return 'bg-blue-600';
@@ -54,7 +54,7 @@ export const AppleSlider = ({ value, max, onChange, label, desc }) => {
   };
 
   return (
-    <div className="group select-none touch-none py-3">
+    <div className={`group select-none touch-none py-3 ${disabled ? 'opacity-50 pointer-events-none grayscale' : ''}`}>
       <div className="flex justify-between items-end mb-2 px-1">
         <div>
           <span className="text-[14px] font-bold text-slate-700  tracking-tight block">{label}</span>
@@ -73,7 +73,8 @@ export const AppleSlider = ({ value, max, onChange, label, desc }) => {
         <input 
           type="range" min="0" max={max} step="1"
           value={value} onChange={(e) => onChange(Number(e.target.value))}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+          disabled={disabled}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20 disabled:cursor-not-allowed"
         />
         <div className="absolute bottom-0 w-full flex justify-between px-2 pointer-events-none opacity-30">
            {Array.from({length: max + 1}).map((_, i) => (
