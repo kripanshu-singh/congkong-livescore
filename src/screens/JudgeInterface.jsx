@@ -24,7 +24,10 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
   const activeTeam = teams.find(t => t.id === activeTeamId);
   const currentKey = `${activeTeamId}_${judge.id}`;
   const savedData = scores[currentKey];
-  const isLocked = savedData?.locked;
+  
+  const isGlobalLock = control?.globalLock;
+  const isUnlocked = control?.unlockedJudges?.includes(judge.id);
+  const isLocked = isGlobalLock && !isUnlocked;
 
   useEffect(() => {
     if (savedData) {

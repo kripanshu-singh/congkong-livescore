@@ -14,7 +14,12 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [scores, setScores] = useState({});
-  const [control, setControl] = useState({ activeTeamId: TEAMS[0].id, timer: { isRunning: false, seconds: 420 } });
+  const [control, setControl] = useState({ 
+    activeTeamId: TEAMS[0].id, 
+    timer: { isRunning: false, seconds: 420 },
+    globalLock: false,
+    unlockedJudges: [] 
+  });
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [theme, setTheme] = useState('light');
   const [lang, setLang] = useState('ko');
@@ -93,8 +98,7 @@ export default function App() {
     const id = `${teamId}_${userProfile.id}`;
     const payload = {
       id, teamId, judgeId: userProfile.id, judgeName: userProfile.name,
-      detail, total, comment, signature, timestamp: Date.now(),
-      locked: true // Lock the score upon submission
+      detail, total, comment, signature, timestamp: Date.now()
     };
     // Optimistic update
     setScores(prev => ({ ...prev, [id]: payload }));
@@ -115,22 +119,21 @@ export default function App() {
     }
   };
 
-  const handleUnlock = async (scoreId) => {
-    const scoreToUnlock = scores[scoreId];
-    if (!scoreToUnlock) return;
+  const handleGlobalLock = async (isLocked) => {
+    const newControl = { ...control, globalLock: isLocked, unlockedJudges: [] }; // Reset exceptions on toggle
+    handleControlUpdate(newControl);
+  };
 
-    const updatedScore = { ...scoreToUnlock, locked: false };
-    
-    // Optimistic update
-    setScores(prev => ({ ...prev, [scoreId]: updatedScore }));
-    
-    try {
-      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'scores', scoreId), updatedScore, { merge: true }); 
-    } catch (e) {
-      console.error("Error unlocking:", e);
-      // Revert optimistic update if needed
-      setScores(prev => ({ ...prev, [scoreId]: scoreToUnlock }));
+  const handleJudgeUnlock = async (judgeId) => {
+    const currentUnlocked = control.unlockedJudges || [];
+    let newUnlocked;
+    if (currentUnlocked.includes(judgeId)) {
+      newUnlocked = currentUnlocked.filter(id => id !== judgeId);
+    } else {
+      newUnlocked = [...currentUnlocked, judgeId];
     }
+    const newControl = { ...control, unlockedJudges: newUnlocked };
+    handleControlUpdate(newControl);
   };
 
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
@@ -147,7 +150,8 @@ export default function App() {
             judges={JUDGES} 
             control={control}
             onControlUpdate={handleControlUpdate}
-            onUnlock={handleUnlock}
+            onGlobalLock={handleGlobalLock}
+            onJudgeUnlock={handleJudgeUnlock}
             onLogout={() => setUserProfile(null)} 
           />
         ) : (
