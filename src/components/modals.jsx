@@ -234,10 +234,10 @@ export const SignatureModal = ({ isOpen, onClose, onSave }) => {
 
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 backdrop-blur-md animate-in fade-in">
-      <div className="bg-white  w-[90%] max-w-[400px] rounded-[32px] p-6 shadow-2xl animate-in zoom-in-95">
+      <div className="bg-white  w-[90%] max-w-[600px] rounded-[32px] p-6 shadow-2xl animate-in zoom-in-95">
         <h3 className="text-lg font-bold mb-4 text-center">{t.sign_title}</h3>
         <p className="text-xs text-center text-slate-500 mb-4">{t.sign_desc}</p>
-        <div className="bg-slate-50  rounded-2xl border border-slate-200  h-40 w-full relative overflow-hidden mb-4">
+        <div className="bg-slate-50  rounded-2xl border border-slate-200  h-64 w-full relative overflow-hidden mb-4">
           <canvas
             ref={canvasRef}
             className="w-full h-full touch-none cursor-crosshair"

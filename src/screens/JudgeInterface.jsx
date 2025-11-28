@@ -100,7 +100,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
 
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden px-4 pb-4 gap-4 mt-5">
         {/* Sidebar */}
-        <div className="w-full lg:w-[300px] h-[200px] lg:h-auto shrink-0 bg-white/80 backdrop-blur-xl rounded-[24px] flex flex-col border border-white/20 shadow-sm z-20">
+        <div className="w-full lg:w-[300px] h-[280px] lg:h-auto shrink-0 bg-white/80 backdrop-blur-xl rounded-[24px] flex flex-col border border-white/20 shadow-sm z-20">
           <div className="p-5 border-b border-slate-100 ">
             <div className="flex items-center gap-2 mb-6 opacity-50">
                <img src="/conkkong-logo.svg" className="w-4 h-4" alt="Logo" />
@@ -180,7 +180,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
           </div>
 
           <div className="flex-1 overflow-y-auto p-6 pb-24 scroll-smooth">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-6">
                 {Object.entries(groupedCriteria).map(([category, items]) => (
                   <GlassCard key={category} className="p-5">
