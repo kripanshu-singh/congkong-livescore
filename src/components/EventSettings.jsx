@@ -2,6 +2,7 @@ import React, { useState, useRef, useContext, useEffect } from 'react';
 import { Save, Upload, Image as ImageIcon, Clock, MapPin, Type, Calendar, AlertTriangle } from 'lucide-react';
 import { GlassCard } from './ui';
 import { AppContext } from '../context';
+import { ResetConfirmModal } from './modals';
 
 export const EventSettings = ({ settings, onSave, onReset }) => {
   const { t } = useContext(AppContext);
@@ -15,6 +16,8 @@ export const EventSettings = ({ settings, onSave, onReset }) => {
     description: ''
   });
   const fileInputRef = useRef(null);
+
+  const [showResetModal, setShowResetModal] = useState(false);
 
   useEffect(() => {
     if (settings) {
@@ -44,6 +47,11 @@ export const EventSettings = ({ settings, onSave, onReset }) => {
 
   return (
     <div className="h-full overflow-y-auto custom-scrollbar pb-20">
+      <ResetConfirmModal 
+        isOpen={showResetModal} 
+        onClose={() => setShowResetModal(false)} 
+        onConfirm={onReset} 
+      />
       <div className="max-w-4xl mx-auto space-y-8">
         <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
            <ImageIcon className="w-6 h-6 text-indigo-600"/> {t.event_settings}
@@ -193,11 +201,7 @@ export const EventSettings = ({ settings, onSave, onReset }) => {
                 </p>
               </div>
               <button 
-                onClick={() => {
-                  if (window.confirm(t.msg_confirm_reset)) {
-                    onReset();
-                  }
-                }}
+                onClick={() => setShowResetModal(true)}
                 className="px-6 py-2 bg-white border border-red-200 text-red-600 rounded-xl font-bold hover:bg-red-600 hover:text-white hover:border-red-600 transition-all cursor-pointer shadow-sm"
               >
                 {t.btn_reset_all}

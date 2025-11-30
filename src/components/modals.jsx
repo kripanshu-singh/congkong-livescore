@@ -253,3 +253,62 @@ export const SignatureModal = ({ isOpen, onClose, onSave }) => {
     </div>
   );
 };
+
+// Secure Reset Confirmation Modal
+export const ResetConfirmModal = ({ isOpen, onClose, onConfirm }) => {
+  const { t } = useContext(AppContext);
+  const [pw, setPw] = useState('');
+  const [error, setError] = useState('');
+  const [showPw, setShowPw] = useState(false);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const adminPw = import.meta.env.VITE_ADMIN_PASSWORD || 'friends';
+    
+    if (pw === adminPw) {
+       onConfirm();
+       onClose();
+    } else {
+       setError(t.err_wrong_pw);
+       setTimeout(() => setError(''), 2000);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in">
+      <div className="bg-white w-[90%] max-w-[400px] rounded-[32px] p-8 shadow-2xl border border-red-100 animate-in zoom-in-95">
+        <div className="flex justify-between items-center mb-6">
+           <h3 className="text-xl font-bold flex items-center gap-2 text-red-600"><AlertTriangle className="w-6 h-6"/> {t.reset_modal_title}</h3>
+           <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full cursor-pointer"><X className="w-5 h-5"/></button>
+        </div>
+        
+        <p className="text-sm text-slate-600 mb-6 leading-relaxed">
+          {t.reset_modal_desc}
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+           <div className="relative">
+              <div className="absolute left-4 top-3.5 text-slate-400"><Key className="w-4 h-4" /></div>
+              <input 
+                type={showPw ? "text" : "password"} placeholder="Admin Password"
+                value={pw} onChange={(e) => setPw(e.target.value)}
+                className="w-full bg-slate-100 rounded-2xl py-3 pl-12 pr-12 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
+                autoFocus
+              />
+              <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-4 top-3.5 text-slate-400 hover:text-slate-600 cursor-pointer">
+                {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+           </div>
+           
+           {error && <div className="text-red-500 text-xs text-center font-bold animate-pulse">{error}</div>}
+
+           <button type="submit" className="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white rounded-2xl font-bold text-sm shadow-lg shadow-red-500/30 transition-all transform active:scale-95 cursor-pointer">
+             {t.btn_confirm_reset}
+           </button>
+        </form>
+      </div>
+    </div>
+  );
+};

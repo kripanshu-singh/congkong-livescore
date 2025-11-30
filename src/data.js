@@ -144,7 +144,14 @@ export const DICTIONARY = {
     danger_zone: "위험 구역",
     btn_reset_all: "데이터 초기화",
     msg_confirm_reset: "정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+    msg_confirm_reset: "정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
     msg_reset_success: "시스템이 초기화되었습니다.",
+    
+    // Secure Reset Modal
+    reset_modal_title: "데이터 초기화 확인",
+    reset_modal_desc: "이 작업은 되돌릴 수 없습니다. 확인을 위해 관리자 비밀번호를 입력하세요.",
+    btn_confirm_reset: "초기화 확인",
+    err_wrong_pw: "비밀번호가 일치하지 않습니다",
 
     // Criteria Categories
     cat_creativity: "도전성 및 창의성 (30)",
@@ -282,7 +289,14 @@ export const DICTIONARY = {
     danger_zone: "Danger Zone",
     btn_reset_all: "Reset All Data",
     msg_confirm_reset: "Are you sure you want to delete all data? This action cannot be undone.",
+    msg_confirm_reset: "Are you sure you want to delete all data? This action cannot be undone.",
     msg_reset_success: "System has been reset.",
+
+    // Secure Reset Modal
+    reset_modal_title: "Confirm Data Reset",
+    reset_modal_desc: "This action is irreversible. Please enter the admin password to confirm.",
+    btn_confirm_reset: "Confirm Reset",
+    err_wrong_pw: "Incorrect Password",
 
     // Criteria Categories
     cat_creativity: "Creativity & Challenge (30)",

@@ -8,13 +8,7 @@ import { JudgeManagement } from '../components/JudgeManagement';
 import { EventSettings } from '../components/EventSettings';
 
 const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onUpdateEventSettings, onSystemReset, scores, onLogout, control, onControlUpdate, onGlobalLock, onJudgeUnlock }) => {
-  // ... (existing code)
 
-         ) : activeTab === 'event' ? (
-            <div className="col-span-12 h-full overflow-hidden">
-               <EventSettings settings={eventSettings} onSave={onUpdateEventSettings} onReset={onSystemReset} />
-            </div>
-         ) : (
   const { t, lang } = useContext(AppContext);
   const [mode, setMode] = useState('DASHBOARD');
   const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, teams, judges
