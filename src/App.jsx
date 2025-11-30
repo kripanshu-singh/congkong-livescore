@@ -13,6 +13,7 @@ const appId = '1:642440523500:web:993b21fc1a7b05dfaaffc9';
 export default function App() {
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
+  const [teams, setTeams] = useState(TEAMS);
   const [scores, setScores] = useState({});
   const [control, setControl] = useState({ 
     activeTeamId: TEAMS[0].id, 
@@ -82,11 +83,36 @@ export default function App() {
       console.error("Error fetching control state:", error);
     });
 
+    const qTeams = doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'teams');
+    const unsubTeams = onSnapshot(qTeams, (docSnap) => {
+      if (docSnap.exists()) {
+        setTeams(docSnap.data().list || []);
+      } else {
+        // Initialize if not exists
+        setDoc(qTeams, { list: TEAMS });
+        setTeams(TEAMS);
+      }
+    }, (error) => {
+      console.error("Error fetching teams:", error);
+    });
+
     return () => {
       unsubScores();
       unsubControl();
+      unsubTeams();
     };
   }, [user]);
+
+  const handleUpdateTeams = async (newTeams) => {
+    // Optimistic update
+    setTeams(newTeams);
+    try {
+      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'teams'), { list: newTeams });
+    } catch (e) {
+      console.error("Error updating teams:", e);
+      // Revert if needed, but for now we rely on snapshot to correct it eventually or user retry
+    }
+  };
 
   const handleSubmitScore = async (teamId, detail, comment, signature) => {
     if (!user) {
@@ -145,7 +171,8 @@ export default function App() {
           <LoginScreen onLogin={setUserProfile} />
         ) : userProfile.role === 'admin' ? (
           <AdminDashboard 
-            teams={TEAMS} 
+            teams={teams} 
+            setTeams={handleUpdateTeams}
             scores={scores} 
             judges={JUDGES} 
             control={control}
@@ -157,7 +184,7 @@ export default function App() {
         ) : (
           <JudgeInterface 
             judge={userProfile} 
-            teams={TEAMS} 
+            teams={teams} 
             scores={scores} 
             control={control}
             onSubmit={handleSubmitScore} 

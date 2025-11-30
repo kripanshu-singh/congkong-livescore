@@ -87,6 +87,29 @@ export const DICTIONARY = {
     final_score_label: "Final Score (Total 110)",
     grand_prix: "2025 Grand Prix",
     
+    // Team Management
+    manage_teams: "참가팀 관리",
+    btn_add_team: "팀 추가",
+    btn_csv_upload: "CSV 업로드",
+    btn_template: "템플릿 다운로드",
+    header_seq: "순서",
+    header_team: "팀명",
+    header_affil: "소속",
+    header_presenter: "발표자",
+    header_topic: "주제",
+    header_action: "관리",
+    msg_confirm_delete: "정말 삭제하시겠습니까?",
+    msg_fill_required: "모든 필수 항목을 입력해주세요.",
+    msg_csv_success: "팀 등록이 완료되었습니다.",
+    
+    // Add Team Modal
+    add_team_title: "새로운 팀 등록",
+    label_team_name: "팀명",
+    label_affiliation: "소속 (학교/기관)",
+    label_presenter: "발표자",
+    label_topic: "발표 주제",
+    btn_save: "저장하기",
+    
     // Criteria Categories
     cat_creativity: "도전성 및 창의성 (30)",
     cat_market: "시장성 (40)",
@@ -166,6 +189,29 @@ export const DICTIONARY = {
     final_score_label: "Final Score (Total 110)",
     grand_prix: "2025 Grand Prix",
     
+    // Team Management
+    manage_teams: "Team Management",
+    btn_add_team: "Add New Team",
+    btn_csv_upload: "Upload CSV",
+    btn_template: "CSV Template",
+    header_seq: "Seq",
+    header_team: "Team Name",
+    header_affil: "Affiliation",
+    header_presenter: "Presenter",
+    header_topic: "Topic",
+    header_action: "Action",
+    msg_confirm_delete: "Are you sure you want to delete this team?",
+    msg_fill_required: "Please fill in all required fields.",
+    msg_csv_success: "Teams registered successfully.",
+
+    // Add Team Modal
+    add_team_title: "Add New Team",
+    label_team_name: "Team Name",
+    label_affiliation: "Affiliation",
+    label_presenter: "Presenter",
+    label_topic: "Topic",
+    btn_save: "Save Team",
+
     // Criteria Categories
     cat_creativity: "Creativity & Challenge (30)",
     cat_market: "Marketability (40)",

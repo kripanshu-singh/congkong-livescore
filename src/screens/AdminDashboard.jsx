@@ -3,10 +3,12 @@ import { Trophy, X, MonitorPlay, Unlock, Calculator, Timer, Pause, Play, Activit
 import { AppContext } from '../context';
 import { SettingsBar, GlassCard } from '../components/ui';
 import { TeamDetailModal } from '../components/modals';
+import { TeamManagement } from '../components/TeamManagement';
 
-const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpdate, onGlobalLock, onJudgeUnlock }) => {
+const AdminDashboard = ({ teams, setTeams, scores, judges, onLogout, control, onControlUpdate, onGlobalLock, onJudgeUnlock }) => {
   const { t, lang } = useContext(AppContext);
   const [mode, setMode] = useState('DASHBOARD');
+  const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, teams, judges
   const [selectedTeam, setSelectedTeam] = useState(null);
   
   const stats = useMemo(() => {
@@ -194,6 +196,23 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                )}
             </div>
          </div>
+         
+         {/* Tab Navigation */}
+         <div className="flex bg-slate-200/50 p-1 rounded-xl gap-1">
+            <button 
+              onClick={() => setActiveTab('dashboard')}
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer ${activeTab === 'dashboard' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              Dashboard
+            </button>
+            <button 
+              onClick={() => setActiveTab('teams')}
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer ${activeTab === 'teams' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+              Teams
+            </button>
+         </div>
+
          <div className="flex gap-4 items-center flex-wrap justify-center w-full lg:w-auto">
             <SettingsBar />
             
@@ -247,8 +266,14 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
       </header>
 
       <div className="flex flex-col lg:grid lg:grid-cols-12 lg:grid-rows-1 gap-6 flex-1 min-h-0 overflow-y-auto lg:overflow-hidden">
-         {/* Left Col: Field Control */}
-         <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 shrink-0">
+         {activeTab === 'teams' ? (
+            <div className="col-span-12 h-full overflow-hidden">
+               <TeamManagement teams={teams} setTeams={setTeams} />
+            </div>
+         ) : (
+           <>
+             {/* Left Col: Field Control */}
+             <div className="col-span-1 lg:col-span-3 flex flex-col gap-6 shrink-0">
             {/* Field Op 1: Active Team Control */}
             <GlassCard className="flex-1 p-0 flex flex-col overflow-hidden border-slate-200/60 shadow-lg">
                <div className="p-4 border-b border-slate-100 bg-slate-50/80 backdrop-blur-sm sticky top-0 z-10">
@@ -408,7 +433,9 @@ const AdminDashboard = ({ teams, scores, judges, onLogout, control, onControlUpd
                   })}
                </div>
             </GlassCard>
-         </div>
+          </div>
+           </>
+         )}
       </div>
     </div>
   );
