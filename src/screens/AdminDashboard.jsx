@@ -1,12 +1,20 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react';
-import { Trophy, X, MonitorPlay, Unlock, Calculator, Timer, Pause, Play, Activity, LogOut, AlertTriangle, Crown, Medal, Download, Users, Lock } from 'lucide-react';
+import { Trophy, X, MonitorPlay, Unlock, Calculator, Timer, Pause, Play, Activity, LogOut, AlertTriangle, Crown, Medal, Download, Users, Lock, Settings } from 'lucide-react';
 import { AppContext } from '../context';
 import { SettingsBar, GlassCard } from '../components/ui';
 import { TeamDetailModal } from '../components/modals';
 import { TeamManagement } from '../components/TeamManagement';
 import { JudgeManagement } from '../components/JudgeManagement';
+import { EventSettings } from '../components/EventSettings';
 
-const AdminDashboard = ({ teams, setTeams, judges, setJudges, scores, onLogout, control, onControlUpdate, onGlobalLock, onJudgeUnlock }) => {
+const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onUpdateEventSettings, onSystemReset, scores, onLogout, control, onControlUpdate, onGlobalLock, onJudgeUnlock }) => {
+  // ... (existing code)
+
+         ) : activeTab === 'event' ? (
+            <div className="col-span-12 h-full overflow-hidden">
+               <EventSettings settings={eventSettings} onSave={onUpdateEventSettings} onReset={onSystemReset} />
+            </div>
+         ) : (
   const { t, lang } = useContext(AppContext);
   const [mode, setMode] = useState('DASHBOARD');
   const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, teams, judges
@@ -218,6 +226,12 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, scores, onLogout, 
             >
               <Users className="w-4 h-4"/> Judges
             </button>
+            <button 
+              onClick={() => setActiveTab('event')}
+              className={`px-6 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${activeTab === 'event' ? 'bg-white text-slate-800 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
+            >
+              <Settings className="w-4 h-4"/> Event
+            </button>
          </div>
 
          <div className="flex gap-3 items-center flex-wrap justify-center w-full lg:w-auto">
@@ -277,6 +291,10 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, scores, onLogout, 
          ) : activeTab === 'judges' ? (
             <div className="col-span-12 h-full overflow-hidden">
                <JudgeManagement judges={judges} setJudges={setJudges} />
+            </div>
+         ) : activeTab === 'event' ? (
+            <div className="col-span-12 h-full overflow-hidden">
+               <EventSettings settings={eventSettings} onSave={onUpdateEventSettings} onReset={onSystemReset} />
             </div>
          ) : (
            <>

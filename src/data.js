@@ -126,6 +126,26 @@ export const DICTIONARY = {
     label_email: "이메일",
     msg_judge_csv_success: "심사위원 등록이 완료되었습니다.",
 
+    // Event Settings
+    event_settings: "행사 설정",
+    banner_upload: "행사 배너 업로드",
+    timer_settings: "타이머 설정",
+    presentation_time: "발표 시간 (분)",
+    qna_time: "질의응답 (분)",
+    detail_info: "상세 정보 설정",
+    main_title: "행사명",
+    event_time: "행사 일시",
+    location: "장소",
+    description: "행사 설명",
+    save_changes: "변경사항 저장",
+    msg_event_saved: "행사 설정이 저장되었습니다.",
+
+    // System Reset
+    danger_zone: "위험 구역",
+    btn_reset_all: "데이터 초기화",
+    msg_confirm_reset: "정말로 모든 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+    msg_reset_success: "시스템이 초기화되었습니다.",
+
     // Criteria Categories
     cat_creativity: "도전성 및 창의성 (30)",
     cat_market: "시장성 (40)",
@@ -243,6 +263,26 @@ export const DICTIONARY = {
     label_phone: "Phone",
     label_email: "Email",
     msg_judge_csv_success: "Judges registered successfully.",
+
+    // Event Settings
+    event_settings: "Event Settings",
+    banner_upload: "Event Banner Upload",
+    timer_settings: "Timer Settings",
+    presentation_time: "Presentation (min)",
+    qna_time: "Q&A (min)",
+    detail_info: "Detailed Information",
+    main_title: "Main Title",
+    event_time: "Event Time",
+    location: "Location",
+    description: "Description",
+    save_changes: "Save Changes",
+    msg_event_saved: "Event settings saved successfully.",
+
+    // System Reset
+    danger_zone: "Danger Zone",
+    btn_reset_all: "Reset All Data",
+    msg_confirm_reset: "Are you sure you want to delete all data? This action cannot be undone.",
+    msg_reset_success: "System has been reset.",
 
     // Criteria Categories
     cat_creativity: "Creativity & Challenge (30)",

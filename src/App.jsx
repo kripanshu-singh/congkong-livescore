@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
-import { collection, doc, setDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
+import { collection, doc, setDoc, onSnapshot, deleteDoc, getDocs } from 'firebase/firestore';
 import { auth, db } from './firebaseConfig';
 import { AppContext } from './context';
 import { DICTIONARY, TEAMS, JUDGES } from './data';
@@ -15,6 +15,7 @@ export default function App() {
   const [userProfile, setUserProfile] = useState(null);
   const [teams, setTeams] = useState(TEAMS);
   const [judges, setJudges] = useState(JUDGES); // Initialize with default, will be overwritten by Firestore
+  const [eventSettings, setEventSettings] = useState({});
   const [scores, setScores] = useState({});
   const [control, setControl] = useState({
     activeTeamId: null,
@@ -22,6 +23,8 @@ export default function App() {
     unlockedJudges: [],
     timer: { isRunning: false, seconds: 420 }
   });
+
+
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [theme, setTheme] = useState('light');
   const [lang, setLang] = useState('ko');
@@ -110,11 +113,30 @@ export default function App() {
       console.error("Error fetching judges:", error);
     });
 
+    const qEventSettings = doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'event_settings');
+    const unsubEventSettings = onSnapshot(qEventSettings, (docSnap) => {
+      if (docSnap.exists()) {
+        setEventSettings(docSnap.data() || {});
+      } else {
+        // Initialize with defaults if needed, or leave empty
+        setDoc(qEventSettings, { 
+          timerPresentation: 12, 
+          timerQnA: 3,
+          mainTitle: '25년 기술사업화',
+          eventTime: '2025. 12. 03 (수)',
+          location: 'CCEX Conf. 307호'
+        });
+      }
+    }, (error) => {
+      console.error("Error fetching event settings:", error);
+    });
+
     return () => {
       unsubScores();
       unsubControl();
       unsubTeams();
       unsubJudges();
+      unsubEventSettings();
     };
   }, [user]);
 
@@ -146,6 +168,21 @@ export default function App() {
     } catch (e) {
       console.error("Error updating judges:", e);
       alert("Failed to save judge changes. Please check your connection.");
+    }
+  };
+
+  const handleUpdateEventSettings = async (newSettings) => {
+    if (!user) {
+      alert("Error: You must be logged in to save changes.");
+      return;
+    }
+    // Optimistic update
+    setEventSettings(newSettings);
+    try {
+      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'event_settings'), newSettings, { merge: true });
+    } catch (e) {
+      console.error("Error updating event settings:", e);
+      alert("Failed to save event settings. Please check your connection.");
     }
   };
 
@@ -197,6 +234,53 @@ export default function App() {
     handleControlUpdate(newControl);
   };
 
+  const handleSystemReset = async () => {
+    if (!user) return;
+    
+    try {
+      // 1. Delete all scores
+      const qScores = collection(db, 'artifacts', appId, 'public', 'data', 'scores');
+      const snapshot = await getDocs(qScores);
+      const deletePromises = snapshot.docs.map(doc => deleteDoc(doc.ref));
+      await Promise.all(deletePromises);
+      setScores({});
+
+      // 2. Reset Teams to default
+      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'teams'), { list: TEAMS });
+      setTeams(TEAMS);
+
+      // 3. Reset Judges to default
+      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'judges'), { list: JUDGES });
+      setJudges(JUDGES);
+
+      // 4. Reset Event Settings to default
+      const defaultSettings = { 
+        timerPresentation: 12, 
+        timerQnA: 3,
+        mainTitle: '25년 기술사업화',
+        eventTime: '2025. 12. 03 (수)',
+        location: 'CCEX Conf. 307호'
+      };
+      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'event_settings'), defaultSettings);
+      setEventSettings(defaultSettings);
+
+      // 5. Reset Control State
+      const defaultControl = {
+        activeTeamId: null,
+        globalLock: false,
+        unlockedJudges: [],
+        timer: { isRunning: false, seconds: 420 }
+      };
+      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'control_state'), defaultControl);
+      setControl(defaultControl);
+
+      alert("System has been reset successfully.");
+    } catch (e) {
+      console.error("Error resetting system:", e);
+      alert("Failed to reset system. Check console for details.");
+    }
+  };
+
   const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
   return (
@@ -210,6 +294,9 @@ export default function App() {
             setTeams={handleUpdateTeams}
             judges={judges}
             setJudges={handleUpdateJudges}
+            eventSettings={eventSettings}
+            onUpdateEventSettings={handleUpdateEventSettings}
+            onSystemReset={handleSystemReset}
             scores={scores} 
             control={control}
             onControlUpdate={handleControlUpdate}
