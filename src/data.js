@@ -110,6 +110,22 @@ export const DICTIONARY = {
     label_topic: "발표 주제",
     btn_save: "저장하기",
     
+    // Judge Management
+    manage_judges: "심사위원 관리",
+    btn_add_judge: "심사위원 추가",
+    header_title: "직함",
+    header_phone: "핸드폰번호",
+    header_email: "이메일",
+    header_name: "성함",
+    header_company: "소속",
+    add_judge_title: "새로운 심사위원 등록",
+    label_name: "성함",
+    label_title: "직함",
+    label_company: "소속",
+    label_phone: "핸드폰번호",
+    label_email: "이메일",
+    msg_judge_csv_success: "심사위원 등록이 완료되었습니다.",
+
     // Criteria Categories
     cat_creativity: "도전성 및 창의성 (30)",
     cat_market: "시장성 (40)",
@@ -211,6 +227,22 @@ export const DICTIONARY = {
     label_presenter: "Presenter",
     label_topic: "Topic",
     btn_save: "Save Team",
+
+    // Judge Management
+    manage_judges: "Judge Management",
+    btn_add_judge: "Add Judge",
+    header_title: "Title",
+    header_phone: "Phone",
+    header_email: "Email",
+    header_name: "Name",
+    header_company: "Affiliation",
+    add_judge_title: "Add New Judge",
+    label_name: "Name",
+    label_title: "Title",
+    label_company: "Affiliation",
+    label_phone: "Phone",
+    label_email: "Email",
+    msg_judge_csv_success: "Judges registered successfully.",
 
     // Criteria Categories
     cat_creativity: "Creativity & Challenge (30)",

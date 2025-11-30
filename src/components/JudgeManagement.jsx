@@ -1,17 +1,17 @@
 import React, { useState, useRef, useContext } from 'react';
-import { Plus, Trash2, Upload, Download, Users, Save, X, FileText } from 'lucide-react';
+import { Plus, Trash2, Upload, Download, Users, Save, X, FileText, UserCheck } from 'lucide-react';
 import { GlassCard } from './ui';
 import { AppContext } from '../context';
 
 // Sub-component: Toolbar for actions
-const TeamToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
+const JudgeToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
   const { t } = useContext(AppContext);
   const fileInputRef = useRef(null);
 
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
       <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-        <Users className="w-6 h-6 text-blue-600"/> {t.manage_teams}
+        <UserCheck className="w-6 h-6 text-blue-600"/> {t.manage_judges}
       </h2>
       <div className="flex gap-2 w-full sm:w-auto">
         {/* <button 
@@ -41,73 +41,82 @@ const TeamToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
           onClick={onAddClick}
           className="flex-1 sm:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm font-bold shadow-lg shadow-blue-500/30 cursor-pointer"
         >
-          <Plus className="w-4 h-4"/> {t.btn_add_team}
+          <Plus className="w-4 h-4"/> {t.btn_add_judge}
         </button>
       </div>
     </div>
   );
 };
 
-// Sub-component: Add Team Modal/Form
-const AddTeamForm = ({ onClose, onSave }) => {
+// Sub-component: Add Judge Modal/Form
+const AddJudgeForm = ({ onClose, onSave }) => {
   const { t } = useContext(AppContext);
-  const [newTeam, setNewTeam] = useState({
+  const [newJudge, setNewJudge] = useState({
     name: '',
-    univ: '',
-    presenter: '',
-    topic: '',
-    univ_en: ''
+    title: '',
+    company: '',
+    phone: '',
+    email: ''
   });
 
   const handleSave = () => {
-    if (!newTeam.name || !newTeam.univ || !newTeam.presenter) {
+    if (!newJudge.name || !newJudge.company) {
       alert(t.msg_fill_required);
       return;
     }
-    onSave(newTeam);
+    onSave(newJudge);
   };
 
   return (
     <GlassCard className="p-6 border-blue-200 bg-blue-50/50 mb-6">
       <div className="flex justify-between items-start mb-4">
-         <h3 className="font-bold text-lg text-blue-900">{t.add_team_title}</h3>
+         <h3 className="font-bold text-lg text-blue-900">{t.add_judge_title}</h3>
          <button onClick={onClose} className="p-1 hover:bg-blue-100 rounded-full text-blue-500 cursor-pointer"><X className="w-5 h-5"/></button>
       </div>
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div>
-          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_team_name}</label>
+          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_name}</label>
           <input 
-            value={newTeam.name}
-            onChange={e => setNewTeam({...newTeam, name: e.target.value})}
-            className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="e.g. DReaM"
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_affiliation}</label>
-          <input 
-            value={newTeam.univ}
-            onChange={e => setNewTeam({...newTeam, univ: e.target.value})}
-            className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="e.g. KOREATECH"
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_presenter}</label>
-          <input 
-            value={newTeam.presenter}
-            onChange={e => setNewTeam({...newTeam, presenter: e.target.value})}
+            value={newJudge.name}
+            onChange={e => setNewJudge({...newJudge, name: e.target.value})}
             className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Name"
           />
         </div>
         <div>
-          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_topic}</label>
+          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_title}</label>
           <input 
-            value={newTeam.topic}
-            onChange={e => setNewTeam({...newTeam, topic: e.target.value})}
+            value={newJudge.title}
+            onChange={e => setNewJudge({...newJudge, title: e.target.value})}
             className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Project Topic"
+            placeholder="Title"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_company}</label>
+          <input 
+            value={newJudge.company}
+            onChange={e => setNewJudge({...newJudge, company: e.target.value})}
+            className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Affiliation"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_phone}</label>
+          <input 
+            value={newJudge.phone}
+            onChange={e => setNewJudge({...newJudge, phone: e.target.value})}
+            className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Phone Number"
+          />
+        </div>
+        <div className="col-span-2">
+          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_email}</label>
+          <input 
+            value={newJudge.email}
+            onChange={e => setNewJudge({...newJudge, email: e.target.value})}
+            className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Email"
           />
         </div>
       </div>
@@ -123,34 +132,36 @@ const AddTeamForm = ({ onClose, onSave }) => {
   );
 };
 
-// Sub-component: Team List Table
-const TeamList = ({ teams, onDelete }) => {
+// Sub-component: Judge List Table
+const JudgeList = ({ judges, onDelete }) => {
   const { t } = useContext(AppContext);
 
   return (
     <GlassCard className="flex-1 overflow-hidden flex flex-col p-0">
       <div className="p-4 border-b border-slate-100 bg-slate-50/80 backdrop-blur-sm grid grid-cols-12 gap-4 font-bold text-xs text-slate-500 uppercase tracking-wider sticky top-0 z-10">
         <div className="col-span-1 text-center">{t.header_seq}</div>
-        <div className="col-span-3">{t.header_team}</div>
-        <div className="col-span-3">{t.header_affil}</div>
-        <div className="col-span-2">{t.header_presenter}</div>
-        <div className="col-span-2">{t.header_topic}</div>
+        <div className="col-span-2">{t.header_name}</div>
+        <div className="col-span-2">{t.header_title}</div>
+        <div className="col-span-3">{t.header_company}</div>
+        <div className="col-span-2">{t.header_phone}</div>
+        <div className="col-span-1">{t.header_email}</div>
         <div className="col-span-1 text-center">{t.header_action}</div>
       </div>
       <div className="overflow-y-auto flex-1 p-2 space-y-2 custom-scrollbar">
-        {teams.length === 0 ? (
-          <div className="text-center py-20 text-slate-400">No teams registered yet.</div>
+        {judges.length === 0 ? (
+          <div className="text-center py-20 text-slate-400">No judges registered yet.</div>
         ) : (
-          teams.map((team) => (
-            <div key={team.id} className="grid grid-cols-12 gap-4 items-center p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition-all">
-              <div className="col-span-1 text-center font-mono font-bold text-slate-400">{team.seq}</div>
-              <div className="col-span-3 font-bold text-slate-800">{team.name}</div>
-              <div className="col-span-3 text-sm text-slate-600">{team.univ}</div>
-              <div className="col-span-2 text-sm text-slate-600">{team.presenter}</div>
-              <div className="col-span-2 text-xs text-slate-500 truncate" title={team.topic}>{team.topic}</div>
+          judges.map((judge) => (
+            <div key={judge.id} className="grid grid-cols-12 gap-4 items-center p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition-all">
+              <div className="col-span-1 text-center font-mono font-bold text-slate-400">{judge.seq}</div>
+              <div className="col-span-2 font-bold text-slate-800">{judge.name}</div>
+              <div className="col-span-2 text-sm text-slate-600">{judge.title}</div>
+              <div className="col-span-3 text-sm text-slate-600">{judge.company}</div>
+              <div className="col-span-2 text-xs text-slate-500">{judge.phone}</div>
+              <div className="col-span-1 text-xs text-slate-500 truncate" title={judge.email}>{judge.email}</div>
               <div className="col-span-1 text-center flex justify-center">
                 <button 
-                  onClick={() => onDelete(team.id)}
+                  onClick={() => onDelete(judge.id)}
                   className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                 >
                   <Trash2 className="w-4 h-4"/>
@@ -165,29 +176,28 @@ const TeamList = ({ teams, onDelete }) => {
 };
 
 // Main Component
-export const TeamManagement = ({ teams, setTeams }) => {
+export const JudgeManagement = ({ judges, setJudges }) => {
   const { t } = useContext(AppContext);
   const [isAdding, setIsAdding] = useState(false);
 
-  const handleAddTeam = (teamData) => {
-    const team = {
-      id: `t${Date.now()}`,
-      seq: teams.length + 1,
-      ...teamData,
-      univ_en: teamData.univ_en || teamData.univ // Fallback
+  const handleAddJudge = (judgeData) => {
+    const judge = {
+      id: `j${Date.now()}`,
+      seq: judges.length + 1,
+      ...judgeData
     };
 
-    setTeams([...teams, team]);
+    setJudges([...judges, judge]);
     setIsAdding(false);
   };
 
-  const handleDeleteTeam = (id) => {
+  const handleDeleteJudge = (id) => {
     if (window.confirm(t.msg_confirm_delete)) {
-      const updatedTeams = teams.filter(t => t.id !== id).map((t, index) => ({
-        ...t,
+      const updatedJudges = judges.filter(j => j.id !== id).map((j, index) => ({
+        ...j,
         seq: index + 1 // Re-sequence
       }));
-      setTeams(updatedTeams);
+      setJudges(updatedJudges);
     }
   };
 
@@ -199,32 +209,33 @@ export const TeamManagement = ({ teams, setTeams }) => {
     reader.onload = (event) => {
       const text = event.target.result;
       const lines = text.split('\n');
-      const newTeams = [];
+      const newJudges = [];
       
-      const startIndex = lines[0].includes('순서') || lines[0].includes('Order') ? 1 : 0;
+      const startIndex = lines[0].includes('번호') || lines[0].includes('Seq') ? 1 : 0;
 
       for (let i = startIndex; i < lines.length; i++) {
         const line = lines[i].trim();
         if (!line) continue;
         
         const parts = line.split(',').map(p => p.trim());
-        if (parts.length >= 4) {
-             newTeams.push({
-                id: `t${Date.now()}_${i}`,
-                seq: newTeams.length + teams.length + 1,
+        // Format: 번호,성함,직함,소속,핸드폰번호,이메일
+        if (parts.length >= 2) {
+             newJudges.push({
+                id: `j${Date.now()}_${i}`,
+                seq: newJudges.length + judges.length + 1,
                 name: parts[1],
-                univ: parts[2],
-                presenter: parts[3],
-                topic: parts[5] || '',
-                univ_en: parts[2]
+                title: parts[2] || '',
+                company: parts[3] || '',
+                phone: parts[4] || '',
+                email: parts[5] || ''
              });
         }
       }
 
-      if (newTeams.length > 0) {
-        const combined = [...teams, ...newTeams].map((t, idx) => ({ ...t, seq: idx + 1 }));
-        setTeams(combined);
-        alert(t.msg_csv_success);
+      if (newJudges.length > 0) {
+        const combined = [...judges, ...newJudges].map((j, idx) => ({ ...j, seq: idx + 1 }));
+        setJudges(combined);
+        alert(t.msg_judge_csv_success);
       }
     };
     reader.readAsText(file);
@@ -232,34 +243,34 @@ export const TeamManagement = ({ teams, setTeams }) => {
   };
 
   const downloadTemplate = () => {
-    const headers = "순서,팀명,소속,발표자,시간,주제";
-    const sample = "1,DReaM,한국기술교육대,유준철,13:10~13:22,스마트 트러스 로드(SMTR)";
+    const headers = "번호,성함,직함,소속,핸드폰번호,이메일";
+    const sample = "1,홍길동,교수,한국대학교,010-1234-5678,hong@example.com";
     const blob = new Blob([`\uFEFF${headers}\n${sample}`], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'team_template.csv';
+    link.download = 'judge_template.csv';
     link.click();
   };
 
   return (
     <div className="h-full flex flex-col">
-      <TeamToolbar 
+      <JudgeToolbar 
         onAddClick={() => setIsAdding(true)} 
         onUpload={handleCSVUpload} 
         onDownloadTemplate={downloadTemplate} 
       />
       
       {isAdding && (
-        <AddTeamForm 
+        <AddJudgeForm 
           onClose={() => setIsAdding(false)} 
-          onSave={handleAddTeam} 
+          onSave={handleAddJudge} 
         />
       )}
 
-      <TeamList 
-        teams={teams} 
-        onDelete={handleDeleteTeam} 
+      <JudgeList 
+        judges={judges} 
+        onDelete={handleDeleteJudge} 
       />
     </div>
   );

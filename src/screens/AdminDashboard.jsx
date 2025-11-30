@@ -4,8 +4,9 @@ import { AppContext } from '../context';
 import { SettingsBar, GlassCard } from '../components/ui';
 import { TeamDetailModal } from '../components/modals';
 import { TeamManagement } from '../components/TeamManagement';
+import { JudgeManagement } from '../components/JudgeManagement';
 
-const AdminDashboard = ({ teams, setTeams, scores, judges, onLogout, control, onControlUpdate, onGlobalLock, onJudgeUnlock }) => {
+const AdminDashboard = ({ teams, setTeams, judges, setJudges, scores, onLogout, control, onControlUpdate, onGlobalLock, onJudgeUnlock }) => {
   const { t, lang } = useContext(AppContext);
   const [mode, setMode] = useState('DASHBOARD');
   const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, teams, judges
@@ -211,6 +212,12 @@ const AdminDashboard = ({ teams, setTeams, scores, judges, onLogout, control, on
             >
               <Users className="w-4 h-4"/> Teams
             </button>
+            <button 
+              onClick={() => setActiveTab('judges')}
+              className={`px-6 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${activeTab === 'judges' ? 'bg-white text-slate-800 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
+            >
+              <Users className="w-4 h-4"/> Judges
+            </button>
          </div>
 
          <div className="flex gap-3 items-center flex-wrap justify-center w-full lg:w-auto">
@@ -266,6 +273,10 @@ const AdminDashboard = ({ teams, setTeams, scores, judges, onLogout, control, on
          {activeTab === 'teams' ? (
             <div className="col-span-12 h-full overflow-hidden">
                <TeamManagement teams={teams} setTeams={setTeams} />
+            </div>
+         ) : activeTab === 'judges' ? (
+            <div className="col-span-12 h-full overflow-hidden">
+               <JudgeManagement judges={judges} setJudges={setJudges} />
             </div>
          ) : (
            <>

@@ -14,12 +14,13 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [teams, setTeams] = useState(TEAMS);
+  const [judges, setJudges] = useState(JUDGES); // Initialize with default, will be overwritten by Firestore
   const [scores, setScores] = useState({});
-  const [control, setControl] = useState({ 
-    activeTeamId: TEAMS[0].id, 
-    timer: { isRunning: false, seconds: 420 },
+  const [control, setControl] = useState({
+    activeTeamId: null,
     globalLock: false,
-    unlockedJudges: [] 
+    unlockedJudges: [],
+    timer: { isRunning: false, seconds: 420 }
   });
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [theme, setTheme] = useState('light');
@@ -96,10 +97,24 @@ export default function App() {
       console.error("Error fetching teams:", error);
     });
 
+    const qJudges = doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'judges');
+    const unsubJudges = onSnapshot(qJudges, (docSnap) => {
+      if (docSnap.exists()) {
+        setJudges(docSnap.data().list || []);
+      } else {
+        // Initialize if not exists
+        setDoc(qJudges, { list: JUDGES });
+        setJudges(JUDGES);
+      }
+    }, (error) => {
+      console.error("Error fetching judges:", error);
+    });
+
     return () => {
       unsubScores();
       unsubControl();
       unsubTeams();
+      unsubJudges();
     };
   }, [user]);
 
@@ -116,6 +131,21 @@ export default function App() {
       console.error("Error updating teams:", e);
       alert("Failed to save team changes. Please check your connection.");
       // Revert if needed, but for now we rely on snapshot to correct it eventually or user retry
+    }
+  };
+
+  const handleUpdateJudges = async (newJudges) => {
+    if (!user) {
+      alert("Error: You must be logged in to save changes.");
+      return;
+    }
+    // Optimistic update
+    setJudges(newJudges);
+    try {
+      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'judges'), { list: newJudges }, { merge: true });
+    } catch (e) {
+      console.error("Error updating judges:", e);
+      alert("Failed to save judge changes. Please check your connection.");
     }
   };
 
@@ -178,8 +208,9 @@ export default function App() {
           <AdminDashboard 
             teams={teams} 
             setTeams={handleUpdateTeams}
+            judges={judges}
+            setJudges={handleUpdateJudges}
             scores={scores} 
-            judges={JUDGES} 
             control={control}
             onControlUpdate={handleControlUpdate}
             onGlobalLock={handleGlobalLock}
