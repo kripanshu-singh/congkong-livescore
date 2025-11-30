@@ -9,19 +9,20 @@ const TeamToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
   const fileInputRef = useRef(null);
 
   return (
-    <div className="flex justify-between items-center mb-6">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
       <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
         <Users className="w-6 h-6 text-blue-600"/> {t.manage_teams}
       </h2>
-      <div className="flex gap-2">
-        {/* <button 
+      <div className="flex gap-2 w-full sm:w-auto">
+        <button 
           onClick={onDownloadTemplate}
-          className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition-colors text-sm font-bold cursor-pointer"
+          className="flex-1 sm:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-500 rounded-xl hover:bg-slate-50 hover:text-slate-700 transition-colors text-sm font-bold cursor-pointer"
+          title={t.btn_template}
         >
-          <FileText className="w-4 h-4"/> {t.btn_template}
-        </button> */}
+          <FileText className="w-4 h-4"/> <span className="hidden sm:inline">{t.btn_template}</span>
+        </button>
       
-        <div className="relative">
+        <div className="relative flex-1 sm:flex-none">
           <input 
             type="file" 
             accept=".csv"
@@ -31,14 +32,14 @@ const TeamToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
           />
           <button 
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-slate-50 transition-colors text-sm font-bold cursor-pointer"
+            className="w-full justify-center flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-100 transition-colors text-sm font-bold cursor-pointer"
           >
             <Upload className="w-4 h-4"/> {t.btn_csv_upload}
           </button>
         </div>
         <button 
           onClick={onAddClick}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm font-bold shadow-lg shadow-blue-500/30 cursor-pointer"
+          className="flex-1 sm:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm font-bold shadow-lg shadow-blue-500/30 cursor-pointer"
         >
           <Plus className="w-4 h-4"/> {t.btn_add_team}
         </button>

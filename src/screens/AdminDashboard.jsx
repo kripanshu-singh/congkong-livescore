@@ -139,7 +139,7 @@ const AdminDashboard = ({ teams, setTeams, scores, judges, onLogout, control, on
   if (mode === 'CEREMONY') {
     return (
       <div className="fixed inset-0 bg-black text-white z-50 flex flex-col items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-900/40 via-black to-black animate-pulse-slow" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-indigo-900/40 via-black to-black animate-pulse-slow" />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
         
         <button onClick={() => setMode('DASHBOARD')} className="absolute top-8 right-8 z-50 p-3 bg-white/5 rounded-full hover:bg-white/20 cursor-pointer backdrop-blur-sm transition-all hover:scale-110"><X className="w-6 h-6"/></button>
@@ -150,14 +150,14 @@ const AdminDashboard = ({ teams, setTeams, scores, judges, onLogout, control, on
            </div>
            
            <div className="space-y-4">
-             <h1 className="text-7xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-slate-500 drop-shadow-2xl">
+             <h1 className="text-7xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-white via-white to-slate-500 drop-shadow-2xl">
                 {stats.teamStats[0]?.name}
              </h1>
              <div className="text-3xl text-slate-400 font-light tracking-wide">{lang === 'en' ? stats.teamStats[0]?.univ_en : stats.teamStats[0]?.univ}</div>
            </div>
 
            <div className="mt-16 flex flex-col items-center relative">
-             <div className="absolute -inset-10 bg-gradient-to-t from-yellow-500/20 to-transparent blur-3xl rounded-full" />
+             <div className="absolute -inset-10 bg-linear-to-t from-yellow-500/20 to-transparent blur-3xl rounded-full" />
              <div className="text-sm text-yellow-500/80 mb-4 uppercase tracking-[0.3em] font-bold">{t.final_score_label}</div>
              <div className="text-[10rem] leading-none font-black text-white select-none font-mono tabular-nums tracking-tighter drop-shadow-[0_0_60px_rgba(255,255,255,0.3)]">
                 {stats.teamStats[0]?.judgeAvg.toFixed(2)}
@@ -171,16 +171,16 @@ const AdminDashboard = ({ teams, setTeams, scores, judges, onLogout, control, on
   return (
     <div className="h-screen flex flex-col bg-slate-50 font-sans p-6 text-slate-900 transition-colors duration-500 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-blue-50 to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-[500px] bg-linear-to-b from-blue-50 to-transparent pointer-events-none" />
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-100/40 blur-[100px] rounded-full pointer-events-none" />
 
       <TeamDetailModal isOpen={!!selectedTeam} onClose={() => setSelectedTeam(null)} team={selectedTeam} judges={judges} scores={scores} />
 
-      <header className="relative flex flex-col lg:flex-row justify-between items-center mb-8 px-2 z-10 shrink-0 gap-4 lg:gap-0">
+      <header className="relative flex flex-col lg:flex-row justify-between items-center mb-6 px-2 z-10 shrink-0 gap-4 lg:gap-0">
          <div className="w-full lg:w-auto flex flex-col items-center lg:items-start">
             <div className="flex items-center gap-3 mb-2">
               <img src="/conkkong-logo.svg" className="w-8 h-8" alt="Logo" />
-              <h1 className="text-4xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 drop-shadow-sm">{t.mission_control}</h1>
+              <h1 className="text-3xl font-black tracking-tighter bg-clip-text text-transparent bg-linear-to-r from-slate-900 to-slate-600 drop-shadow-sm">{t.mission_control}</h1>
             </div>
             <div className="flex items-center gap-4 text-xs font-medium">
                <span className="flex items-center gap-2 px-3 py-1 bg-white/80 backdrop-blur-sm rounded-full shadow-sm border border-slate-200/60 text-slate-600">
@@ -197,35 +197,27 @@ const AdminDashboard = ({ teams, setTeams, scores, judges, onLogout, control, on
             </div>
          </div>
          
-         {/* Tab Navigation */}
-         <div className="flex bg-slate-200/50 p-1 rounded-xl gap-1">
+         {/* Center: Tab Navigation */}
+         <div className="flex bg-slate-200/50 p-1.5 rounded-xl gap-1 shadow-inner">
             <button 
               onClick={() => setActiveTab('dashboard')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer ${activeTab === 'dashboard' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-6 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${activeTab === 'dashboard' ? 'bg-white text-slate-800 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
             >
-              Dashboard
+              <Activity className="w-4 h-4"/> Dashboard
             </button>
             <button 
               onClick={() => setActiveTab('teams')}
-              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer ${activeTab === 'teams' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+              className={`px-6 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${activeTab === 'teams' ? 'bg-white text-slate-800 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
             >
-              Teams
+              <Users className="w-4 h-4"/> Teams
             </button>
          </div>
 
-         <div className="flex gap-4 items-center flex-wrap justify-center w-full lg:w-auto">
+         <div className="flex gap-3 items-center flex-wrap justify-center w-full lg:w-auto">
             <SettingsBar />
             
-            <button 
-              onClick={downloadCSV}
-              className="p-2.5 bg-white border border-slate-200 text-slate-500 rounded-xl hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-100 transition-colors cursor-pointer shadow-sm flex items-center gap-2"
-              title="Download CSV"
-            >
-              <Download className="w-5 h-5"/>
-            </button>
-            
             {/* Timer Control */}
-            <div className="bg-white rounded-2xl p-1.5 flex items-center gap-4 border border-slate-200 shadow-sm pr-2">
+            <div className="bg-white rounded-2xl p-1.5 flex items-center gap-3 border border-slate-200 shadow-sm pr-2">
                <div className="bg-slate-100 rounded-xl px-3 py-1.5 flex items-center gap-2">
                  <Timer className="w-4 h-4 text-slate-500"/>
                  <span className={`font-mono font-bold text-xl w-[4.5ch] text-center ${control?.timer?.seconds < 60 && control?.timer?.isRunning ? 'text-red-500' : 'text-slate-700'}`}>
@@ -245,23 +237,28 @@ const AdminDashboard = ({ teams, setTeams, scores, judges, onLogout, control, on
                </div>
             </div>
 
-            <div className="h-8 w-px bg-slate-200 mx-2" />
+            <div className="h-8 w-px bg-slate-200 mx-1" />
 
-            <button 
-               onClick={() => onGlobalLock(!control?.globalLock)}
-               className={`px-5 py-2.5 rounded-xl text-sm font-bold shadow-sm transition-all flex items-center gap-2 cursor-pointer border ${control?.globalLock ? 'bg-red-500 text-white border-red-600 hover:bg-red-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
-            >
-               {control?.globalLock ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
-               {t.global_lock}
-            </button>
+            {/* Global Controls Group */}
+            <div className="flex bg-white rounded-2xl p-1 border border-slate-200 shadow-sm">
+               <button 
+                  onClick={() => onGlobalLock(!control?.globalLock)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${control?.globalLock ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'text-slate-500 hover:bg-slate-50'}`}
+                  title={t.global_lock}
+               >
+                  {control?.globalLock ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
+               </button>
+               <div className="w-px bg-slate-100 my-1"/>
+               <button 
+                  onClick={() => setMode('CEREMONY')} 
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 transition-all flex items-center gap-2 cursor-pointer"
+                  title={t.mode_ceremony}
+               >
+                  <Trophy className="w-4 h-4"/>
+               </button>
+            </div>
 
-            <div className="h-8 w-px bg-slate-200 mx-2" />
-
-            <button onClick={() => setMode('CEREMONY')} className="group px-5 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer overflow-hidden relative">
-               <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-               <span className="relative flex items-center gap-2"><Trophy className="w-4 h-4"/> {t.mode_ceremony}</span>
-            </button>
-            <button onClick={onLogout} className="p-2.5 bg-white border border-slate-200 text-slate-400 rounded-xl hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-colors cursor-pointer shadow-sm"><LogOut className="w-5 h-5"/></button>
+            <button onClick={onLogout} className="p-3 bg-white border border-slate-200 text-slate-400 rounded-2xl hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-colors cursor-pointer shadow-sm"><LogOut className="w-5 h-5"/></button>
          </div>
       </header>
 
@@ -369,8 +366,17 @@ const AdminDashboard = ({ teams, setTeams, scores, judges, onLogout, control, on
                       <p className="text-xs text-slate-400">Real-time scoring updates</p>
                     </div>
                   </div>
-                  <div className="text-[10px] font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full flex items-center gap-2 border border-slate-200">
-                     <Calculator className="w-3 h-3"/> {t.ranking_calc}
+                  <div className="flex items-center gap-2">
+                     <button 
+                        onClick={downloadCSV}
+                        className="px-3 py-1.5 bg-white border border-slate-200 text-slate-500 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-100 transition-colors cursor-pointer shadow-sm flex items-center gap-2 text-xs font-bold"
+                        title="Download CSV"
+                     >
+                        <Download className="w-3 h-3"/> CSV
+                     </button>
+                     <div className="text-[10px] font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full flex items-center gap-2 border border-slate-200">
+                        <Calculator className="w-3 h-3"/> {t.ranking_calc}
+                     </div>
                   </div>
                </div>
                

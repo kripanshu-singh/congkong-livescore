@@ -104,12 +104,17 @@ export default function App() {
   }, [user]);
 
   const handleUpdateTeams = async (newTeams) => {
+    if (!user) {
+      alert("Error: You must be logged in to save changes.");
+      return;
+    }
     // Optimistic update
     setTeams(newTeams);
     try {
-      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'teams'), { list: newTeams });
+      await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'teams'), { list: newTeams }, { merge: true });
     } catch (e) {
       console.error("Error updating teams:", e);
+      alert("Failed to save team changes. Please check your connection.");
       // Revert if needed, but for now we rely on snapshot to correct it eventually or user retry
     }
   };
