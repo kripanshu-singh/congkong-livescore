@@ -151,7 +151,12 @@ export const DICTIONARY = {
     reset_modal_title: "데이터 초기화 확인",
     reset_modal_desc: "이 작업은 되돌릴 수 없습니다. 확인을 위해 관리자 비밀번호를 입력하세요.",
     btn_confirm_reset: "초기화 확인",
+    btn_confirm_reset: "초기화 확인",
     err_wrong_pw: "비밀번호가 일치하지 않습니다",
+
+    // Internet Status
+    status_online: "온라인",
+    status_offline: "오프라인",
 
     // Criteria Categories
     cat_creativity: "도전성 및 창의성 (30)",
@@ -297,6 +302,10 @@ export const DICTIONARY = {
     reset_modal_desc: "This action is irreversible. Please enter the admin password to confirm.",
     btn_confirm_reset: "Confirm Reset",
     err_wrong_pw: "Incorrect Password",
+
+    // Internet Status
+    status_online: "Online",
+    status_offline: "Offline",
 
     // Criteria Categories
     cat_creativity: "Creativity & Challenge (30)",

@@ -102,9 +102,15 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
         {/* Sidebar */}
         <div className="w-full lg:w-[300px] h-[280px] lg:h-auto shrink-0 bg-white/80 backdrop-blur-xl rounded-[24px] flex flex-col border border-white/20 shadow-sm z-20">
           <div className="p-5 border-b border-slate-100 ">
-            <div className="flex items-center gap-2 mb-6 opacity-50">
-               <img src="/conkkong-logo.svg" className="w-4 h-4" alt="Logo" />
-               <span className="text-xs font-bold uppercase tracking-widest">LiveScore</span>
+            <div className="flex items-center gap-2 mb-6 opacity-50 justify-between">
+               <div className="flex items-center gap-2">
+                 <img src="/conkkong-logo.svg" className="w-4 h-4" alt="Logo" />
+                 <span className="text-xs font-bold uppercase tracking-widest">LiveScore</span>
+               </div>
+               <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold border ${isOnline ? 'bg-green-50 text-green-600 border-green-200' : 'bg-red-50 text-red-600 border-red-200'}`}>
+                 <div className={`w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`} />
+                 {isOnline ? t.status_online : t.status_offline}
+               </div>
             </div>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xs">
