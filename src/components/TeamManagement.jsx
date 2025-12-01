@@ -22,7 +22,7 @@ const TeamToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
           <FileText className="w-4 h-4"/> <span className="hidden sm:inline">{t.btn_template}</span>
         </button> */}
       
-        {/* <div className="relative flex-1 sm:flex-none">
+        <div className="relative flex-1 sm:flex-none">
           <input 
             type="file" 
             accept=".csv"
@@ -36,7 +36,7 @@ const TeamToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
           >
             <Upload className="w-4 h-4"/> {t.btn_csv_upload}
           </button>
-        </div> */}
+        </div>
         <button 
           onClick={onAddClick}
           className="flex-1 sm:flex-none justify-center flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm font-bold shadow-lg shadow-blue-500/30 cursor-pointer"
