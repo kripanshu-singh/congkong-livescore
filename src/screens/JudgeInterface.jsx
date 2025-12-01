@@ -146,6 +146,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                     <div className="flex items-center gap-2">
                       {isGlobalActive && <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" title={t.current_presenting} />}
                       <span className={`font-bold text-xs ${isActive ? 'text-blue-600' : ''}`}>{team.name}</span>
+                      {team.category && <span className="text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">{team.category}</span>}
                     </div>
                     {isDone && (
                       <span className="font-mono font-bold text-xs text-blue-600 bg-blue-50  px-1.5 py-0.5 rounded flex items-center gap-1">
@@ -173,6 +174,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                  )}
               </div>
               <div className="text-sm text-slate-500 font-medium mt-1 flex items-center gap-2">
+                 {activeTeam.category && <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px] font-bold">{activeTeam.category}</span>}
                  <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold  ">{lang === 'en' ? activeTeam.univ_en : activeTeam.univ}</span>
                  {activeTeam.topic}
               </div>

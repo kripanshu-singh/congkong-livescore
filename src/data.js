@@ -93,9 +93,11 @@ export const DICTIONARY = {
     btn_csv_upload: "CSV 업로드",
     btn_template: "템플릿 다운로드",
     header_seq: "순서",
+    header_category: "부문",
     header_team: "팀명",
     header_affil: "소속",
     header_presenter: "발표자",
+    header_time: "시간",
     header_topic: "주제",
     header_action: "관리",
     msg_confirm_delete: "정말 삭제하시겠습니까?",
@@ -109,6 +111,8 @@ export const DICTIONARY = {
     label_presenter: "발표자",
     label_topic: "발표 주제",
     btn_save: "저장하기",
+    label_category: "부문",
+    label_time: "발표 시간",
     
     // Judge Management
     manage_judges: "심사위원 관리",
@@ -243,9 +247,11 @@ export const DICTIONARY = {
     btn_csv_upload: "Upload CSV",
     btn_template: "CSV Template",
     header_seq: "Seq",
+    header_category: "Category",
     header_team: "Team Name",
     header_affil: "Affiliation",
     header_presenter: "Presenter",
+    header_time: "Time",
     header_topic: "Topic",
     header_action: "Action",
     msg_confirm_delete: "Are you sure you want to delete this team?",
@@ -259,6 +265,8 @@ export const DICTIONARY = {
     label_presenter: "Presenter",
     label_topic: "Topic",
     btn_save: "Save Team",
+    label_category: "Category",
+    label_time: "Time",
 
     // Judge Management
     manage_judges: "Judge Management",

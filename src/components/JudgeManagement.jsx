@@ -1,5 +1,6 @@
+
 import React, { useState, useRef, useContext } from 'react';
-import { Plus, Trash2, Upload, Download, Users, Save, X, FileText, UserCheck, GripVertical } from 'lucide-react';
+import { Plus, Trash2, Upload, Download, Users, Save, X, FileText, UserCheck, Edit, GripVertical } from 'lucide-react';
 import { GlassCard } from './ui';
 import { AppContext } from '../context';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
@@ -52,9 +53,9 @@ const JudgeToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
 };
 
 // Sub-component: Add Judge Modal/Form
-const AddJudgeForm = ({ onClose, onSave }) => {
+const AddJudgeForm = ({ onClose, onSave, initialData = null }) => {
   const { t } = useContext(AppContext);
-  const [newJudge, setNewJudge] = useState({
+  const [newJudge, setNewJudge] = useState(initialData || {
     name: '',
     title: '',
     company: '',
@@ -73,7 +74,7 @@ const AddJudgeForm = ({ onClose, onSave }) => {
   return (
     <GlassCard className="p-6 border-blue-200 bg-blue-50/50 mb-6">
       <div className="flex justify-between items-start mb-4">
-         <h3 className="font-bold text-lg text-blue-900">{t.add_judge_title}</h3>
+         <h3 className="font-bold text-lg text-blue-900">{initialData ? t.edit_judge_title || 'Edit Judge' : t.add_judge_title}</h3>
          <button onClick={onClose} className="p-1 hover:bg-blue-100 rounded-full text-blue-500 cursor-pointer"><X className="w-5 h-5"/></button>
       </div>
       <div className="grid grid-cols-2 gap-4 mb-4">
@@ -136,7 +137,7 @@ const AddJudgeForm = ({ onClose, onSave }) => {
 };
 
 // Sub-component: Sortable Judge Row
-const SortableJudgeRow = ({ judge, onDelete }) => {
+const SortableJudgeRow = ({ judge, onDelete, onEdit }) => {
   const {
     attributes,
     listeners,
@@ -170,20 +171,26 @@ const SortableJudgeRow = ({ judge, onDelete }) => {
       <div className="col-span-3 text-sm text-slate-600">{judge.company}</div>
       <div className="col-span-2 text-xs text-slate-500">{judge.phone}</div>
       <div className="col-span-1 text-xs text-slate-500 truncate" title={judge.email}>{judge.email}</div>
-      <div className="col-span-1 text-center flex justify-center">
-        <button 
-          onClick={() => onDelete(judge.id)}
-          className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-        >
-          <Trash2 className="w-4 h-4"/>
-        </button>
-      </div>
+              <div className="col-span-1 text-center flex justify-center gap-1">
+                <button 
+                  onClick={() => onEdit(judge)}
+                  className="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                >
+                  <Edit className="w-4 h-4"/>
+                </button>
+                <button 
+                  onClick={() => onDelete(judge.id)}
+                  className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                >
+                  <Trash2 className="w-4 h-4"/>
+                </button>
+              </div>
     </div>
   );
 };
 
 // Sub-component: Judge List Table
-const JudgeList = ({ judges, onDelete, onReorder }) => {
+const JudgeList = ({ judges, onDelete, onEdit, onReorder }) => {
   const { t } = useContext(AppContext);
 
   const sensors = useSensors(
@@ -229,6 +236,7 @@ const JudgeList = ({ judges, onDelete, onReorder }) => {
                   key={judge.id} 
                   judge={judge} 
                   onDelete={onDelete} 
+                  onEdit={onEdit}
                 />
               ))}
             </SortableContext>
@@ -243,16 +251,31 @@ const JudgeList = ({ judges, onDelete, onReorder }) => {
 export const JudgeManagement = ({ judges, setJudges }) => {
   const { t } = useContext(AppContext);
   const [isAdding, setIsAdding] = useState(false);
+  const [editingJudge, setEditingJudge] = useState(null);
 
-  const handleAddJudge = (judgeData) => {
-    const judge = {
-      id: `j${Date.now()}`,
-      seq: judges.length + 1,
-      ...judgeData
-    };
-
-    setJudges([...judges, judge]);
+  const handleSaveJudge = (judgeData) => {
+    if (editingJudge) {
+      // Update existing
+      const updatedJudges = judges.map(j => 
+        j.id === editingJudge.id ? { ...j, ...judgeData } : j
+      );
+      setJudges(updatedJudges);
+      setEditingJudge(null);
+    } else {
+      // Add new
+      const judge = {
+        id: `j${Date.now()}`,
+        seq: judges.length + 1,
+        ...judgeData
+      };
+      setJudges([...judges, judge]);
+    }
     setIsAdding(false);
+  };
+
+  const handleEditJudge = (judge) => {
+    setEditingJudge(judge);
+    setIsAdding(true);
   };
 
   const handleDeleteJudge = (id) => {
@@ -339,16 +362,19 @@ export const JudgeManagement = ({ judges, setJudges }) => {
       
       {isAdding && (
         <AddJudgeForm 
-          onClose={() => setIsAdding(false)} 
-          onSave={handleAddJudge} 
+          onClose={() => { setIsAdding(false); setEditingJudge(null); }} 
+          onSave={handleSaveJudge} 
+          initialData={editingJudge}
         />
       )}
 
       <JudgeList 
         judges={judges} 
-        onDelete={handleDeleteJudge}
+        onDelete={handleDeleteJudge} 
+        onEdit={handleEditJudge}
         onReorder={handleReorder}
       />
     </div>
   );
 };
+

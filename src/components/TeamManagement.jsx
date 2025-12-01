@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
-import { Plus, Trash2, Upload, Download, Users, Save, X, FileText, GripVertical } from 'lucide-react';
+import { Plus, Trash2, Upload, Download, Users, Save, X, FileText, Edit, GripVertical } from 'lucide-react';
 import { GlassCard } from './ui';
 import { AppContext } from '../context';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
@@ -52,12 +52,14 @@ const TeamToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
 };
 
 // Sub-component: Add Team Modal/Form
-const AddTeamForm = ({ onClose, onSave }) => {
+const AddTeamForm = ({ onClose, onSave, initialData = null }) => {
   const { t } = useContext(AppContext);
-  const [newTeam, setNewTeam] = useState({
+  const [newTeam, setNewTeam] = useState(initialData || {
+    category: '',
     name: '',
     univ: '',
     presenter: '',
+    time: '',
     topic: '',
     univ_en: ''
   });
@@ -73,10 +75,19 @@ const AddTeamForm = ({ onClose, onSave }) => {
   return (
     <GlassCard className="p-6 border-blue-200 bg-blue-50/50 mb-6">
       <div className="flex justify-between items-start mb-4">
-         <h3 className="font-bold text-lg text-blue-900">{t.add_team_title}</h3>
+         <h3 className="font-bold text-lg text-blue-900">{initialData ? t.edit_team_title || 'Edit Team' : t.add_team_title}</h3>
          <button onClick={onClose} className="p-1 hover:bg-blue-100 rounded-full text-blue-500 cursor-pointer"><X className="w-5 h-5"/></button>
       </div>
       <div className="grid grid-cols-2 gap-4 mb-4">
+        <div>
+          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_category}</label>
+          <input 
+            value={newTeam.category}
+            onChange={e => setNewTeam({...newTeam, category: e.target.value})}
+            className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="e.g. Student"
+          />
+        </div>
         <div>
           <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_team_name}</label>
           <input 
@@ -105,6 +116,15 @@ const AddTeamForm = ({ onClose, onSave }) => {
           />
         </div>
         <div>
+          <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_time}</label>
+          <input 
+            value={newTeam.time}
+            onChange={e => setNewTeam({...newTeam, time: e.target.value})}
+            className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="e.g. 10:00~10:15"
+          />
+        </div>
+        <div>
           <label className="block text-xs font-bold text-slate-500 mb-1">{t.label_topic}</label>
           <input 
             value={newTeam.topic}
@@ -127,7 +147,7 @@ const AddTeamForm = ({ onClose, onSave }) => {
 };
 
 // Sub-component: Sortable Team Row
-const SortableTeamRow = ({ team, onDelete }) => {
+const SortableTeamRow = ({ team, onDelete, onEdit }) => {
   const {
     attributes,
     listeners,
@@ -156,11 +176,19 @@ const SortableTeamRow = ({ team, onDelete }) => {
         </button>
         {team.seq}
       </div>
-      <div className="col-span-3 font-bold text-slate-800">{team.name}</div>
-      <div className="col-span-3 text-sm text-slate-600">{team.univ}</div>
-      <div className="col-span-2 text-sm text-slate-600">{team.presenter}</div>
+      <div className="col-span-1 text-sm text-slate-600">{team.category}</div>
+      <div className="col-span-2 font-bold text-slate-800">{team.name}</div>
+      <div className="col-span-2 text-sm text-slate-600">{team.univ}</div>
+      <div className="col-span-1 text-sm text-slate-600">{team.presenter}</div>
+      <div className="col-span-1 text-xs text-slate-500">{team.time}</div>
       <div className="col-span-2 text-xs text-slate-500 truncate" title={team.topic}>{team.topic}</div>
-      <div className="col-span-1 text-center flex justify-center">
+      <div className="col-span-1 text-center flex justify-center gap-1">
+        <button 
+          onClick={() => onEdit(team)}
+          className="p-2 text-slate-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+        >
+          <Edit className="w-4 h-4"/>
+        </button>
         <button 
           onClick={() => onDelete(team.id)}
           className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
@@ -173,7 +201,7 @@ const SortableTeamRow = ({ team, onDelete }) => {
 };
 
 // Sub-component: Team List Table
-const TeamList = ({ teams, onDelete, onReorder }) => {
+const TeamList = ({ teams, onDelete, onEdit, onReorder }) => {
   const { t } = useContext(AppContext);
 
   const sensors = useSensors(
@@ -194,9 +222,11 @@ const TeamList = ({ teams, onDelete, onReorder }) => {
     <GlassCard className="flex-1 overflow-hidden flex flex-col p-0">
       <div className="p-4 border-b border-slate-100 bg-slate-50/80 backdrop-blur-sm grid grid-cols-12 gap-4 font-bold text-xs text-slate-500 uppercase tracking-wider sticky top-0 z-10">
         <div className="col-span-1 text-center">{t.header_seq}</div>
-        <div className="col-span-3">{t.header_team}</div>
-        <div className="col-span-3">{t.header_affil}</div>
-        <div className="col-span-2">{t.header_presenter}</div>
+        <div className="col-span-1">{t.header_category}</div>
+        <div className="col-span-2">{t.header_team}</div>
+        <div className="col-span-2">{t.header_affil}</div>
+        <div className="col-span-1">{t.header_presenter}</div>
+        <div className="col-span-1">{t.header_time}</div>
         <div className="col-span-2">{t.header_topic}</div>
         <div className="col-span-1 text-center">{t.header_action}</div>
       </div>
@@ -218,6 +248,7 @@ const TeamList = ({ teams, onDelete, onReorder }) => {
                   key={team.id} 
                   team={team} 
                   onDelete={onDelete} 
+                  onEdit={onEdit}
                 />
               ))}
             </SortableContext>
@@ -232,17 +263,32 @@ const TeamList = ({ teams, onDelete, onReorder }) => {
 export const TeamManagement = ({ teams, setTeams }) => {
   const { t } = useContext(AppContext);
   const [isAdding, setIsAdding] = useState(false);
+  const [editingTeam, setEditingTeam] = useState(null);
 
-  const handleAddTeam = (teamData) => {
-    const team = {
-      id: `t${Date.now()}`,
-      seq: teams.length + 1,
-      ...teamData,
-      univ_en: teamData.univ_en || teamData.univ // Fallback
-    };
-
-    setTeams([...teams, team]);
+  const handleSaveTeam = (teamData) => {
+    if (editingTeam) {
+      // Update existing
+      const updatedTeams = teams.map(t => 
+        t.id === editingTeam.id ? { ...t, ...teamData } : t
+      );
+      setTeams(updatedTeams);
+      setEditingTeam(null);
+    } else {
+      // Add new
+      const team = {
+        id: `t${Date.now()}`,
+        seq: teams.length + 1,
+        ...teamData,
+        univ_en: teamData.univ_en || teamData.univ // Fallback
+      };
+      setTeams([...teams, team]);
+    }
     setIsAdding(false);
+  };
+
+  const handleEditTeam = (team) => {
+    setEditingTeam(team);
+    setIsAdding(true);
   };
 
   const handleDeleteTeam = (id) => {
@@ -272,15 +318,17 @@ export const TeamManagement = ({ teams, setTeams }) => {
         if (!line) continue;
         
         const parts = line.split(',').map(p => p.trim());
-        if (parts.length >= 4) {
+        if (parts.length >= 7) {
              newTeams.push({
                 id: `t${Date.now()}_${i}`,
                 seq: newTeams.length + teams.length + 1,
-                name: parts[1],
-                univ: parts[2],
-                presenter: parts[3],
-                topic: parts[5] || '',
-                univ_en: parts[2]
+                category: parts[1],
+                name: parts[2],
+                univ: parts[3],
+                presenter: parts[4],
+                time: parts[5],
+                topic: parts[6] || '',
+                univ_en: parts[3]
              });
         }
       }
@@ -296,8 +344,8 @@ export const TeamManagement = ({ teams, setTeams }) => {
   };
 
   const downloadTemplate = () => {
-    const headers = "순서,팀명,소속,발표자,시간,주제";
-    const sample = "1,DReaM,한국기술교육대,유준철,13:10~13:22,스마트 트러스 로드(SMTR)";
+    const headers = "순서,부문,팀명,소속,발표자,시간,주제";
+    const sample = "1,학생부,DReaM,한국기술교육대,유준철,13:10~13:22,스마트 트러스 로드(SMTR)";
     const blob = new Blob([`\uFEFF${headers}\n${sample}`], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -328,14 +376,16 @@ export const TeamManagement = ({ teams, setTeams }) => {
       
       {isAdding && (
         <AddTeamForm 
-          onClose={() => setIsAdding(false)} 
-          onSave={handleAddTeam} 
+          onClose={() => { setIsAdding(false); setEditingTeam(null); }} 
+          onSave={handleSaveTeam} 
+          initialData={editingTeam}
         />
       )}
 
       <TeamList 
         teams={teams} 
-        onDelete={handleDeleteTeam}
+        onDelete={handleDeleteTeam} 
+        onEdit={handleEditTeam}
         onReorder={handleReorder}
       />
     </div>
