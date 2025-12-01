@@ -1,7 +1,10 @@
 import React, { useState, useRef, useContext } from 'react';
-import { Plus, Trash2, Upload, Download, Users, Save, X, FileText, UserCheck } from 'lucide-react';
+import { Plus, Trash2, Upload, Download, Users, Save, X, FileText, UserCheck, GripVertical } from 'lucide-react';
 import { GlassCard } from './ui';
 import { AppContext } from '../context';
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 // Sub-component: Toolbar for actions
 const JudgeToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
@@ -132,9 +135,70 @@ const AddJudgeForm = ({ onClose, onSave }) => {
   );
 };
 
+// Sub-component: Sortable Judge Row
+const SortableJudgeRow = ({ judge, onDelete }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: judge.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 10 : 1,
+    position: 'relative',
+  };
+
+  return (
+    <div 
+      ref={setNodeRef} 
+      style={style} 
+      className={`grid grid-cols-12 gap-4 items-center p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition-all ${isDragging ? 'shadow-lg ring-2 ring-blue-500/20 z-10' : ''}`}
+    >
+      <div className="col-span-1 text-center font-mono font-bold text-slate-400 flex items-center justify-center gap-2">
+        <button {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500 touch-none">
+          <GripVertical className="w-4 h-4" />
+        </button>
+        {judge.seq}
+      </div>
+      <div className="col-span-2 font-bold text-slate-800">{judge.name}</div>
+      <div className="col-span-2 text-sm text-slate-600">{judge.title}</div>
+      <div className="col-span-3 text-sm text-slate-600">{judge.company}</div>
+      <div className="col-span-2 text-xs text-slate-500">{judge.phone}</div>
+      <div className="col-span-1 text-xs text-slate-500 truncate" title={judge.email}>{judge.email}</div>
+      <div className="col-span-1 text-center flex justify-center">
+        <button 
+          onClick={() => onDelete(judge.id)}
+          className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+        >
+          <Trash2 className="w-4 h-4"/>
+        </button>
+      </div>
+    </div>
+  );
+};
+
 // Sub-component: Judge List Table
-const JudgeList = ({ judges, onDelete }) => {
+const JudgeList = ({ judges, onDelete, onReorder }) => {
   const { t } = useContext(AppContext);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      onReorder(active.id, over.id);
+    }
+  };
 
   return (
     <GlassCard className="flex-1 overflow-hidden flex flex-col p-0">
@@ -151,24 +215,24 @@ const JudgeList = ({ judges, onDelete }) => {
         {judges.length === 0 ? (
           <div className="text-center py-20 text-slate-400">No judges registered yet.</div>
         ) : (
-          judges.map((judge) => (
-            <div key={judge.id} className="grid grid-cols-12 gap-4 items-center p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition-all">
-              <div className="col-span-1 text-center font-mono font-bold text-slate-400">{judge.seq}</div>
-              <div className="col-span-2 font-bold text-slate-800">{judge.name}</div>
-              <div className="col-span-2 text-sm text-slate-600">{judge.title}</div>
-              <div className="col-span-3 text-sm text-slate-600">{judge.company}</div>
-              <div className="col-span-2 text-xs text-slate-500">{judge.phone}</div>
-              <div className="col-span-1 text-xs text-slate-500 truncate" title={judge.email}>{judge.email}</div>
-              <div className="col-span-1 text-center flex justify-center">
-                <button 
-                  onClick={() => onDelete(judge.id)}
-                  className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                >
-                  <Trash2 className="w-4 h-4"/>
-                </button>
-              </div>
-            </div>
-          ))
+          <DndContext 
+            sensors={sensors} 
+            collisionDetection={closestCenter} 
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext 
+              items={judges.map(j => j.id)} 
+              strategy={verticalListSortingStrategy}
+            >
+              {judges.map((judge) => (
+                <SortableJudgeRow 
+                  key={judge.id} 
+                  judge={judge} 
+                  onDelete={onDelete} 
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
         )}
       </div>
     </GlassCard>
@@ -253,6 +317,18 @@ export const JudgeManagement = ({ judges, setJudges }) => {
     link.click();
   };
 
+  const handleReorder = (activeId, overId) => {
+    const oldIndex = judges.findIndex((j) => j.id === activeId);
+    const newIndex = judges.findIndex((j) => j.id === overId);
+    
+    const newJudges = arrayMove(judges, oldIndex, newIndex).map((j, index) => ({
+      ...j,
+      seq: index + 1
+    }));
+    
+    setJudges(newJudges);
+  };
+
   return (
     <div className="h-full flex flex-col">
       <JudgeToolbar 
@@ -270,7 +346,8 @@ export const JudgeManagement = ({ judges, setJudges }) => {
 
       <JudgeList 
         judges={judges} 
-        onDelete={handleDeleteJudge} 
+        onDelete={handleDeleteJudge}
+        onReorder={handleReorder}
       />
     </div>
   );

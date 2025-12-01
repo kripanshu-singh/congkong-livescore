@@ -1,7 +1,10 @@
 import React, { useState, useRef, useContext } from 'react';
-import { Plus, Trash2, Upload, Download, Users, Save, X, FileText } from 'lucide-react';
+import { Plus, Trash2, Upload, Download, Users, Save, X, FileText, GripVertical } from 'lucide-react';
 import { GlassCard } from './ui';
 import { AppContext } from '../context';
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 // Sub-component: Toolbar for actions
 const TeamToolbar = ({ onAddClick, onUpload, onDownloadTemplate }) => {
@@ -123,9 +126,69 @@ const AddTeamForm = ({ onClose, onSave }) => {
   );
 };
 
+// Sub-component: Sortable Team Row
+const SortableTeamRow = ({ team, onDelete }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: team.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 10 : 1,
+    position: 'relative',
+  };
+
+  return (
+    <div 
+      ref={setNodeRef} 
+      style={style} 
+      className={`grid grid-cols-12 gap-4 items-center p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition-all ${isDragging ? 'shadow-lg ring-2 ring-blue-500/20 z-10' : ''}`}
+    >
+      <div className="col-span-1 text-center font-mono font-bold text-slate-400 flex items-center justify-center gap-2">
+        <button {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-slate-300 hover:text-slate-500 touch-none">
+          <GripVertical className="w-4 h-4" />
+        </button>
+        {team.seq}
+      </div>
+      <div className="col-span-3 font-bold text-slate-800">{team.name}</div>
+      <div className="col-span-3 text-sm text-slate-600">{team.univ}</div>
+      <div className="col-span-2 text-sm text-slate-600">{team.presenter}</div>
+      <div className="col-span-2 text-xs text-slate-500 truncate" title={team.topic}>{team.topic}</div>
+      <div className="col-span-1 text-center flex justify-center">
+        <button 
+          onClick={() => onDelete(team.id)}
+          className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+        >
+          <Trash2 className="w-4 h-4"/>
+        </button>
+      </div>
+    </div>
+  );
+};
+
 // Sub-component: Team List Table
-const TeamList = ({ teams, onDelete }) => {
+const TeamList = ({ teams, onDelete, onReorder }) => {
   const { t } = useContext(AppContext);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    if (active.id !== over.id) {
+      onReorder(active.id, over.id);
+    }
+  };
 
   return (
     <GlassCard className="flex-1 overflow-hidden flex flex-col p-0">
@@ -141,23 +204,24 @@ const TeamList = ({ teams, onDelete }) => {
         {teams.length === 0 ? (
           <div className="text-center py-20 text-slate-400">No teams registered yet.</div>
         ) : (
-          teams.map((team) => (
-            <div key={team.id} className="grid grid-cols-12 gap-4 items-center p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition-all">
-              <div className="col-span-1 text-center font-mono font-bold text-slate-400">{team.seq}</div>
-              <div className="col-span-3 font-bold text-slate-800">{team.name}</div>
-              <div className="col-span-3 text-sm text-slate-600">{team.univ}</div>
-              <div className="col-span-2 text-sm text-slate-600">{team.presenter}</div>
-              <div className="col-span-2 text-xs text-slate-500 truncate" title={team.topic}>{team.topic}</div>
-              <div className="col-span-1 text-center flex justify-center">
-                <button 
-                  onClick={() => onDelete(team.id)}
-                  className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                >
-                  <Trash2 className="w-4 h-4"/>
-                </button>
-              </div>
-            </div>
-          ))
+          <DndContext 
+            sensors={sensors} 
+            collisionDetection={closestCenter} 
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext 
+              items={teams.map(t => t.id)} 
+              strategy={verticalListSortingStrategy}
+            >
+              {teams.map((team) => (
+                <SortableTeamRow 
+                  key={team.id} 
+                  team={team} 
+                  onDelete={onDelete} 
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
         )}
       </div>
     </GlassCard>
@@ -242,6 +306,18 @@ export const TeamManagement = ({ teams, setTeams }) => {
     link.click();
   };
 
+  const handleReorder = (activeId, overId) => {
+    const oldIndex = teams.findIndex((t) => t.id === activeId);
+    const newIndex = teams.findIndex((t) => t.id === overId);
+    
+    const newTeams = arrayMove(teams, oldIndex, newIndex).map((t, index) => ({
+      ...t,
+      seq: index + 1
+    }));
+    
+    setTeams(newTeams);
+  };
+
   return (
     <div className="h-full flex flex-col">
       <TeamToolbar 
@@ -259,7 +335,8 @@ export const TeamManagement = ({ teams, setTeams }) => {
 
       <TeamList 
         teams={teams} 
-        onDelete={handleDeleteTeam} 
+        onDelete={handleDeleteTeam}
+        onReorder={handleReorder}
       />
     </div>
   );
