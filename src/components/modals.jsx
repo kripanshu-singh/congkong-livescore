@@ -139,8 +139,8 @@ export const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const adminUser = import.meta.env.VITE_ADMIN_USER || 'congkong';
-    const adminPw = import.meta.env.VITE_ADMIN_PASSWORD || 'friends';
+    const adminUser = import.meta.env.VITE_ADMIN_USER || '';
+    const adminPw = import.meta.env.VITE_ADMIN_PASSWORD || '';
     
     if (id === adminUser && pw === adminPw) {
        onLogin();

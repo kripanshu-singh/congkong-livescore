@@ -119,9 +119,10 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
   };
 
   const resetTimer = () => {
+    const minutes = eventSettings?.timerPresentation || 7;
     onControlUpdate({ 
       ...control, 
-      timer: { isRunning: false, seconds: 420 } // 7 minutes
+      timer: { isRunning: false, seconds: minutes * 60 }
     });
   };
 
@@ -137,6 +138,19 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
     }
     return () => clearInterval(interval);
   }, [control?.timer?.isRunning, control?.timer?.seconds]);
+
+  // Auto-update timer when settings change (only if not running)
+  useEffect(() => {
+    if (!control?.timer?.isRunning && eventSettings?.timerPresentation) {
+      const newSeconds = eventSettings.timerPresentation * 60;
+      if (control?.timer?.seconds !== newSeconds) {
+        onControlUpdate({
+          ...control,
+          timer: { ...control.timer, seconds: newSeconds }
+        });
+      }
+    }
+  }, [eventSettings?.timerPresentation]);
 
 
   if (mode === 'CEREMONY') {

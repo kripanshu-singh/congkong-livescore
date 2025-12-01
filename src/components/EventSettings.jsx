@@ -108,6 +108,7 @@ export const EventSettings = ({ settings, onSave, onReset }) => {
                   value={localSettings.timerPresentation}
                   onChange={(e) => handleChange('timerPresentation', parseInt(e.target.value) || 0)}
                   className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono font-bold text-lg"
+                  min="0"
                 />
               </div>
               <div>
