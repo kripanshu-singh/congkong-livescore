@@ -287,7 +287,7 @@ export default function App() {
     <AppContext.Provider value={{ isOnline, theme, toggleTheme, lang, setLang, t: DICTIONARY[lang] }}>
       <div className={`min-h-screen ${theme === 'dark' ? 'dark' : ''}`}>
         {!userProfile ? (
-          <LoginScreen onLogin={setUserProfile} />
+          <LoginScreen onLogin={setUserProfile} judges={judges} eventSettings={eventSettings} />
         ) : userProfile.role === 'admin' ? (
           <AdminDashboard 
             teams={teams} 

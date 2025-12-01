@@ -3,9 +3,8 @@ import { Sparkles, CalendarClock, MapPin, Command, ChevronRight, Lock } from 'lu
 import { AppContext } from '../context';
 import { SettingsBar, GlassCard } from '../components/ui';
 import { AdminLoginModal } from '../components/modals';
-import { JUDGES } from '../data';
 
-const LoginScreen = ({ onLogin }) => {
+const LoginScreen = ({ onLogin, judges, eventSettings }) => {
   const { t } = useContext(AppContext);
   const [showAdmin, setShowAdmin] = useState(false);
 
@@ -28,12 +27,12 @@ const LoginScreen = ({ onLogin }) => {
               <img src="/conkkong-logo.svg" className="w-4 h-4" alt="Logo" /> LiveScore Titanium Edition
             </div>
             <h1 className="text-5xl lg:text-6xl font-semibold tracking-tighter text-slate-900  mb-6 leading-tight break-keep">
-              {t.app_title}<br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{t.app_subtitle}</span>
+              {eventSettings?.mainTitle || t.app_title}<br/>
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-indigo-600">{eventSettings?.description || t.app_subtitle}</span>
             </h1>
-            <p className="text-lg text-slate-500  max-w-md leading-relaxed whitespace-pre-line">
-               {t.app_desc}
-            </p>
+            {/* <p className="text-lg text-slate-500  max-w-md leading-relaxed whitespace-pre-line">
+               {eventSettings?.description || t.app_desc}
+            </p> */}
           </div>
           
           <div className="flex gap-6">
@@ -43,7 +42,7 @@ const LoginScreen = ({ onLogin }) => {
                </div>
                <div>
                   <div className="text-xs text-slate-500 uppercase font-bold">{t.date_label}</div>
-                  <div className="text-sm font-semibold ">{t.date_val}</div>
+                  <div className="text-sm font-semibold ">{eventSettings?.eventTime || t.date_val}</div>
                </div>
             </div>
             <div className="flex items-center gap-3">
@@ -52,7 +51,7 @@ const LoginScreen = ({ onLogin }) => {
                </div>
                <div>
                   <div className="text-xs text-slate-500 uppercase font-bold">{t.loc_label}</div>
-                  <div className="text-sm font-semibold ">{t.loc_val}</div>
+                  <div className="text-sm font-semibold ">{eventSettings?.location || t.loc_val}</div>
                </div>
             </div>
           </div>
@@ -65,7 +64,7 @@ const LoginScreen = ({ onLogin }) => {
           </div>
 
           <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-            {JUDGES.map(judge => (
+            {judges.map(judge => (
               <button
                 key={judge.id}
                 onClick={() => onLogin(judge)}
