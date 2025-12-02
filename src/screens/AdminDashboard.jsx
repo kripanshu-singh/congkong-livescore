@@ -70,15 +70,23 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
       'Judge Count'
     ];
 
-    // 2. Build Rows
-    const rows = stats.teamStats.map((team, index) => {
+    // 2. Prepare data with Rank and Sort by Presentation Order (seq)
+    const rankedTeams = stats.teamStats.map((team, index) => ({
+      ...team,
+      rank: index + 1
+    }));
+
+    const sortedRows = rankedTeams.sort((a, b) => Number(a.seq) - Number(b.seq));
+
+    // 3. Build Rows
+    const rows = sortedRows.map((team) => {
       const judgeScores = judges.map(j => {
         const s = scores[`${team.id}_${j.id}`];
         return s ? s.total : '-';
       });
 
       return [
-        index + 1,
+        team.rank,
         `"${team.name}"`, // Quote to handle commas
         `"${team.univ}"`,
         `"${team.presenter}"`,
@@ -91,13 +99,13 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
       ];
     });
 
-    // 3. Combine to CSV String
+    // 4. Combine to CSV String
     const csvContent = [
       headers.join(','),
       ...rows.map(r => r.join(','))
     ].join('\n');
 
-    // 4. Trigger Download
+    // 5. Trigger Download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
