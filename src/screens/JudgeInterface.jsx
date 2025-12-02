@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react';
-import { LogOut, MonitorPlay, PenTool, Sparkles, Crown } from 'lucide-react';
+import { LogOut, MonitorPlay, PenTool, Sparkles, Crown, Download } from 'lucide-react';
 import { AppContext } from '../context';
 import { SettingsBar, GlassCard, AppleSlider, DynamicIsland, ToastMessage } from '../components/ui';
 import { ConfirmSubmitModal, SignatureModal } from '../components/modals';
@@ -80,6 +80,52 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
     return groups;
   }, []);
 
+  const downloadMyScores = () => {
+    // 1. Headers
+    const headers = [
+      'Team Sequence',
+      'Team Name',
+      'University',
+      'Presenter',
+      'Total Score',
+      ...CRITERIA.map(c => lang === 'en' ? c.label_en : c.label),
+      'Comment'
+    ];
+
+    // 2. Rows
+    const rows = teams.map(team => {
+      const s = scores[`${team.id}_${judge.id}`];
+      const detail = s ? s.detail : {};
+      const criteriaScores = CRITERIA.map(c => detail[c.id] || 0);
+      
+      return [
+        team.seq,
+        `"${team.name}"`,
+        `"${lang === 'en' ? team.univ_en : team.univ}"`,
+        `"${team.presenter}"`,
+        s ? s.total : 0,
+        ...criteriaScores,
+        `"${s ? (s.comment || '').replace(/"/g, '""') : ''}"`
+      ];
+    });
+
+    // 3. CSV Content
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(r => r.join(','))
+    ].join('\n');
+
+    // 4. Download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `my_scores_${judge.name}_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="h-screen bg-[#F5F5F7]  text-slate-900  font-sans overflow-hidden flex flex-col selection:bg-blue-500/30 transition-colors duration-500">
       <ConfirmSubmitModal 
@@ -120,6 +166,9 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                 <div className="font-bold text-sm truncate">{lang === 'en' ? (judge.name_en || judge.name) : judge.name}</div>
                 <div className="text-[10px] text-slate-500 uppercase tracking-wider">{judge.company}</div>
               </div>
+              <button onClick={downloadMyScores} className="cursor-pointer mr-2" title={t.btn_download_csv}>
+                 <Download className="w-4 h-4 text-slate-400 hover:text-blue-500" />
+              </button>
               <button onClick={onLogout} className="cursor-pointer"><LogOut className="w-4 h-4 text-slate-400 hover:text-red-500" /></button>
             </div>
             <div className="h-1 bg-slate-100  rounded-full overflow-hidden">

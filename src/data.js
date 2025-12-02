@@ -129,6 +129,7 @@ export const DICTIONARY = {
     label_phone: "핸드폰번호",
     label_email: "이메일",
     msg_judge_csv_success: "심사위원 등록이 완료되었습니다.",
+    btn_download_csv: "내 점수 다운로드",
 
     // Event Settings
     event_settings: "행사 설정",
@@ -283,6 +284,7 @@ export const DICTIONARY = {
     label_phone: "Phone",
     label_email: "Email",
     msg_judge_csv_success: "Judges registered successfully.",
+    btn_download_csv: "Download My Scores",
 
     // Event Settings
     event_settings: "Event Settings",
