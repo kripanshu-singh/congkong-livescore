@@ -26,6 +26,8 @@ dist-ssr
 # Environment Variables
 .env
 .env.local
+.env.development
+.env.production
 
 judge_sample.csv
 team_sample.csv

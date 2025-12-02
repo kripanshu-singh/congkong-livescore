@@ -7,6 +7,7 @@ import { DICTIONARY, TEAMS, JUDGES } from './data';
 import LoginScreen from './screens/LoginScreen';
 import JudgeInterface from './screens/JudgeInterface';
 import AdminDashboard from './screens/AdminDashboard';
+import Footer from './components/Footer';
 
 const appId = '1:642440523500:web:993b21fc1a7b05dfaaffc9';
 
@@ -285,36 +286,39 @@ export default function App() {
 
   return (
     <AppContext.Provider value={{ isOnline, theme, toggleTheme, lang, setLang, t: DICTIONARY[lang] }}>
-      <div className={`min-h-screen ${theme === 'dark' ? 'dark' : ''}`}>
-        {!userProfile ? (
-          <LoginScreen onLogin={setUserProfile} judges={judges} eventSettings={eventSettings} />
-        ) : userProfile.role === 'admin' ? (
-          <AdminDashboard 
-            teams={teams} 
-            setTeams={handleUpdateTeams}
-            judges={judges}
-            setJudges={handleUpdateJudges}
-            eventSettings={eventSettings}
-            onUpdateEventSettings={handleUpdateEventSettings}
-            onSystemReset={handleSystemReset}
-            scores={scores} 
-            control={control}
-            onControlUpdate={handleControlUpdate}
-            onGlobalLock={handleGlobalLock}
-            onJudgeUnlock={handleJudgeUnlock}
-            onLogout={() => setUserProfile(null)} 
-          />
-        ) : (
-          <JudgeInterface 
-            judge={userProfile} 
-            teams={teams} 
-            scores={scores} 
-            control={control}
-            onSubmit={handleSubmitScore} 
-            onLogout={() => setUserProfile(null)} 
-            isOnline={isOnline} 
-          />
-        )}
+      <div className={`min-h-screen flex flex-col ${theme === 'dark' ? 'dark' : ''}`}>
+        <div className="grow">
+          {!userProfile ? (
+            <LoginScreen onLogin={setUserProfile} judges={judges} eventSettings={eventSettings} />
+          ) : userProfile.role === 'admin' ? (
+            <AdminDashboard 
+              teams={teams} 
+              setTeams={handleUpdateTeams}
+              judges={judges}
+              setJudges={handleUpdateJudges}
+              eventSettings={eventSettings}
+              onUpdateEventSettings={handleUpdateEventSettings}
+              onSystemReset={handleSystemReset}
+              scores={scores} 
+              control={control}
+              onControlUpdate={handleControlUpdate}
+              onGlobalLock={handleGlobalLock}
+              onJudgeUnlock={handleJudgeUnlock}
+              onLogout={() => setUserProfile(null)} 
+            />
+          ) : (
+            <JudgeInterface 
+              judge={userProfile} 
+              teams={teams} 
+              scores={scores} 
+              control={control}
+              onSubmit={handleSubmitScore} 
+              onLogout={() => setUserProfile(null)} 
+              isOnline={isOnline} 
+            />
+          )}
+        </div>
+        <Footer />
       </div>
     </AppContext.Provider>
   );
