@@ -18,9 +18,11 @@ export default function Footer() {
         </a>
         
         <div className="text-center space-y-1">
+          <a href="https://www.congkong.net/" target="_blank" rel="noopener noreferrer">
           <p className="text-2xl text-gray-700 tracking-wide font-extrabold ">
             CongKong Friends
           </p>
+          </a>
           <p className="text-[10px] text-slate-400">
             © 2025 CongKong Friends. All rights reserved.
           </p>
