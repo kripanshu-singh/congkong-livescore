@@ -230,7 +230,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                        value={memo} onChange={(e) => setMemo(e.target.value)}
                        placeholder={t.comment_placeholder}
                        disabled={isLocked}
-                       className={`flex-1 w-full bg-transparent border-none focus:ring-0 text-sm resize-none placeholder:text-slate-300 leading-relaxed p-0 ${isLocked ? 'cursor-not-allowed text-slate-400' : ''}`}
+                       className={`flex-1 w-full p-4 bg-transparent border-none focus:ring-0 text-sm resize-none placeholder:text-slate-300 leading-relaxed ${isLocked ? 'cursor-not-allowed text-slate-400' : ''}`}
                     />
                  </GlassCard>
                  
