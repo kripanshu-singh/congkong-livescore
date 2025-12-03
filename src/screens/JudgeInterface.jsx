@@ -283,7 +283,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                     />
                  </GlassCard>
                  
-                 <div className={`p-6 rounded-[24px] text-white shadow-xl flex items-center justify-between relative overflow-hidden transition-all duration-300 ${isLocked ? 'bg-slate-400 grayscale' : 'bg-gradient-to-br from-blue-600 to-indigo-700'}`}>
+                 <div className={`p-6 rounded-[24px] text-white shadow-xl flex items-center justify-between relative overflow-hidden transition-all duration-300 ${isLocked ? 'bg-slate-400 grayscale' : 'bg-linear-to-br from-blue-600 to-indigo-700'}`}>
                     <div className="relative z-10">
                        <div className="text-xs font-bold opacity-70 uppercase mb-1">{t.score_total}</div>
                        <div className="text-5xl font-black tracking-tighter">{totalScore}</div>
