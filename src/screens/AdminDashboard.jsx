@@ -59,6 +59,7 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
     // 1. Define Headers
     const headers = [
       'Rank',
+      'Category',
       'Team Name',
       'University',
       'Presenter',
@@ -87,6 +88,7 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
 
       return [
         team.rank,
+        `"${team.category || ''}"`,
         `"${team.name}"`, // Quote to handle commas
         `"${team.univ}"`,
         `"${team.presenter}"`,
