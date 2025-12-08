@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Save, Check, Info, LayoutTemplate, Calculator, Trophy, Users, Star, Crown } from 'lucide-react';
+import { Save, Check, Info, LayoutTemplate, Calculator, Trophy, Users, Star, Crown, CheckCircle2, LogOut } from 'lucide-react';
 import { GlassCard, AppleSlider } from './ui';
 import { AppContext } from '../context';
 
@@ -7,27 +7,34 @@ const MethodCard = ({ id, label, desc, active, onClick, icon: Icon, tag }) => (
     <div 
       onClick={() => onClick(id)}
       className={`relative p-5 rounded-2xl cursor-pointer transition-all duration-300 border-2 overflow-hidden group
-        ${active ? 'bg-indigo-600 border-indigo-600 shadow-xl shadow-indigo-200 text-white transform scale-[1.02]' : 'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-md'}`}
+        ${active 
+            ? 'bg-gradient-to-br from-indigo-600 to-indigo-700 border-indigo-600 shadow-xl shadow-indigo-200/50 text-white ring-2 ring-indigo-600 ring-offset-2' 
+            : 'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-lg hover:-translate-y-1'}`}
     >
-      <div className="flex justify-between items-start mb-3">
-         <div className={`p-3 rounded-xl ${active ? 'bg-white/20 text-white' : 'bg-indigo-50 text-indigo-600'}`}>
+      <div className="flex justify-between items-start mb-3 relative z-10">
+         <div className={`p-3 rounded-xl transition-colors ${active ? 'bg-white/20 text-white' : 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-100'}`}>
             <Icon className="w-6 h-6" />
          </div>
          {active && <div className="p-1 bg-white rounded-full text-indigo-600"><Check className="w-4 h-4" /></div>}
       </div>
       
-      <h3 className={`font-bold text-lg mb-1 ${active ? 'text-white' : 'text-slate-800'}`}>{label}</h3>
-      <p className={`text-xs leading-relaxed ${active ? 'text-indigo-100' : 'text-slate-500'}`}>{desc}</p>
+      <h3 className={`font-bold text-lg mb-1 relative z-10 ${active ? 'text-white' : 'text-slate-800'}`}>{label}</h3>
+      <p className={`text-xs leading-relaxed relative z-10 ${active ? 'text-indigo-100' : 'text-slate-500'}`}>{desc}</p>
       
       {tag && (
-        <span className={`absolute top-4 right-4 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider
+        <span className={`absolute top-4 right-4 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm z-10
            ${active ? 'bg-white text-indigo-600' : 'bg-slate-100 text-slate-500'}`}>
            {tag}
         </span>
       )}
 
       {/* Background Decor */}
-      {active && <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />}
+      {active && (
+          <>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-bl-full -mr-8 -mt-8 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/5 rounded-tr-full -ml-8 -mb-8 pointer-events-none" />
+          </>
+      )}
     </div>
 );
 
@@ -117,40 +124,67 @@ export const ScoringSettings = ({ settings, onSave }) => {
               </h3>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                 {/* None */}
                  <button 
                     onClick={() => setVoteMode('none')}
-                    className={`p-4 rounded-xl border-2 text-left transition-all ${voteMode === 'none' ? 'border-pink-500 bg-pink-50 text-pink-700' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-200'}`}
+                    className={`relative p-5 rounded-2xl border-2 text-left transition-all duration-300 overflow-hidden group
+                       ${voteMode === 'none' 
+                          ? 'bg-gradient-to-br from-pink-500 to-rose-600 border-pink-500 shadow-lg shadow-pink-200/50 text-white ring-2 ring-pink-500 ring-offset-2' 
+                          : 'bg-white border-slate-100 hover:border-pink-200 hover:shadow-md hover:-translate-y-1'}`}
                  >
-                    <div className="font-bold mb-1 flex items-center gap-2">
-                       <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${voteMode === 'none' ? 'border-pink-500' : 'border-slate-300'}`}>
-                          {voteMode === 'none' && <div className="w-2 h-2 rounded-full bg-pink-500" />}
+                    <div className="flex justify-between items-start mb-2 relative z-10">
+                       <div className={`p-2 rounded-lg ${voteMode === 'none' ? 'bg-white/20 text-white' : 'bg-pink-50 text-pink-500'}`}>
+                          <LogOut className="w-5 h-5" />
                        </div>
-                       {t.vote_none}
+                       {voteMode === 'none' && <CheckCircle2 className="w-5 h-5 text-pink-100" />}
                     </div>
+                    <div className="font-bold text-lg mb-1 relative z-10">{t.vote_none}</div>
+                    <div className={`text-xs relative z-10 ${voteMode === 'none' ? 'text-pink-100' : 'text-slate-400'}`}>
+                       Judge scores only
+                    </div>
+                    {voteMode === 'none' && <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-white/10 rounded-full blur-xl pointer-events-none" />}
                  </button>
 
+                 {/* Ratio */}
                  <button 
                     onClick={() => setVoteMode('ratio')}
-                    className={`p-4 rounded-xl border-2 text-left transition-all ${voteMode === 'ratio' ? 'border-purple-500 bg-purple-50 text-purple-700' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-200'}`}
+                    className={`relative p-5 rounded-2xl border-2 text-left transition-all duration-300 overflow-hidden group
+                       ${voteMode === 'ratio' 
+                          ? 'bg-gradient-to-br from-purple-600 to-indigo-600 border-purple-600 shadow-lg shadow-purple-200/50 text-white ring-2 ring-purple-600 ring-offset-2' 
+                          : 'bg-white border-slate-100 hover:border-purple-200 hover:shadow-md hover:-translate-y-1'}`}
                  >
-                    <div className="font-bold mb-1 flex items-center gap-2">
-                       <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${voteMode === 'ratio' ? 'border-purple-500' : 'border-slate-300'}`}>
-                          {voteMode === 'ratio' && <div className="w-2 h-2 rounded-full bg-purple-500" />}
+                    <div className="flex justify-between items-start mb-2 relative z-10">
+                       <div className={`p-2 rounded-lg ${voteMode === 'ratio' ? 'bg-white/20 text-white' : 'bg-purple-50 text-purple-600'}`}>
+                          <Users className="w-5 h-5" />
                        </div>
-                       {t.vote_ratio}
+                       {voteMode === 'ratio' && <CheckCircle2 className="w-5 h-5 text-purple-200" />}
                     </div>
+                    <div className="font-bold text-lg mb-1 relative z-10">{t.vote_ratio}</div>
+                    <div className={`text-xs relative z-10 ${voteMode === 'ratio' ? 'text-purple-100' : 'text-slate-400'}`}>
+                       Weighted score combination
+                    </div>
+                    {voteMode === 'ratio' && <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-bl-full -mr-6 -mt-6 pointer-events-none" />}
                  </button>
 
+                 {/* Rank */}
                  <button 
                     onClick={() => setVoteMode('rank')}
-                    className={`p-4 rounded-xl border-2 text-left transition-all ${voteMode === 'rank' ? 'border-amber-500 bg-amber-50 text-amber-700' : 'border-slate-100 bg-white text-slate-500 hover:border-slate-200'}`}
+                    className={`relative p-5 rounded-2xl border-2 text-left transition-all duration-300 overflow-hidden group
+                       ${voteMode === 'rank' 
+                          ? 'bg-gradient-to-br from-amber-500 to-orange-600 border-amber-500 shadow-lg shadow-amber-200/50 text-white ring-2 ring-amber-500 ring-offset-2' 
+                          : 'bg-white border-slate-100 hover:border-amber-200 hover:shadow-md hover:-translate-y-1'}`}
                  >
-                    <div className="font-bold mb-1 flex items-center gap-2">
-                       <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${voteMode === 'rank' ? 'border-amber-500' : 'border-slate-300'}`}>
-                          {voteMode === 'rank' && <div className="w-2 h-2 rounded-full bg-amber-500" />}
+                    <div className="flex justify-between items-start mb-2 relative z-10">
+                       <div className={`p-2 rounded-lg ${voteMode === 'rank' ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-600'}`}>
+                          <Crown className="w-5 h-5" />
                        </div>
-                       {t.vote_rank}
+                       {voteMode === 'rank' && <CheckCircle2 className="w-5 h-5 text-amber-100" />}
                     </div>
+                    <div className="font-bold text-lg mb-1 relative z-10">{t.vote_rank}</div>
+                    <div className={`text-xs relative z-10 ${voteMode === 'rank' ? 'text-amber-100' : 'text-slate-400'}`}>
+                       Bonus points by rank
+                    </div>
+                    {voteMode === 'rank' && <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-tr-full -ml-8 -mb-8 pointer-events-none" />}
                  </button>
               </div>
 

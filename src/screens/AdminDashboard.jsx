@@ -256,7 +256,7 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
             >
               <Settings className="w-4 h-4"/> Event
             </button>
-            <div className="w-px h-6 bg-slate-300 mx-1"></div>
+            {/* <div className="w-px h-6 bg-slate-300 mx-1"></div> */}
             <button 
               onClick={() => setActiveTab('judging_criteria')}
               className={`px-6 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${activeTab === 'judging_criteria' ? 'bg-white text-slate-800 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
