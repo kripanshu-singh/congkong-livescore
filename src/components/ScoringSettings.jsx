@@ -8,22 +8,27 @@ const MethodCard = ({ id, label, desc, active, onClick, icon: Icon, tag }) => (
       onClick={() => onClick(id)}
       className={`relative p-5 rounded-2xl cursor-pointer transition-all duration-300 border-2 overflow-hidden group
         ${active 
-            ? 'bg-gradient-to-br from-indigo-600 to-indigo-700 border-indigo-600 shadow-xl shadow-indigo-200/50 text-white ring-2 ring-indigo-600 ring-offset-2' 
-            : 'bg-white border-slate-100 hover:border-indigo-300 hover:shadow-lg hover:-translate-y-1'}`}
+            ? 'bg-linear-to-br from-blue-600 to-blue-700 border-blue-600 shadow-xl shadow-blue-200/50 text-white ring-2 ring-blue-600 ring-offset-2' 
+            : 'bg-white border-slate-100 hover:border-blue-300 hover:shadow-lg hover:-translate-y-1'}`}
+
     >
       <div className="flex justify-between items-start mb-3 relative z-10">
-         <div className={`p-3 rounded-xl transition-colors ${active ? 'bg-white/20 text-white' : 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-100'}`}>
+         <div className={`p-3 rounded-xl transition-colors ${active ? 'bg-white/20 text-white' : 'bg-blue-50 text-blue-600 group-hover:bg-blue-100'}`}>
+
             <Icon className="w-6 h-6" />
          </div>
-         {active && <div className="p-1 bg-white rounded-full text-indigo-600"><Check className="w-4 h-4" /></div>}
+         {active && <div className="p-1 bg-white rounded-full text-blue-600"><Check className="w-4 h-4" /></div>}
+
       </div>
       
       <h3 className={`font-bold text-lg mb-1 relative z-10 ${active ? 'text-white' : 'text-slate-800'}`}>{label}</h3>
-      <p className={`text-xs leading-relaxed relative z-10 ${active ? 'text-indigo-100' : 'text-slate-500'}`}>{desc}</p>
+      <p className={`text-xs leading-relaxed relative z-10 ${active ? 'text-blue-100' : 'text-slate-500'}`}>{desc}</p>
+
       
       {tag && (
         <span className={`absolute top-4 right-4 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm z-10
-           ${active ? 'bg-white text-indigo-600' : 'bg-slate-100 text-slate-500'}`}>
+           ${active ? 'bg-white text-blue-600' : 'bg-slate-100 text-slate-500'}`}>
+
            {tag}
         </span>
       )}
@@ -62,7 +67,8 @@ export const ScoringSettings = ({ settings, onSave }) => {
        {/* Top Header */}
        <div className="flex justify-between items-center shrink-0 mb-6 p-1">
           <div className="flex items-center gap-3">
-             <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600">
+             <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
+
                <Calculator className="w-5 h-5"/>
              </div>
              <div>
@@ -72,7 +78,8 @@ export const ScoringSettings = ({ settings, onSave }) => {
           </div>
           <button 
              onClick={handleSave}
-             className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-lg shadow-indigo-200 font-bold text-sm flex items-center gap-2 transition-transform active:scale-95"
+             className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg shadow-blue-200 font-bold text-sm flex items-center gap-2 transition-transform active:scale-95"
+
           >
              <Save className="w-4 h-4" /> {t.save_config}
           </button>
@@ -129,17 +136,19 @@ export const ScoringSettings = ({ settings, onSave }) => {
                     onClick={() => setVoteMode('none')}
                     className={`relative p-5 rounded-2xl border-2 text-left transition-all duration-300 overflow-hidden group
                        ${voteMode === 'none' 
-                          ? 'bg-gradient-to-br from-pink-500 to-rose-600 border-pink-500 shadow-lg shadow-pink-200/50 text-white ring-2 ring-pink-500 ring-offset-2' 
-                          : 'bg-white border-slate-100 hover:border-pink-200 hover:shadow-md hover:-translate-y-1'}`}
+                          ? 'bg-linear-to-br from-slate-600 to-slate-700 border-slate-600 shadow-lg shadow-slate-200/50 text-white ring-2 ring-slate-600 ring-offset-2' 
+                          : 'bg-white border-slate-100 hover:border-slate-200 hover:shadow-md hover:-translate-y-1'}`}
+
                  >
                     <div className="flex justify-between items-start mb-2 relative z-10">
-                       <div className={`p-2 rounded-lg ${voteMode === 'none' ? 'bg-white/20 text-white' : 'bg-pink-50 text-pink-500'}`}>
+                       <div className={`p-2 rounded-lg ${voteMode === 'none' ? 'bg-white/20 text-white' : 'bg-slate-50 text-slate-500'}`}>
                           <LogOut className="w-5 h-5" />
                        </div>
-                       {voteMode === 'none' && <CheckCircle2 className="w-5 h-5 text-pink-100" />}
+                       {voteMode === 'none' && <CheckCircle2 className="w-5 h-5 text-slate-100" />}
                     </div>
                     <div className="font-bold text-lg mb-1 relative z-10">{t.vote_none}</div>
-                    <div className={`text-xs relative z-10 ${voteMode === 'none' ? 'text-pink-100' : 'text-slate-400'}`}>
+                    <div className={`text-xs relative z-10 ${voteMode === 'none' ? 'text-slate-100' : 'text-slate-400'}`}>
+
                        Judge scores only
                     </div>
                     {voteMode === 'none' && <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-white/10 rounded-full blur-xl pointer-events-none" />}
@@ -150,17 +159,19 @@ export const ScoringSettings = ({ settings, onSave }) => {
                     onClick={() => setVoteMode('ratio')}
                     className={`relative p-5 rounded-2xl border-2 text-left transition-all duration-300 overflow-hidden group
                        ${voteMode === 'ratio' 
-                          ? 'bg-gradient-to-br from-purple-600 to-indigo-600 border-purple-600 shadow-lg shadow-purple-200/50 text-white ring-2 ring-purple-600 ring-offset-2' 
-                          : 'bg-white border-slate-100 hover:border-purple-200 hover:shadow-md hover:-translate-y-1'}`}
+                          ? 'bg-linear-to-br from-blue-600 to-blue-700 border-blue-600 shadow-lg shadow-blue-200/50 text-white ring-2 ring-blue-600 ring-offset-2' 
+                          : 'bg-white border-slate-100 hover:border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
+
                  >
                     <div className="flex justify-between items-start mb-2 relative z-10">
-                       <div className={`p-2 rounded-lg ${voteMode === 'ratio' ? 'bg-white/20 text-white' : 'bg-purple-50 text-purple-600'}`}>
+                       <div className={`p-2 rounded-lg ${voteMode === 'ratio' ? 'bg-white/20 text-white' : 'bg-blue-50 text-blue-600'}`}>
                           <Users className="w-5 h-5" />
                        </div>
-                       {voteMode === 'ratio' && <CheckCircle2 className="w-5 h-5 text-purple-200" />}
+                       {voteMode === 'ratio' && <CheckCircle2 className="w-5 h-5 text-blue-200" />}
                     </div>
                     <div className="font-bold text-lg mb-1 relative z-10">{t.vote_ratio}</div>
-                    <div className={`text-xs relative z-10 ${voteMode === 'ratio' ? 'text-purple-100' : 'text-slate-400'}`}>
+                    <div className={`text-xs relative z-10 ${voteMode === 'ratio' ? 'text-blue-100' : 'text-slate-400'}`}>
+
                        Weighted score combination
                     </div>
                     {voteMode === 'ratio' && <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-bl-full -mr-6 -mt-6 pointer-events-none" />}
@@ -171,17 +182,19 @@ export const ScoringSettings = ({ settings, onSave }) => {
                     onClick={() => setVoteMode('rank')}
                     className={`relative p-5 rounded-2xl border-2 text-left transition-all duration-300 overflow-hidden group
                        ${voteMode === 'rank' 
-                          ? 'bg-gradient-to-br from-amber-500 to-orange-600 border-amber-500 shadow-lg shadow-amber-200/50 text-white ring-2 ring-amber-500 ring-offset-2' 
-                          : 'bg-white border-slate-100 hover:border-amber-200 hover:shadow-md hover:-translate-y-1'}`}
+                          ? 'bg-linear-to-br from-indigo-500 to-indigo-600 border-indigo-500 shadow-lg shadow-indigo-200/50 text-white ring-2 ring-indigo-500 ring-offset-2' 
+                          : 'bg-white border-slate-100 hover:border-indigo-200 hover:shadow-md hover:-translate-y-1'}`}
+
                  >
                     <div className="flex justify-between items-start mb-2 relative z-10">
-                       <div className={`p-2 rounded-lg ${voteMode === 'rank' ? 'bg-white/20 text-white' : 'bg-amber-50 text-amber-600'}`}>
+                       <div className={`p-2 rounded-lg ${voteMode === 'rank' ? 'bg-white/20 text-white' : 'bg-indigo-50 text-indigo-600'}`}>
                           <Crown className="w-5 h-5" />
                        </div>
-                       {voteMode === 'rank' && <CheckCircle2 className="w-5 h-5 text-amber-100" />}
+                       {voteMode === 'rank' && <CheckCircle2 className="w-5 h-5 text-indigo-100" />}
                     </div>
                     <div className="font-bold text-lg mb-1 relative z-10">{t.vote_rank}</div>
-                    <div className={`text-xs relative z-10 ${voteMode === 'rank' ? 'text-amber-100' : 'text-slate-400'}`}>
+                    <div className={`text-xs relative z-10 ${voteMode === 'rank' ? 'text-indigo-100' : 'text-slate-400'}`}>
+
                        Bonus points by rank
                     </div>
                     {voteMode === 'rank' && <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-tr-full -ml-8 -mb-8 pointer-events-none" />}
@@ -190,10 +203,11 @@ export const ScoringSettings = ({ settings, onSave }) => {
 
               {/* Conditional Logic Editors */}
               {voteMode === 'ratio' && (
-                 <GlassCard className="border-purple-200 bg-purple-50/50 p-6 animate-in fade-in slide-in-from-top-4">
-                    <h3 className="font-bold text-purple-800 mb-6 flex items-center gap-2">
+                 <GlassCard className="border-blue-200 bg-blue-50/50 p-6 animate-in fade-in slide-in-from-top-4">
+                    <h3 className="font-bold text-blue-800 mb-6 flex items-center gap-2">
                        <Info className="w-4 h-4"/> {t.ratio_config}
                     </h3>
+
                     
                     <div className="flex items-center gap-6">
                        <div className="flex-1 space-y-2">
@@ -208,22 +222,24 @@ export const ScoringSettings = ({ settings, onSave }) => {
                              className="h-4"
                           />
                        </div>
-                       <div className="text-2xl font-black text-purple-600 w-24 text-center">
+                       <div className="text-2xl font-black text-blue-600 w-24 text-center">
                           {ratio.judge}:{ratio.audience}
                        </div>
                     </div>
                     
-                    <div className="mt-6 p-4 bg-white/60 rounded-xl text-xs text-purple-700 font-mono text-center border border-purple-100">
+                    <div className="mt-6 p-4 bg-white/60 rounded-xl text-xs text-blue-700 font-mono text-center border border-blue-100">
+
                        {t.ratio_formula.replace('{j}', ratio.judge).replace('{a}', ratio.audience)}
                     </div>
                  </GlassCard>
               )}
 
               {voteMode === 'rank' && (
-                 <GlassCard className="border-amber-200 bg-amber-50/50 p-6 animate-in fade-in slide-in-from-top-4">
-                    <h3 className="font-bold text-amber-800 mb-6 flex items-center gap-2">
+                 <GlassCard className="border-indigo-200 bg-indigo-50/50 p-6 animate-in fade-in slide-in-from-top-4">
+                    <h3 className="font-bold text-indigo-800 mb-6 flex items-center gap-2">
                        <Trophy className="w-4 h-4"/> {t.rank_config}
                     </h3>
+
                     
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                        {[
@@ -232,8 +248,9 @@ export const ScoringSettings = ({ settings, onSave }) => {
                           { key: 3, label: t.bonus_3rd, icon: Trophy, color: 'text-amber-700' },
                           { key: 'other', label: t.bonus_other, icon: Users, color: 'text-slate-500' }
                        ].map((rank) => (
-                          <div key={rank.key} className="bg-white p-4 rounded-xl border border-amber-100 shadow-sm">
+                          <div key={rank.key} className="bg-white p-4 rounded-xl border border-indigo-100 shadow-sm">
                              <div className={`flex items-center gap-2 mb-2 font-bold text-sm ${rank.color}`}>
+
                                 <rank.icon className="w-4 h-4" /> {rank.label}
                              </div>
                              <div className="flex items-center gap-2">
@@ -241,7 +258,7 @@ export const ScoringSettings = ({ settings, onSave }) => {
                                    type="number"
                                    value={rankBonus[rank.key]}
                                    onChange={(e) => setRankBonus({...rankBonus, [rank.key]: parseInt(e.target.value) || 0})}
-                                   className="w-full text-center font-black text-xl py-2 bg-slate-50 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none"
+                                   className="w-full text-center font-black text-xl py-2 bg-slate-50 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
                                 />
                                 <span className="text-xs font-bold text-slate-400">pts</span>
                              </div>
@@ -249,9 +266,10 @@ export const ScoringSettings = ({ settings, onSave }) => {
                        ))}
                     </div>
                     
-                    <div className="mt-6 p-4 bg-white/60 rounded-xl text-xs text-amber-800 font-mono text-center border border-amber-100">
+                    <div className="mt-6 p-4 bg-white/60 rounded-xl text-xs text-indigo-800 font-mono text-center border border-indigo-100">
                        {t.rank_formula}
                     </div>
+
                  </GlassCard>
               )}
            </section>

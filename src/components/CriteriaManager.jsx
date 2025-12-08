@@ -19,7 +19,8 @@ const SortableItem = ({ item, categoryId, onUpdate, onDelete, t }) => {
     <div 
       ref={setNodeRef} 
       style={style}
-      className={`group relative grid grid-cols-12 gap-3 items-center p-3 bg-white rounded-xl border transition-all duration-200 ${isDragging ? 'shadow-lg ring-2 ring-indigo-500/20 border-indigo-200 rotate-1' : 'border-slate-100 hover:border-indigo-100 hover:shadow-sm'}`}
+      className={`group relative grid grid-cols-12 gap-3 items-center p-3 bg-white rounded-xl border transition-all duration-200 ${isDragging ? 'shadow-lg ring-2 ring-blue-500/20 border-blue-200 rotate-1' : 'border-slate-100 hover:border-blue-100 hover:shadow-sm'}`}
+
     >
       <div className="col-span-1 flex justify-center">
         <button {...attributes} {...listeners} className="p-1 text-slate-300 hover:text-slate-500 cursor-grab active:cursor-grabbing touch-none transition-colors">
@@ -30,7 +31,8 @@ const SortableItem = ({ item, categoryId, onUpdate, onDelete, t }) => {
         <input 
           value={item.label}
           onChange={(e) => onUpdate(item.id, 'label', e.target.value)}
-          className="w-full text-sm font-bold text-slate-700 bg-transparent border-b border-transparent focus:border-indigo-500 focus:outline-none transition-colors placeholder:text-slate-300"
+          className="w-full text-sm font-bold text-slate-700 bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none transition-colors placeholder:text-slate-300"
+
           placeholder={t.item_name_ko}
         />
       </div>
@@ -38,7 +40,8 @@ const SortableItem = ({ item, categoryId, onUpdate, onDelete, t }) => {
          <input 
           value={item.label_en || ''}
           onChange={(e) => onUpdate(item.id, 'label_en', e.target.value)}
-          className="w-full text-sm font-medium text-slate-500 bg-transparent border-b border-transparent focus:border-indigo-500 focus:outline-none transition-colors placeholder:text-slate-300"
+          className="w-full text-sm font-medium text-slate-500 bg-transparent border-b border-transparent focus:border-blue-500 focus:outline-none transition-colors placeholder:text-slate-300"
+
           placeholder={t.item_name_en}
         />
       </div>
@@ -48,7 +51,8 @@ const SortableItem = ({ item, categoryId, onUpdate, onDelete, t }) => {
               type="number"
               value={item.max}
               onChange={(e) => onUpdate(item.id, 'max', parseInt(e.target.value) || 0)}
-              className="w-full text-center text-sm font-bold text-indigo-600 bg-indigo-50/50 rounded-lg py-1 focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all outline-none"
+              className="w-full text-center text-sm font-bold text-blue-600 bg-blue-50/50 rounded-lg py-1 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all outline-none"
+
             />
          </div>
       </div>
@@ -178,7 +182,8 @@ export const CriteriaManager = ({ settings, onSave }) => {
        {/* Top Header */}
        <div className="flex justify-between items-center shrink-0">
           <div className="flex items-center gap-3">
-             <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600">
+             <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
+
                <Layers className="w-5 h-5"/>
              </div>
              <div>
@@ -189,13 +194,15 @@ export const CriteriaManager = ({ settings, onSave }) => {
           <div className="flex items-center gap-4">
              <div className="text-right hidden sm:block">
                 <div className="text-xs font-bold text-slate-500">{t.total_points}</div>
-                <div className={`text-xl font-black ${totalMaxScore === 100 ? 'text-indigo-600' : 'text-red-500'}`}>
+                <div className={`text-xl font-black ${totalMaxScore === 100 ? 'text-blue-600' : 'text-red-500'}`}>
+
                    {totalMaxScore} pts
                 </div>
              </div>
              <button 
                 onClick={handleSave}
-                className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-lg shadow-indigo-200 font-bold text-sm flex items-center gap-2 transition-transform active:scale-95"
+                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg shadow-blue-200 font-bold text-sm flex items-center gap-2 transition-transform active:scale-95"
+
              >
                 <Save className="w-4 h-4" /> {t.save_config}
              </button>
@@ -216,14 +223,16 @@ export const CriteriaManager = ({ settings, onSave }) => {
                    <div 
                       key={cat.id}
                       onClick={() => setActiveTab(cat.id)}
-                      className={`group relative p-4 rounded-2xl border-2 transition-all cursor-pointer overflow-hidden ${isActive ? 'bg-white border-indigo-500 shadow-md ring-4 ring-indigo-50' : 'bg-white border-transparent hover:border-slate-200'}`}
+                      className={`group relative p-4 rounded-2xl border-2 transition-all cursor-pointer overflow-hidden ${isActive ? 'bg-white border-blue-500 shadow-md ring-4 ring-blue-50' : 'bg-white border-transparent hover:border-slate-200'}`}
+
                    >
                       <div className="flex justify-between items-start mb-3 relative z-10">
                          <div className="flex-1">
                             <input 
                                value={cat.label}
                                onChange={(e) => handleUpdateCategory(cat.id, 'label', e.target.value)}
-                               className={`w-full font-bold bg-transparent focus:outline-none focus:border-b border-slate-300 ${isActive ? 'text-indigo-900' : 'text-slate-700'}`}
+                               className={`w-full font-bold bg-transparent focus:outline-none focus:border-b border-slate-300 ${isActive ? 'text-blue-900' : 'text-slate-700'}`}
+
                                placeholder={t.category_name_ko}
                             />
                             <input 
@@ -239,7 +248,8 @@ export const CriteriaManager = ({ settings, onSave }) => {
                                   type="number"
                                   value={cat.max}
                                   onChange={(e) => handleUpdateCategory(cat.id, 'max', parseInt(e.target.value) || 0)}
-                                  className={`w-12 text-right font-black text-lg bg-transparent focus:outline-none border-b border-transparent focus:border-indigo-300 ${isActive ? 'text-indigo-600' : 'text-slate-400'}`}
+                                  className={`w-12 text-right font-black text-lg bg-transparent focus:outline-none border-b border-transparent focus:border-blue-300 ${isActive ? 'text-blue-600' : 'text-slate-400'}`}
+
                                />
                                <span className="text-xs font-bold text-slate-400">pts</span>
                             </div>
@@ -249,7 +259,8 @@ export const CriteriaManager = ({ settings, onSave }) => {
                       {/* Progress Bar */}
                       <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden relative z-10">
                          <div 
-                            className={`h-full transition-all duration-500 ${isError ? 'bg-red-500' : isActive ? 'bg-indigo-500' : 'bg-slate-400'}`}
+                            className={`h-full transition-all duration-500 ${isError ? 'bg-red-500' : isActive ? 'bg-blue-500' : 'bg-slate-400'}`}
+
                             style={{ width: `${cat.max > 0 ? Math.min((catSum / cat.max) * 100, 100) : 0}%` }} 
                          />
                       </div>
@@ -261,7 +272,8 @@ export const CriteriaManager = ({ settings, onSave }) => {
 
                       {/* Creating a subtle active background effect */}
                       {isActive && (
-                          <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-indigo-100/50 to-transparent rounded-bl-[100px] -mr-8 -mt-8 z-0 pointer-events-none" />
+                          <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-blue-100/50 to-transparent rounded-bl-[100px] -mr-8 -mt-8 z-0 pointer-events-none" />
+
                       )}
                    </div>
                 );
@@ -273,7 +285,8 @@ export const CriteriaManager = ({ settings, onSave }) => {
                    setCategories([...categories, { id: newId, label: '', label_en: '', max: 0 }]);
                    setActiveTab(newId);
                 }}
-                className="w-full py-3 border-2 border-dashed border-slate-300 text-slate-400 rounded-xl font-bold hover:border-indigo-400 hover:text-indigo-500 hover:bg-indigo-50 transition-all flex items-center justify-center gap-2"
+                className="w-full py-3 border-2 border-dashed border-slate-300 text-slate-400 rounded-xl font-bold hover:border-blue-400 hover:text-blue-500 hover:bg-blue-50 transition-all flex items-center justify-center gap-2"
+
              >
                 <Plus className="w-4 h-4" /> {t.add_category}
              </button>
@@ -330,7 +343,8 @@ export const CriteriaManager = ({ settings, onSave }) => {
 
                       <button 
                          onClick={handleAddItem}
-                         className="w-full py-3 rounded-xl border-2 border-dashed border-slate-200 text-slate-400 hover:border-indigo-300 hover:text-indigo-500 hover:bg-white transition-all text-sm font-bold flex items-center justify-center gap-2"
+                         className="w-full py-3 rounded-xl border-2 border-dashed border-slate-200 text-slate-400 hover:border-blue-300 hover:text-blue-500 hover:bg-white transition-all text-sm font-bold flex items-center justify-center gap-2"
+
                       >
                          <Plus className="w-4 h-4" /> {t.add_item}
                       </button>
