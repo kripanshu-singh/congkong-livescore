@@ -74,7 +74,7 @@ const AddJudgeForm = ({ onClose, onSave, initialData = null }) => {
   return (
     <GlassCard className="p-6 border-blue-200 bg-blue-50/50 mb-6">
       <div className="flex justify-between items-start mb-4">
-         <h3 className="font-bold text-lg text-blue-900">{initialData ? t.edit_judge_title || 'Edit Judge' : t.add_judge_title}</h3>
+         <h3 className="font-bold text-lg text-blue-900">{initialData ? t.edit_judge : t.add_judge_title}</h3>
          <button onClick={onClose} className="p-1 hover:bg-blue-100 rounded-full text-blue-500 cursor-pointer"><X className="w-5 h-5"/></button>
       </div>
       <div className="grid grid-cols-2 gap-4 mb-4">
@@ -84,7 +84,7 @@ const AddJudgeForm = ({ onClose, onSave, initialData = null }) => {
             value={newJudge.name}
             onChange={e => setNewJudge({...newJudge, name: e.target.value})}
             className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Name"
+            placeholder={t.label_name}
           />
         </div>
         <div>
@@ -93,7 +93,7 @@ const AddJudgeForm = ({ onClose, onSave, initialData = null }) => {
             value={newJudge.title}
             onChange={e => setNewJudge({...newJudge, title: e.target.value})}
             className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Title"
+            placeholder={t.label_title}
           />
         </div>
         <div>
@@ -102,7 +102,7 @@ const AddJudgeForm = ({ onClose, onSave, initialData = null }) => {
             value={newJudge.company}
             onChange={e => setNewJudge({...newJudge, company: e.target.value})}
             className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Affiliation"
+            placeholder={t.label_company}
           />
         </div>
         <div>
@@ -111,7 +111,7 @@ const AddJudgeForm = ({ onClose, onSave, initialData = null }) => {
             value={newJudge.phone}
             onChange={e => setNewJudge({...newJudge, phone: e.target.value})}
             className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Phone Number"
+            placeholder={t.label_phone}
           />
         </div>
         <div className="col-span-2">
@@ -120,7 +120,7 @@ const AddJudgeForm = ({ onClose, onSave, initialData = null }) => {
             value={newJudge.email}
             onChange={e => setNewJudge({...newJudge, email: e.target.value})}
             className="w-full p-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Email"
+            placeholder={t.label_email}
           />
         </div>
       </div>
@@ -220,7 +220,7 @@ const JudgeList = ({ judges, onDelete, onEdit, onReorder }) => {
       </div>
       <div className="overflow-y-auto flex-1 p-2 space-y-2 custom-scrollbar">
         {judges.length === 0 ? (
-          <div className="text-center py-20 text-slate-400">No judges registered yet.</div>
+          <div className="text-center py-20 text-slate-400">{t.no_judges}</div>
         ) : (
           <DndContext 
             sensors={sensors} 

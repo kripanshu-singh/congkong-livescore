@@ -42,7 +42,7 @@ export const ConfirmSubmitModal = ({ isOpen, onClose, onConfirm, totalScore, zer
 };
 
 // Admin Team Detail Modal
-export const TeamDetailModal = ({ isOpen, onClose, team, judges, scores }) => {
+export const TeamDetailModal = ({ isOpen, onClose, team, judges, scores, eventSettings }) => {
   const { t, lang } = useContext(AppContext);
   if (!isOpen || !team) return null;
 
@@ -97,7 +97,7 @@ export const TeamDetailModal = ({ isOpen, onClose, team, judges, scores }) => {
                     <div className="flex items-center justify-end gap-2">
                        {isMax && <span className="text-[10px] px-1.5 py-0.5 rounded bg-red-100 text-red-500 font-bold">MAX</span>}
                        {isMin && <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-500 font-bold">MIN</span>}
-                       <div className={`text-2xl font-black ${isMax || isMin ? 'text-slate-400 line-through decoration-slate-400/50' : 'text-slate-800 '}`}>{score.total}</div>
+                       <div className={`text-2xl font-black ${ (isMax || isMin) && eventSettings?.scoringMethod === 'trimmed' ? 'text-slate-400 line-through decoration-slate-400/50' : 'text-slate-800 '}`}>{score.total}</div>
                     </div>
                     <div className="text-[10px] text-slate-400">{t.submitted}</div>
                     {score.signature && (
@@ -139,8 +139,8 @@ export const AdminLoginModal = ({ isOpen, onClose, onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const adminUser = import.meta.env.VITE_ADMIN_USER || 'congkong';
-    const adminPw = import.meta.env.VITE_ADMIN_PASSWORD || 'friends';
+    const adminUser = '';
+    const adminPw = '';
     
     if (id === adminUser && pw === adminPw) {
        onLogin();
@@ -292,7 +292,7 @@ export const ResetConfirmModal = ({ isOpen, onClose, onConfirm }) => {
            <div className="relative">
               <div className="absolute left-4 top-3.5 text-slate-400"><Key className="w-4 h-4" /></div>
               <input 
-                type={showPw ? "text" : "password"} placeholder="Admin Password"
+                type={showPw ? "text" : "password"} placeholder={t.admin_placeholder_pw}
                 value={pw} onChange={(e) => setPw(e.target.value)}
                 className="w-full bg-slate-100 rounded-2xl py-3 pl-12 pr-12 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
                 autoFocus

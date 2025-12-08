@@ -5,7 +5,7 @@ import { SettingsBar, GlassCard, AppleSlider, DynamicIsland, ToastMessage } from
 import { ConfirmSubmitModal, SignatureModal } from '../components/modals';
 import { CRITERIA } from '../data';
 
-const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, control }) => {
+const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, control, eventSettings }) => {
   const { t, lang } = useContext(AppContext);
   const [activeTeamId, setActiveTeamId] = useState(teams[0].id);
   const [localScore, setLocalScore] = useState({});
@@ -15,6 +15,24 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
   const [saveStatus, setSaveStatus] = useState('idle'); // idle, saving, saved
   const [showToast, setShowToast] = useState(false);
   const [showAI, setShowAI] = useState(false);
+
+  // Derive Criteria from Settings or Fallback
+  const criteriaData = useMemo(() => {
+     if (eventSettings?.criteria?.categories) {
+        // Flatten for easy access if needed, or just return categories
+        return eventSettings.criteria.categories;
+     }
+     // Fallback if settings not loaded yet
+     return []; 
+  }, [eventSettings]);
+
+  const allCriteriaItems = useMemo(() => {
+     if (criteriaData.length > 0) {
+        return criteriaData.flatMap(cat => cat.items.map(item => ({...item, category: cat.id})));
+     }
+     return CRITERIA; // Fallback to hardcoded
+  }, [criteriaData]);
+
 
   // Sync active team
   useEffect(() => {
@@ -35,11 +53,11 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
       setMemo(savedData.comment || '');
     } else {
       const init = {};
-      CRITERIA.forEach(c => init[c.id] = 0);
+      allCriteriaItems.forEach(c => init[c.id] = 0);
       setLocalScore(init);
       setMemo('');
     }
-  }, [activeTeamId, savedData]);
+  }, [activeTeamId, savedData, allCriteriaItems]);
 
   const handleScoreChange = (id, val) => {
     if (isLocked) return;
@@ -69,16 +87,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
     }, 2000);
   };
 
-  const zeroItems = CRITERIA.filter(c => (localScore[c.id] || 0) === 0);
-
-  const groupedCriteria = useMemo(() => {
-    const groups = {};
-    CRITERIA.forEach(c => {
-      if (!groups[c.category]) groups[c.category] = [];
-      groups[c.category].push(c);
-    });
-    return groups;
-  }, []);
+  const zeroItems = allCriteriaItems.filter(c => (localScore[c.id] || 0) === 0);
 
   const downloadMyScores = () => {
     // 1. Headers
@@ -88,7 +97,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
       'University',
       'Presenter',
       'Total Score',
-      ...CRITERIA.map(c => lang === 'en' ? c.label_en : c.label),
+      ...allCriteriaItems.map(c => lang === 'en' ? c.label_en : c.label),
       'Comment'
     ];
 
@@ -96,7 +105,7 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
     const rows = teams.map(team => {
       const s = scores[`${team.id}_${judge.id}`];
       const detail = s ? s.detail : {};
-      const criteriaScores = CRITERIA.map(c => detail[c.id] || 0);
+      const criteriaScores = allCriteriaItems.map(c => detail[c.id] || 0);
       
       return [
         team.seq,
@@ -239,14 +248,14 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
           <div className="flex-1 overflow-y-auto p-6 pb-24 scroll-smooth">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-6">
-                {Object.entries(groupedCriteria).map(([category, items]) => (
-                  <GlassCard key={category} className="p-5">
+                {criteriaData.length > 0 ? criteriaData.map((cat) => (
+                  <GlassCard key={cat.id} className="p-5">
                     <div className="flex items-center gap-2 mb-4">
-                       <div className={`w-1 h-4 rounded-full ${category === 'cat_creativity' ? 'bg-blue-500' : category === 'cat_market' ? 'bg-purple-500' : 'bg-amber-500'}`} />
-                       <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">{t[category]}</h3>
+                       <div className={`w-1 h-4 rounded-full ${cat.id === 'cat_creativity' ? 'bg-blue-500' : cat.id === 'cat_market' ? 'bg-purple-500' : 'bg-amber-500'}`} />
+                       <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">{lang === 'en' ? cat.label_en : cat.label}</h3>
                     </div>
                     <div className="space-y-4">
-                      {items.map(crit => (
+                      {cat.items.map(crit => (
                         <AppleSlider 
                           key={crit.id} 
                           label={lang === 'en' ? crit.label_en : crit.label} 
@@ -259,7 +268,34 @@ const JudgeInterface = ({ judge, teams, scores, onSubmit, onLogout, isOnline, co
                       ))}
                     </div>
                   </GlassCard>
-                ))}
+                )) : (
+                  /* Fallback for legacy static data which was grouped differently or if settings fail */
+                  Object.entries(CRITERIA.reduce((groups, c) => {
+                      if (!groups[c.category]) groups[c.category] = [];
+                      groups[c.category].push(c);
+                      return groups;
+                  }, {})).map(([category, items]) => (
+                    <GlassCard key={category} className="p-5">
+                        <div className="flex items-center gap-2 mb-4">
+                        <div className="w-1 h-4 rounded-full bg-slate-300" />
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500">{t[category]}</h3>
+                        </div>
+                        <div className="space-y-4">
+                        {items.map(crit => (
+                            <AppleSlider 
+                            key={crit.id} 
+                            label={lang === 'en' ? crit.label_en : crit.label} 
+                            desc={crit.desc} 
+                            max={crit.max} 
+                            value={localScore[crit.id] || 0} 
+                            onChange={(val) => handleScoreChange(crit.id, val)} 
+                            disabled={isLocked}
+                            />
+                        ))}
+                        </div>
+                    </GlassCard>
+                  ))
+                )}
               </div>
 
               <div className="space-y-6">

@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react';
-import { Trophy, X, MonitorPlay, Unlock, Calculator, Timer, Pause, Play, Activity, LogOut, AlertTriangle, Crown, Medal, Download, Users, Lock, Settings } from 'lucide-react';
+import { Trophy, X, MonitorPlay, Unlock, Calculator, Timer, Pause, Play, Activity, LogOut, AlertTriangle, Crown, Medal, Download, Users, Lock, Settings, PenTool } from 'lucide-react';
 import { AppContext } from '../context';
 import { SettingsBar, GlassCard } from '../components/ui';
 import { TeamDetailModal } from '../components/modals';
 import { TeamManagement } from '../components/TeamManagement';
 import { JudgeManagement } from '../components/JudgeManagement';
 import { EventSettings } from '../components/EventSettings';
+import { CriteriaManager } from '../components/CriteriaManager';
+import { ScoringSettings } from '../components/ScoringSettings';
+import { calculateFinalScore } from '../utils/scoring';
 
 const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onUpdateEventSettings, onSystemReset, scores, onLogout, control, onControlUpdate, onGlobalLock, onJudgeUnlock }) => {
 
@@ -30,32 +33,35 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
             if (k.startsWith('c')) creScore += v;
          });
       });
-
-      let judgeAvg = 0;
-      if (scoresList.length > 2) {
-        const max = Math.max(...scoresList);
-        const min = Math.min(...scoresList);
-        const sum = scoresList.reduce((a, b) => a + b, 0);
-        judgeAvg = (sum - max - min) / (scoresList.length - 2);
-      } else if (scoresList.length > 0) {
-        judgeAvg = scoresList.reduce((a, b) => a + b, 0) / scoresList.length;
-      }
-      judgeAvg = Math.round(judgeAvg * 100) / 100;
+ 
+       // New Dynamic Scoring Logic
+       let judgeAvg = 0;
+       
+       // Filter empty scores (0) if using trimmed mean, though usually we pass all valid judges
+       // For now, let's pass all detailed scores that exist
+       
+       if (scoresList.length > 0) {
+           const method = eventSettings?.scoringMethod || 'avg';
+           judgeAvg = calculateFinalScore(scoresList, method);
+       }
 
       return { ...t, judgeAvg, bizScore, mktScore, creScore, count: tScores.length };
     });
-
-    const finalRanking = teamJudgedData.sort((a, b) => {
-       if (b.judgeAvg !== a.judgeAvg) return b.judgeAvg - a.judgeAvg;
-       if (b.bizScore !== a.bizScore) return b.bizScore - a.bizScore;
-       if (b.mktScore !== a.mktScore) return b.mktScore - a.mktScore;
-       return b.creScore - a.creScore;
-    });
-
-    return { progress, totalVotes, teamStats: finalRanking };
-  }, [teams, scores, judges]);
-
-  const downloadCSV = () => {
+ 
+     // Final Score with Voting Integration (Mockup for now, assuming no audience scores yet)
+     // TODO: Add audience score integration here
+     const finalRanking = teamJudgedData.sort((a, b) => {
+        if (b.judgeAvg !== a.judgeAvg) return b.judgeAvg - a.judgeAvg;
+        // Tie-breakers
+        if (b.bizScore !== a.bizScore) return b.bizScore - a.bizScore; // Feasibility
+        if (b.mktScore !== a.mktScore) return b.mktScore - a.mktScore; // Market
+        return b.creScore - a.creScore; // Creativity
+     });
+ 
+     return { progress, totalVotes, teamStats: finalRanking };
+   }, [teams, scores, judges, eventSettings]);
+ 
+   const downloadCSV = () => {
     // 1. Define Headers
     const headers = [
       'Rank',
@@ -198,10 +204,10 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
   return (
     <div className="h-screen flex flex-col bg-slate-50 font-sans p-6 text-slate-900 transition-colors duration-500 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-[500px] bg-linear-to-b from-blue-50 to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-[500px] bg-linear-to-b from-blue-50 to-transparent pointer-events-none -z-10" />
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-100/40 blur-[100px] rounded-full pointer-events-none" />
 
-      <TeamDetailModal isOpen={!!selectedTeam} onClose={() => setSelectedTeam(null)} team={selectedTeam} judges={judges} scores={scores} />
+      <TeamDetailModal isOpen={!!selectedTeam} onClose={() => setSelectedTeam(null)} team={selectedTeam} judges={judges} scores={scores} eventSettings={eventSettings} />
 
       <header className="relative flex flex-col lg:flex-row justify-between items-center mb-6 px-2 z-10 shrink-0 gap-4 lg:gap-0">
          <div className="w-full lg:w-auto flex flex-col items-center lg:items-start">
@@ -249,6 +255,19 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
               className={`px-6 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${activeTab === 'event' ? 'bg-white text-slate-800 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
             >
               <Settings className="w-4 h-4"/> Event
+            </button>
+            <div className="w-px h-6 bg-slate-300 mx-1"></div>
+            <button 
+              onClick={() => setActiveTab('judging_criteria')}
+              className={`px-6 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${activeTab === 'judging_criteria' ? 'bg-white text-slate-800 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
+            >
+              <PenTool className="w-4 h-4"/> Criteria
+            </button>
+            <button 
+              onClick={() => setActiveTab('judge_scoring')}
+              className={`px-6 py-2 rounded-lg text-sm font-bold transition-all cursor-pointer flex items-center gap-2 ${activeTab === 'judge_scoring' ? 'bg-white text-slate-800 shadow-sm ring-1 ring-black/5' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
+            >
+              <Calculator className="w-4 h-4"/> Scoring
             </button>
          </div>
 
@@ -313,6 +332,14 @@ const AdminDashboard = ({ teams, setTeams, judges, setJudges, eventSettings, onU
          ) : activeTab === 'event' ? (
             <div className="col-span-12 h-full overflow-hidden">
                <EventSettings settings={eventSettings} onSave={onUpdateEventSettings} onReset={onSystemReset} />
+            </div>
+         ) : activeTab === 'judging_criteria' ? (
+            <div className="col-span-12 h-full overflow-hidden">
+               <CriteriaManager settings={eventSettings} onSave={onUpdateEventSettings} />
+            </div>
+         ) : activeTab === 'judge_scoring' ? (
+            <div className="col-span-12 h-full overflow-hidden">
+               <ScoringSettings settings={eventSettings} onSave={onUpdateEventSettings} />
             </div>
          ) : (
            <>

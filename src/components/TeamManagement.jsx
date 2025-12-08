@@ -75,7 +75,7 @@ const AddTeamForm = ({ onClose, onSave, initialData = null }) => {
   return (
     <GlassCard className="p-6 border-blue-200 bg-blue-50/50 mb-6">
       <div className="flex justify-between items-start mb-4">
-         <h3 className="font-bold text-lg text-blue-900">{initialData ? t.edit_team_title || 'Edit Team' : t.add_team_title}</h3>
+         <h3 className="font-bold text-lg text-blue-900">{initialData ? t.edit_team : t.add_team_title}</h3>
          <button onClick={onClose} className="p-1 hover:bg-blue-100 rounded-full text-blue-500 cursor-pointer"><X className="w-5 h-5"/></button>
       </div>
       <div className="grid grid-cols-2 gap-4 mb-4">
@@ -232,7 +232,7 @@ const TeamList = ({ teams, onDelete, onEdit, onReorder }) => {
       </div>
       <div className="overflow-y-auto flex-1 p-2 space-y-2 custom-scrollbar">
         {teams.length === 0 ? (
-          <div className="text-center py-20 text-slate-400">No teams registered yet.</div>
+          <div className="text-center py-20 text-slate-400">{t.no_teams}</div>
         ) : (
           <DndContext 
             sensors={sensors} 

@@ -164,6 +164,68 @@ export const DICTIONARY = {
     status_offline: "오프라인",
 
     // Criteria Categories
+    // Criteria Manager
+    criteria_title: "심사 기준 설정",
+    criteria_desc: "심사 항목 및 배점을 설정합니다.",
+    total_points: "총점",
+    category_name_ko: "부문명 (국문)",
+    category_name_en: "부문명 (영문)",
+    max_points: "배점",
+    item_sum_error: "항목 합계({sum})가 부문 배점({max})과 일치하지 않습니다.",
+    item_name_ko: "항목명 (국문)",
+    item_name_en: "항목명 (영문)",
+    item_desc: "설명 / 가이드",
+    max_score: "최대 점수",
+    add_item: "항목 추가",
+    add_category: "새 부문 추가",
+    criteria_save_success: "심사 기준이 저장되었습니다.",
+    confirm_delete_category: "이 부문을 삭제하시겠습니까?",
+
+    // Scoring Settings
+    scoring_title: "점수 산출 및 투표 설정",
+    scoring_desc: "최종 순위 산출 방식을 설정합니다.",
+    save_config: "설정 저장",
+    scoring_method: "1. 심사위원 채점 방식",
+    method_avg: "산술 평균",
+    method_avg_desc: "모든 유효 점수의 단순 평균을 산출합니다.",
+    default: "기본값",
+    method_trimmed: "절사 평균 (올림픽 방식)",
+    method_trimmed_desc: "최고점과 최저점을 제외하여 편향을 제거합니다.",
+    recommended: "추천",
+    method_sum: "총점 합계",
+    method_sum_desc: "모든 심사위원 점수의 단순 합계입니다.",
+    voting_integration: "2. 청중 투표 연동",
+    vote_none: "연동 없음 (심사위원 전용)",
+    vote_ratio: "비율 반영 (%)",
+    vote_rank: "순위별 가산점",
+    ratio_config: "비율 설정",
+    judge_weight: "심사위원 비중",
+    audience_weight: "청중 비중",
+    ratio_formula: "최종 점수 = (심사위원 * {j}%) + (청중 * {a}%)",
+    rank_config: "순위 가산점 설정",
+    bonus_1st: "1위 가산점",
+    bonus_2nd: "2위 가산점",
+    bonus_3rd: "3위 가산점",
+    bonus_other: "기타 순위 가산점",
+    rank_formula: "최종 점수 = 심사위원 점수 + 가산점(청중 순위 기반)",
+    scoring_save_success: "채점 설정이 저장되었습니다.",
+
+    // Admin Menu
+    menu_judges: "심사위원 관리",
+    menu_event: "행사 설정",
+    menu_criteria: "평가 기준",
+    menu_scoring: "채점 방식",
+    live_ranking_desc: "실시간 점수 집계 현황",
+
+    // Misc
+    msg_reset_warning_detail: "모든 점수가 삭제되고 참가팀/심사위원 목록 및 행사 설정이 초기화됩니다.",
+    placeholder_desc: "행사 설명을 입력하세요...",
+    btn_change_image: "이미지 변경",
+    no_judges: "등록된 심사위원이 없습니다.",
+    no_teams: "등록된 팀이 없습니다.",
+    edit_judge: "심사위원 수정",
+    edit_team: "팀 정보 수정",
+    pts: "점",
     cat_creativity: "도전성 및 창의성 (30)",
     cat_market: "시장성 (40)",
     cat_business: "사업성 (30)"
@@ -304,7 +366,6 @@ export const DICTIONARY = {
     danger_zone: "Danger Zone",
     btn_reset_all: "Reset All Data",
     msg_confirm_reset: "Are you sure you want to delete all data? This action cannot be undone.",
-    msg_confirm_reset: "Are you sure you want to delete all data? This action cannot be undone.",
     msg_reset_success: "System has been reset.",
 
     // Secure Reset Modal
@@ -320,7 +381,70 @@ export const DICTIONARY = {
     // Criteria Categories
     cat_creativity: "Creativity & Challenge (30)",
     cat_market: "Marketability (40)",
-    cat_business: "Feasibility (30)"
+    cat_business: "Feasibility (30)",
+
+    // Criteria Manager
+    criteria_title: "Evaluation Criteria",
+    criteria_desc: "Configure judging categories and scoring items.",
+    total_points: "Total",
+    category_name_ko: "Category Name (KO)",
+    category_name_en: "Category Name (EN)",
+    max_points: "Max Points",
+    item_sum_error: "Item sum ({sum}) does not match category max ({max}). Please adjust.",
+    item_name_ko: "Item Name (KO)",
+    item_name_en: "Item Name (EN)",
+    item_desc: "Description / Guide",
+    max_score: "Max Score",
+    add_item: "Add Item",
+    add_category: "Add New Category",
+    criteria_save_success: "Criteria saved successfully!",
+    confirm_delete_category: "Are you sure you want to delete this category?",
+
+    // Scoring Settings
+    scoring_title: "Scoring & Voting Logic",
+    scoring_desc: "Configure how the final rankings are calculated.",
+    save_config: "Save Configuration",
+    scoring_method: "1. Judge Scoring Method",
+    method_avg: "Arithmetic Mean",
+    method_avg_desc: "Calculate standard average of all valid judge scores.",
+    default: "Default",
+    method_trimmed: "Trimmed Mean",
+    method_trimmed_desc: "Exclude Highest & Lowest scores to remove bias. (Olympic Style)",
+    recommended: "Recommended",
+    method_sum: "Total Sum",
+    method_sum_desc: "Simple sum of all judge scores.",
+    voting_integration: "2. Audience Voting Integration",
+    vote_none: "No Integration (Judges Only)",
+    vote_ratio: "Ratio Combination (%)",
+    vote_rank: "Rank Bonus Points",
+    ratio_config: "Ratio Configuration",
+    judge_weight: "Judge Weight",
+    audience_weight: "Audience Weight",
+    ratio_formula: "Final Score = (JudgeScore * {j}%) + (AudienceScore * {a}%)",
+    rank_config: "Rank Bonus Configuration",
+    bonus_1st: "1st Place Bonus",
+    bonus_2nd: "2nd Place Bonus",
+    bonus_3rd: "3rd Place Bonus",
+    bonus_other: "Others Bonus",
+    rank_formula: "Final Score = JudgeScore + Bonus(based on audience rank)",
+    scoring_save_success: "Scoring settings saved successfully!",
+
+    // Admin Menu
+    menu_judges: "Judges",
+    menu_event: "Event",
+    menu_criteria: "Criteria",
+    menu_scoring: "Scoring",
+    live_ranking_desc: "Real-time scoring updates",
+
+    // Misc
+    msg_reset_warning_detail: "This will delete all scores, reset teams and judges to default, and clear all event settings.",
+    placeholder_desc: "Event description...",
+    btn_change_image: "Change Image",
+    no_judges: "No judges registered yet.",
+    no_teams: "No teams registered yet.",
+    edit_judge: "Edit Judge",
+    edit_team: "Edit Team",
+    pts: "pts"
   }
 };
 

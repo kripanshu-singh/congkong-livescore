@@ -70,7 +70,7 @@ export const EventSettings = ({ settings, onSave, onReset }) => {
                       onClick={() => fileInputRef.current?.click()}
                       className="px-4 py-2 bg-white/90 text-slate-800 rounded-lg font-bold hover:bg-white transition-colors cursor-pointer"
                     >
-                      Change Image
+                      {t.btn_change_image}
                     </button>
                   </div>
                 </div>
@@ -173,7 +173,7 @@ export const EventSettings = ({ settings, onSave, onReset }) => {
                 value={localSettings.description}
                 onChange={(e) => handleChange('description', e.target.value)}
                 className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[100px]"
-                placeholder="Event description..."
+                placeholder={t.placeholder_desc}
               />
             </div>
           </GlassCard>
@@ -198,7 +198,7 @@ export const EventSettings = ({ settings, onSave, onReset }) => {
               <div>
                 <h4 className="font-bold text-slate-800">{t.btn_reset_all}</h4>
                 <p className="text-sm text-slate-500 mt-1">
-                  This will delete all scores, reset teams and judges to default, and clear all event settings.
+                  {t.msg_reset_warning_detail}
                 </p>
               </div>
               <button 

@@ -125,7 +125,36 @@ export default function App() {
           timerQnA: 3,
           mainTitle: '25년 기술사업화',
           eventTime: '2025. 12. 03 (수)',
-          location: 'CCEX Conf. 307호'
+          location: 'CCEX Conf. 307호',
+          // New Defaults
+          scoringMethod: 'avg',
+          voteMode: 'none',
+          voteRatio: 20,
+          rankBonus1: 5,
+          rankBonus2: 3,
+          rankBonus3: 1,
+          rankBonusOther: 0,
+          criteria: {
+             active_template: 'default',
+             totalMaxScore: 100,
+             categories: [
+                { id: 'cat_creativity', label: 'BM 창의성', label_en: 'Creativity', maxPoints: 30, items: [
+                   { id: 'c1', label: 'BM 창의성', label_en: 'Creativity', max: 10, desc: '기존 비즈니스 대비 차별성' },
+                   { id: 'c2', label: 'BM 도전성', label_en: 'Challenge', max: 10, desc: '사업 추진력 또는 의지' },
+                   { id: 'c3', label: 'BM 혁신성', label_en: 'Innovation', max: 10, desc: '산업 혁신역량 제고' }
+                ]},
+                { id: 'cat_market', label: '시장성', label_en: 'Marketability', maxPoints: 40, items: [
+                   { id: 'm1', label: '성장 가능성', label_en: 'Growth Potential', max: 15, desc: '목표시장 미래 성장성' },
+                   { id: 'm2', label: '시장진입장벽', label_en: 'Entry Barriers', max: 15, desc: '경쟁구조 및 규제' },
+                   { id: 'm3', label: '파급효과', label_en: 'Ripple Effect', max: 10, desc: '시장 확대 가능성' }
+                ]},
+                { id: 'cat_business', label: '사업성', label_en: 'Feasibility', maxPoints: 30, items: [
+                   { id: 'b1', label: '목표 구체성', label_en: 'Goal Specificity', max: 10, desc: '명료한 사업 가치 설정' },
+                   { id: 'b2', label: '수익모델', label_en: 'Business Model', max: 10, desc: '수익모델 구체화 정도' },
+                   { id: 'b3', label: '실현 가능성', label_en: 'Feasibility', max: 10, desc: '규제/비용 등 실현성' }
+                ]}
+             ]
+          }
         });
       }
     }, (error) => {
@@ -260,7 +289,36 @@ export default function App() {
         timerQnA: 3,
         mainTitle: '25년 기술사업화',
         eventTime: '2025. 12. 03 (수)',
-        location: 'CCEX Conf. 307호'
+        location: 'CCEX Conf. 307호',
+        // New Defaults
+        scoringMethod: 'avg',
+        voteMode: 'none',
+        voteRatio: 20,
+        rankBonus1: 5,
+        rankBonus2: 3,
+        rankBonus3: 1,
+        rankBonusOther: 0,
+        criteria: {
+           active_template: 'default',
+           totalMaxScore: 100,
+           categories: [
+              { id: 'cat_creativity', label: 'BM 창의성', label_en: 'Creativity', maxPoints: 30, items: [
+                 { id: 'c1', label: 'BM 창의성', label_en: 'Creativity', max: 10, desc: '기존 비즈니스 대비 차별성' },
+                 { id: 'c2', label: 'BM 도전성', label_en: 'Challenge', max: 10, desc: '사업 추진력 또는 의지' },
+                 { id: 'c3', label: 'BM 혁신성', label_en: 'Innovation', max: 10, desc: '산업 혁신역량 제고' }
+              ]},
+              { id: 'cat_market', label: '시장성', label_en: 'Marketability', maxPoints: 40, items: [
+                 { id: 'm1', label: '성장 가능성', label_en: 'Growth Potential', max: 15, desc: '목표시장 미래 성장성' },
+                 { id: 'm2', label: '시장진입장벽', label_en: 'Entry Barriers', max: 15, desc: '경쟁구조 및 규제' },
+                 { id: 'm3', label: '파급효과', label_en: 'Ripple Effect', max: 10, desc: '시장 확대 가능성' }
+              ]},
+              { id: 'cat_business', label: '사업성', label_en: 'Feasibility', maxPoints: 30, items: [
+                 { id: 'b1', label: '목표 구체성', label_en: 'Goal Specificity', max: 10, desc: '명료한 사업 가치 설정' },
+                 { id: 'b2', label: '수익모델', label_en: 'Business Model', max: 10, desc: '수익모델 구체화 정도' },
+                 { id: 'b3', label: '실현 가능성', label_en: 'Feasibility', max: 10, desc: '규제/비용 등 실현성' }
+              ]}
+           ]
+        }
       };
       await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'admin', 'event_settings'), defaultSettings);
       setEventSettings(defaultSettings);
@@ -312,6 +370,7 @@ export default function App() {
               teams={teams} 
               scores={scores} 
               control={control}
+              eventSettings={eventSettings}
               onSubmit={handleSubmitScore} 
               onLogout={() => setUserProfile(null)} 
               isOnline={isOnline} 
