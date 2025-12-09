@@ -78,7 +78,7 @@ export const AppleSlider = ({ value, max, onChange, label, desc, disabled, step 
         />
         <div className="absolute bottom-0 w-full flex justify-between px-2 pointer-events-none opacity-30">
            {Array.from({length: max + 1}).map((_, i) => (
-             <div key={i} className={`w-[1px] ${i % 5 === 0 ? 'h-2 bg-slate-400' : 'h-1 bg-slate-300'}`}></div>
+             <div key={i} className={`w-px ${i % 5 === 0 ? 'h-2 bg-slate-400' : 'h-1 bg-slate-300'}`}></div>
            ))}
         </div>
       </div>
