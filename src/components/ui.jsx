@@ -44,7 +44,7 @@ export const GlassCard = ({ children, className = "", active = false, onClick })
   </div>
 );
 
-export const AppleSlider = ({ value, max, onChange, label, desc, disabled }) => {
+export const AppleSlider = ({ value, max, onChange, label, desc, disabled, step = 1 }) => {
   const percentage = (value / max) * 100;
   const getColor = (pct) => {
     if (pct >= 90) return 'bg-blue-600';
@@ -69,9 +69,9 @@ export const AppleSlider = ({ value, max, onChange, label, desc, disabled }) => 
           className={`absolute top-0 left-0 bottom-0 ${getColor(percentage)} transition-all duration-300 ease-out`}
           style={{ width: `${percentage}%` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-b from-white/20 to-transparent pointer-events-none" />
         <input 
-          type="range" min="0" max={max} step="1"
+          type="range" min="0" max={max} step={step}
           value={value} onChange={(e) => onChange(Number(e.target.value))}
           disabled={disabled}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20 disabled:cursor-not-allowed"

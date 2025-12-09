@@ -219,6 +219,7 @@ export const ScoringSettings = ({ settings, onSave }) => {
                              value={ratio.judge} 
                              onChange={(val) => setRatio({ judge: val, audience: 100 - val })}
                              max={100}
+                             step={5}
                              className="h-4"
                           />
                        </div>
